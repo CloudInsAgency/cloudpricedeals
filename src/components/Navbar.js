@@ -7,72 +7,52 @@ import { Menu, X, Heart } from 'lucide-react'
 export default function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-
   const links = [
-    { href: '/',         label: 'Home' },
-    { href: '/browse',   label: 'Browse' },
+    { href: '/', label: 'Home' },
+    { href: '/browse', label: 'Browse' },
     { href: '/wishlist', label: 'Wishlists' },
-    { href: '/about',    label: 'About' },
+    { href: '/about', label: 'About' },
   ]
-
   return (
-    <header style={{ background: 'white', borderBottom: '1px solid rgba(24,95,165,0.08)', position: 'sticky', top: 0, zIndex: 50 }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-
-        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: '1px' }}>
-          <span style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '26px', fontWeight: 600, color: '#0D1B2A', letterSpacing: '-0.02em' }}>Cloud</span>
-          <span style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '26px', fontWeight: 600, color: '#185FA5', letterSpacing: '-0.02em' }}>Price</span>
-          <span style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '26px', fontWeight: 600, color: '#0D1B2A', letterSpacing: '-0.02em' }}>Deals</span>
+    <header style={{ background: '#F5F0E8', borderBottom: '1px solid rgba(26,26,26,0.1)', position: 'sticky', top: 0, zIndex: 50 }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 40px', height: '76px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 400, letterSpacing: '0.02em', color: '#1A1A1A' }}>
+            Cloud<span style={{ color: '#185FA5' }}>Price</span>Deals
+          </span>
         </Link>
-
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="hidden md:flex">
-          {links.map(l => (
-            <Link key={l.href} href={l.href} style={{
-              fontFamily: 'Outfit, sans-serif', fontSize: '14px', fontWeight: 400,
-              padding: '6px 16px', borderRadius: '100px', textDecoration: 'none',
-              color: pathname === l.href ? '#185FA5' : '#3D5166',
-              background: pathname === l.href ? '#EBF3FC' : 'transparent',
-              transition: 'all 0.15s ease',
-            }}>
-              {l.label}
-            </Link>
-          ))}
+        <nav style={{ display: 'flex', gap: '40px' }} className="hidden md:flex">
+          {links.map(function(l) {
+            return (
+              <Link key={l.href} href={l.href} style={{
+                fontFamily: 'Jost, sans-serif', fontSize: '14px', fontWeight: 400,
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                color: pathname === l.href ? '#185FA5' : '#1A1A1A',
+                textDecoration: pathname === l.href ? 'underline' : 'none',
+                textUnderlineOffset: '5px', transition: 'color 0.15s',
+              }}>{l.label}</Link>
+            )
+          })}
         </nav>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Link href="/wishlist" className="hidden md:flex" style={{
-            display: 'flex', alignItems: 'center', gap: '6px',
-            fontFamily: 'Outfit, sans-serif', fontSize: '13px', fontWeight: 500,
-            color: '#185FA5', textDecoration: 'none',
-            padding: '8px 18px', borderRadius: '100px',
-            border: '1.5px solid #185FA5', transition: 'all 0.15s ease',
-          }}>
-            <Heart size={13} /> My lists
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link href="/wishlist" className="hidden md:flex" style={{ display: 'flex', alignItems: 'center', gap: '7px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', textDecoration: 'none', padding: '10px 22px', border: '1.5px solid #185FA5' }}>
+            <Heart size={14} /> My lists
           </Link>
-          <Link href="/" style={{
-            fontFamily: 'Outfit, sans-serif', fontSize: '13px', fontWeight: 500,
-            background: '#185FA5', color: 'white', textDecoration: 'none',
-            padding: '8px 18px', borderRadius: '100px', transition: 'all 0.15s ease',
-          }} className="hidden md:block">
+          <Link href="/" className="hidden md:block" style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', background: '#185FA5', color: 'white', padding: '11px 24px', textDecoration: 'none' }}>
             Get app alerts
           </Link>
-          <button onClick={() => setOpen(!open)} className="md:hidden" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0D1B2A' }}>
-            {open ? <X size={22} /> : <Menu size={22} />}
+          <button onClick={function() { setOpen(!open) }} className="md:hidden" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1A1A1A' }}>
+            {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
-
       {open && (
-        <div style={{ background: 'white', borderTop: '1px solid rgba(24,95,165,0.08)', padding: '12px 24px 20px' }}>
-          {links.map(l => (
-            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} style={{
-              display: 'block', padding: '10px 0', fontFamily: 'Outfit, sans-serif',
-              fontSize: '15px', color: '#0D1B2A', textDecoration: 'none',
-              borderBottom: '1px solid rgba(24,95,165,0.06)',
-            }}>
-              {l.label}
-            </Link>
-          ))}
+        <div style={{ background: '#F5F0E8', borderTop: '1px solid rgba(26,26,26,0.08)', padding: '20px 40px' }}>
+          {links.map(function(l) {
+            return (
+              <Link key={l.href} href={l.href} onClick={function() { setOpen(false) }} style={{ display: 'block', padding: '14px 0', fontFamily: 'Jost, sans-serif', fontSize: '16px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#1A1A1A', textDecoration: 'none', borderBottom: '1px solid rgba(26,26,26,0.06)' }}>{l.label}</Link>
+            )
+          })}
         </div>
       )}
     </header>
