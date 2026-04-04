@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { LayoutGrid, List, ArrowRight } from 'lucide-react'
+import { LayoutGrid, List } from 'lucide-react'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -33,11 +33,11 @@ function CloudHeroAnimation() {
             <div style={{ fontSize: '44px', lineHeight: 1 }}>🎧</div>
             <div>
               <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#185FA5', marginBottom: '3px' }}>Best price today</div>
-              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '17px', fontWeight: 500, color: '#1A1A1A', marginBottom: '2px' }}>Sony WH-1000XM5</div>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '17px', fontWeight: 500, color: '#1A1A1A', marginBottom: '2px' }}>Bose QC45 Headphones</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 400, color: '#185FA5' }}>$278</span>
-                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>$399</span>
-                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, color: '#185FA5', background: '#D6E8F7', padding: '2px 8px', borderRadius: '100px' }}>30% off</span>
+                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 400, color: '#185FA5' }}>$149</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>$279</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, color: '#185FA5', background: '#D6E8F7', padding: '2px 8px', borderRadius: '100px' }}>47% off</span>
               </div>
             </div>
           </div>
