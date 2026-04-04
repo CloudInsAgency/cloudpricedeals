@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Outfit', sans-serif;
+  --blue-50:  #EBF3FC;
+  --blue-100: #C4DCFA;
+  --blue-200: #85B7EB;
+  --blue-400: #2B7CD3;
+  --blue-500: #185FA5;
+  --blue-600: #0C447C;
+  --blue-900: #061E36;
+  --ink:      #0D1B2A;
+  --ink-soft: #3D5166;
+  --ink-mute: #7B93A8;
+  --surface:  #F5F7FA;
+  --white:    #FFFFFF;
+  --border:   rgba(24, 95, 165, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 300;
+  background: var(--white);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+}
+
+h1,h2,h3,h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+@layer components {
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue-500); color: white;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 13px 28px; border-radius: 100px; border: none; cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--blue-600); transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--blue-500);
+    font-family: var(--font-body); font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 12px 28px; border-radius: 100px; border: 1.5px solid var(--blue-500); cursor: pointer;
+    transition: all 0.2s ease; text-decoration: none;
+  }
+  .btn-outline:hover { background: var(--blue-50); transform: translateY(-1px); }
+
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .card-hover {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(24, 95, 165, 0.08);
+    border-color: rgba(24, 95, 165, 0.2);
+  }
+
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--blue-500);
+  }
+
+  .retailer-badge {
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .deal-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.03em;
+  }
+}
+
+/* Marquee ticker */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  display: flex; width: max-content;
+}
+.marquee-wrap { overflow: hidden; }
+
+/* Fade up animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.6s ease both; }
+.fade-up-1 { animation-delay: 0.08s; }
+.fade-up-2 { animation-delay: 0.16s; }
+.fade-up-3 { animation-delay: 0.24s; }
+.fade-up-4 { animation-delay: 0.32s; }
+.fade-up-5 { animation-delay: 0.40s; }
+.fade-up-6 { animation-delay: 0.48s; }
+.fade-up-7 { animation-delay: 0.56s; }
+.fade-up-8 { animation-delay: 0.64s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--blue-200); border-radius: 4px; }
+
+.price-green, .price-blue { color: var(--blue-500); }
