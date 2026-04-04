@@ -1,290 +1,321 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { Heart, Plus, Share2, Trash2, X, ChevronDown } from 'lucide-react'
+import { Heart, Share2, Trash2, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import RetailerBadge from '@/components/RetailerBadge'
-import EmailCapture from '@/components/EmailCapture'
-import { WISHLIST_OCCASIONS } from '@/data/deals'
-
-const DEMO_LISTS = [
-  {
-    id: 'list-1',
-    name: "Emma's Birthday 2026",
-    occasion: 'birthday',
-    items: [
-      { id: 'sony-wh1000xm5', name: 'Sony WH-1000XM5', emoji: '🎧', price: 89, originalPrice: 149, retailer: 'amazon' },
-      { id: 'fitbit-charge6',  name: 'Fitbit Charge 6',  emoji: '⌚', price: 99, originalPrice: 159, retailer: 'bestbuy' },
-    ],
-    createdAt: '2026-03-20',
-  },
-  {
-    id: 'list-2',
-    name: 'Christmas 2026',
-    occasion: 'christmas',
-    items: [
-      { id: 'bose-qc-earbuds2', name: 'Bose QC Earbuds II', emoji: '🎵', price: 119, originalPrice: 179, retailer: 'amazon' },
-      { id: 'tcl-43-4k-tv',     name: 'TCL 43" 4K Smart TV',  emoji: '📺', price: 119, originalPrice: 179, retailer: 'bestbuy' },
-      { id: 'dell-27-monitor',  name: 'Dell 27" 4K Monitor',   emoji: '🖥️', price: 129, originalPrice: 199, retailer: 'target' },
-    ],
-    createdAt: '2026-03-15',
-  },
-  {
-    id: 'list-3',
-    name: 'Baby shower — Jess & Mike',
-    occasion: 'babyshower',
-    items: [
-      { id: 'instant-pot-duo', name: 'Instant Pot Duo 7-in-1', emoji: '🍲', price: 59, originalPrice: 99, retailer: 'walmart' },
-      { id: 'keurig-k-slim',   name: 'Keurig K-Slim',          emoji: '☕', price: 59, originalPrice: 89, retailer: 'amazon' },
-    ],
-    createdAt: '2026-03-28',
-  },
-]
+import { DEALS, WISHLIST_OCCASIONS, RETAILERS } from '@/data/deals'
 
 export default function WishlistPage() {
-  const [lists, setLists] = useState(DEMO_LISTS)
-  const [showNew, setShowNew] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newOccasion, setNewOccasion] = useState('birthday')
-  const [expandedList, setExpandedList] = useState('list-1')
-  const [copiedId, setCopiedId] = useState(null)
+  const [lists, setLists] = useState([])
+  const [savedItems, setSavedItems] = useState([])
+  const [activeOccasion, setActiveOccasion] = useState('all')
+  const [expandedList, setExpandedList] = useState(null)
+  const [showNewList, setShowNewList] = useState(false)
+  const [newListName, setNewListName] = useState('')
+  const [newListOccasion, setNewListOccasion] = useState('general')
+  const [mounted, setMounted] = useState(false)
 
-  const totalItems = lists.reduce((sum, l) => sum + l.items.length, 0)
-  const totalSaved = lists.reduce((sum, l) => sum + l.items.reduce((s, i) => s + (i.originalPrice - i.price), 0), 0)
+  useEffect(function() {
+    setMounted(true)
+    try {
+      var stored = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      setSavedItems(stored)
 
-  const createList = () => {
-    if (!newName.trim()) return
-    const newList = {
-      id: `list-${Date.now()}`,
-      name: newName.trim(),
-      occasion: newOccasion,
-      items: [],
-      createdAt: new Date().toISOString().split('T')[0],
+      var storedLists = JSON.parse(localStorage.getItem('cpd-lists') || '[]')
+      if (storedLists.length === 0) {
+        storedLists = [
+          { id: 'list-1', name: "Emma's Birthday 2026", occasion: 'birthday', created: '2026-03-20', items: [] },
+          { id: 'list-2', name: 'Christmas 2026', occasion: 'christmas', created: '2026-03-15', items: [] },
+          { id: 'list-3', name: 'Baby Shower — Jess & Mike', occasion: 'babyshower', created: '2026-03-28', items: [] },
+        ]
+        localStorage.setItem('cpd-lists', JSON.stringify(storedLists))
+      }
+      setLists(storedLists)
+      if (storedLists.length > 0) setExpandedList(storedLists[0].id)
+    } catch(e) {
+      console.error(e)
     }
-    setLists([newList, ...lists])
-    setNewName('')
-    setShowNew(false)
+  }, [])
+
+  function saveLists(updated) {
+    setLists(updated)
+    try { localStorage.setItem('cpd-lists', JSON.stringify(updated)) } catch(e) {}
   }
 
-  const deleteList = (id) => setLists(lists.filter(l => l.id !== id))
-
-  const removeItem = (listId, itemId) => {
-    setLists(lists.map(l => l.id === listId ? { ...l, items: l.items.filter(i => i.id !== itemId) } : l))
+  function removeFromSaved(id) {
+    var updated = savedItems.filter(function(s) { return s.id !== id })
+    setSavedItems(updated)
+    try { localStorage.setItem('cpd-wishlist', JSON.stringify(updated)) } catch(e) {}
   }
 
-  const shareList = (list) => {
-    const url = `${window.location.origin}/wishlist/shared/${list.id}`
-    navigator.clipboard.writeText(url).then(() => {
-      setCopiedId(list.id)
-      setTimeout(() => setCopiedId(null), 2000)
+  function addToList(listId, item) {
+    var updated = lists.map(function(l) {
+      if (l.id !== listId) return l
+      var exists = l.items.find(function(i) { return i.id === item.id })
+      if (exists) return l
+      return { ...l, items: [...l.items, item] }
     })
+    saveLists(updated)
+    removeFromSaved(item.id)
+    alert('Added to list!')
   }
+
+  function removeFromList(listId, itemId) {
+    var updated = lists.map(function(l) {
+      if (l.id !== listId) return l
+      return { ...l, items: l.items.filter(function(i) { return i.id !== itemId }) }
+    })
+    saveLists(updated)
+  }
+
+  function deleteList(listId) {
+    if (!confirm('Delete this list?')) return
+    saveLists(lists.filter(function(l) { return l.id !== listId }))
+  }
+
+  function createList() {
+    if (!newListName.trim()) return
+    var newList = {
+      id: 'list-' + Date.now(),
+      name: newListName.trim(),
+      occasion: newListOccasion,
+      created: new Date().toISOString().slice(0, 10),
+      items: [],
+    }
+    var updated = [...lists, newList]
+    saveLists(updated)
+    setExpandedList(newList.id)
+    setNewListName('')
+    setShowNewList(false)
+  }
+
+  function getDealDetails(id) {
+    return DEALS.find(function(d) { return d.id === id })
+  }
+
+  var totalSavings = lists.reduce(function(acc, l) {
+    return acc + l.items.reduce(function(a, item) {
+      var d = getDealDetails(item.id)
+      return a + (d ? (d.originalPrice - d.price) : (item.originalPrice - item.price))
+    }, 0)
+  }, 0)
+
+  var totalItems = lists.reduce(function(acc, l) { return acc + l.items.length }, 0)
+
+  var filteredLists = activeOccasion === 'all'
+    ? lists
+    : lists.filter(function(l) { return l.occasion === activeOccasion })
+
+  if (!mounted) return null
 
   return (
-    <div className="min-h-screen">
+    <div style={{ minHeight: '100vh', background: '#F5F0E8' }}>
       <Navbar />
+      <div style={{ maxWidth: '960px', margin: '0 auto', padding: '64px 40px 96px' }}>
 
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 py-8 flex items-start justify-between gap-4 flex-wrap">
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '48px', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <h1 className="font-display font-bold text-3xl text-ink mb-1">My wishlists</h1>
-            <p className="text-gray-400 text-sm">Save deals to occasion lists — then share with family & friends</p>
+            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '64px', fontWeight: 400, color: '#1A1A1A', letterSpacing: '-0.01em', lineHeight: 1 }}>My wishlists</h1>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '16px', fontWeight: 300, color: '#888', marginTop: '12px' }}>Save deals to occasion lists — then share with family and friends</p>
           </div>
-          <button
-            onClick={() => setShowNew(true)}
-            className="flex items-center gap-2 bg-brand-400 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-brand-500 transition-colors"
-          >
+          <button onClick={function() { setShowNewList(!showNewList) }} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#185FA5', color: 'white', border: 'none', padding: '14px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
             <Plus size={15} /> New list
           </button>
         </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-6">
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {[
-            { label: 'Lists', value: lists.length },
-            { label: 'Items saved', value: totalItems },
-            { label: 'Total savings', value: `$${totalSaved}` },
-          ].map(s => (
-            <div key={s.label} className="bg-white rounded-xl p-4 text-center border border-gray-100">
-              <p className="font-display font-bold text-2xl text-ink">{s.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{s.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* New list form */}
-        {showNew && (
-          <div className="card p-5 mb-4 border-brand-200 bg-brand-50">
-            <div className="flex items-center justify-between mb-4">
-              <p className="font-semibold text-sm text-ink">Create new list</p>
-              <button onClick={() => setShowNew(false)} className="text-gray-400 hover:text-ink">
-                <X size={16} />
-              </button>
-            </div>
+        {showNewList && (
+          <div style={{ background: 'white', padding: '28px', marginBottom: '32px', border: '1px solid rgba(26,26,26,0.08)' }}>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '24px', marginBottom: '20px' }}>Create a new list</p>
             <input
-              type="text"
-              value={newName}
-              onChange={e => setNewName(e.target.value)}
-              placeholder="List name e.g. Sarah's Birthday 2026"
-              className="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 bg-white outline-none focus:border-brand-300 mb-3"
-              onKeyDown={e => e.key === 'Enter' && createList()}
-              autoFocus
+              value={newListName}
+              onChange={function(e) { setNewListName(e.target.value) }}
+              placeholder="List name (e.g. Dad's Birthday 2026)"
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '12px', outline: 'none' }}
             />
-            <div className="mb-4">
-              <p className="text-xs text-gray-400 mb-2">Occasion</p>
-              <div className="flex flex-wrap gap-2">
-                {WISHLIST_OCCASIONS.map(occ => (
-                  <button
-                    key={occ.id}
-                    onClick={() => setNewOccasion(occ.id)}
-                    className="text-xs px-3 py-1.5 rounded-full border transition-all font-medium"
-                    style={{
-                      background: newOccasion === occ.id ? occ.bg : 'white',
-                      color: newOccasion === occ.id ? occ.color : '#888',
-                      borderColor: newOccasion === occ.id ? occ.color : '#e5e7eb',
-                    }}
-                  >
-                    {occ.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => setShowNew(false)} className="btn-outline flex-1 justify-center text-sm py-2">Cancel</button>
-              <button onClick={createList} className="flex-1 bg-brand-400 text-white text-sm font-semibold py-2 rounded-xl hover:bg-brand-500 transition-colors">
+            <select
+              value={newListOccasion}
+              onChange={function(e) { setNewListOccasion(e.target.value) }}
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '16px', outline: 'none' }}
+            >
+              {WISHLIST_OCCASIONS.map(function(o) {
+                return <option key={o.id} value={o.id}>{o.label}</option>
+              })}
+            </select>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={createList} style={{ background: '#185FA5', color: 'white', border: 'none', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 Create list
+              </button>
+              <button onClick={function() { setShowNewList(false) }} style={{ background: 'transparent', color: '#888', border: '1px solid rgba(26,26,26,0.15)', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', cursor: 'pointer' }}>
+                Cancel
               </button>
             </div>
           </div>
         )}
 
-        {/* Occasions legend */}
-        <div className="flex flex-wrap gap-2 mb-5">
-          {WISHLIST_OCCASIONS.map(occ => (
-            <span
-              key={occ.id}
-              className="text-xs font-medium px-2.5 py-1 rounded-full"
-              style={{ background: occ.bg, color: occ.color }}
-            >
-              {occ.label}
-            </span>
-          ))}
-        </div>
-
-        {/* Lists */}
-        <div className="flex flex-col gap-3">
-          {lists.map(list => {
-            const occasion = WISHLIST_OCCASIONS.find(o => o.id === list.occasion)
-            const listTotal = list.items.reduce((s, i) => s + i.price, 0)
-            const isExpanded = expandedList === list.id
-
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: '#EDE8DF', marginBottom: '48px' }}>
+          {[
+            { label: 'Lists', value: lists.length },
+            { label: 'Items saved', value: totalItems },
+            { label: 'Total savings', value: '$' + totalSavings },
+          ].map(function(s) {
             return (
-              <div key={list.id} className="card overflow-visible">
-                <div
-                  className="flex items-center gap-3 p-4 cursor-pointer"
-                  onClick={() => setExpandedList(isExpanded ? null : list.id)}
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="font-semibold text-sm text-ink">{list.name}</span>
-                      {occasion && (
-                        <span
-                          className="text-xs font-medium px-2 py-0.5 rounded-full"
-                          style={{ background: occasion.bg, color: occasion.color }}
-                        >
-                          {occasion.label}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-400">
-                      {list.items.length} {list.items.length === 1 ? 'item' : 'items'} · ${listTotal} total · Created {list.createdAt}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button
-                      onClick={e => { e.stopPropagation(); shareList(list) }}
-                      className="p-2 rounded-xl hover:bg-brand-50 transition-colors"
-                      title="Copy share link"
-                    >
-                      <Share2 size={14} className={copiedId === list.id ? 'text-brand-400' : 'text-gray-400'} />
-                    </button>
-                    <button
-                      onClick={e => { e.stopPropagation(); deleteList(list.id) }}
-                      className="p-2 rounded-xl hover:bg-red-50 transition-colors"
-                      title="Delete list"
-                    >
-                      <Trash2 size={14} className="text-gray-300 hover:text-red-400" />
-                    </button>
-                    <ChevronDown
-                      size={16}
-                      className={`text-gray-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                    />
-                  </div>
-                </div>
-
-                {isExpanded && (
-                  <div className="border-t border-gray-50 px-4 pb-4 pt-3">
-                    {list.items.length === 0 ? (
-                      <div className="text-center py-6">
-                        <Heart size={24} className="text-gray-200 mx-auto mb-2" />
-                        <p className="text-sm text-gray-400 mb-1">No items yet</p>
-                        <p className="text-xs text-gray-300">Browse deals and tap the heart to save here</p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2">
-                        {list.items.map(item => (
-                          <div key={item.id} className="flex items-center gap-3 p-2.5 bg-surface rounded-xl">
-                            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shrink-0">
-                              {item.emoji}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-ink leading-tight">{item.name}</p>
-                              <div className="flex items-center gap-1.5 mt-0.5">
-                                <RetailerBadge retailer={item.retailer} size="xs" />
-                              </div>
-                            </div>
-                            <div className="text-right shrink-0">
-                              <p className="text-sm font-semibold price-green">${item.price}</p>
-                              <p className="text-xs text-gray-300 line-through">${item.originalPrice}</p>
-                            </div>
-                            <button
-                              onClick={() => removeItem(list.id, item.id)}
-                              className="p-1.5 rounded-lg hover:bg-red-50 transition-colors shrink-0"
-                            >
-                              <X size={13} className="text-gray-300 hover:text-red-400" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between">
-                      <button
-                        onClick={() => shareList(list)}
-                        className="flex items-center gap-1.5 text-xs font-medium text-brand-400 hover:text-brand-500 transition-colors"
-                      >
-                        <Share2 size={13} />
-                        {copiedId === list.id ? 'Link copied!' : 'Share this list'}
-                      </button>
-                      <a href="/" className="text-xs font-medium text-gray-400 hover:text-ink transition-colors">
-                        + Browse more deals →
-                      </a>
-                    </div>
-                  </div>
-                )}
+              <div key={s.label} style={{ background: 'white', padding: '28px', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '48px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 300, color: '#888', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{s.label}</div>
               </div>
             )
           })}
         </div>
 
-        <div className="mt-8">
-          <EmailCapture variant="banner" />
+        {savedItems.length > 0 && (
+          <div style={{ background: 'white', padding: '28px', marginBottom: '32px', border: '2px solid #185FA5' }}>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', marginBottom: '6px', color: '#185FA5' }}>
+              {savedItems.length} item{savedItems.length !== 1 ? 's' : ''} saved — assign to a list
+            </p>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 300, marginBottom: '20px' }}>
+              These items are in your saved deals. Add them to a list below.
+            </p>
+            {savedItems.map(function(item) {
+              var deal = getDealDetails(item.id) || item
+              return (
+                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderTop: '1px solid rgba(26,26,26,0.06)', flexWrap: 'wrap' }}>
+                  <div style={{ fontSize: '32px' }}>{deal.emoji || item.emoji}</div>
+                  <div style={{ flex: 1, minWidth: '160px' }}>
+                    <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', color: '#1A1A1A' }}>{deal.name || item.name}</div>
+                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', fontWeight: 500 }}>${deal.price || item.price}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {lists.map(function(l) {
+                      var occ = WISHLIST_OCCASIONS.find(function(o) { return o.id === l.occasion }) || {}
+                      return (
+                        <button key={l.id} onClick={function() { addToList(l.id, item) }}
+                          style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '6px 12px', background: occ.bg || '#F5F0E8', color: occ.color || '#1A1A1A', border: 'none', cursor: 'pointer' }}>
+                          + {l.name}
+                        </button>
+                      )
+                    })}
+                    <button onClick={function() { removeFromSaved(item.id) }}
+                      style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: 'none', cursor: 'pointer', padding: '6px' }}>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: '0', overflowX: 'auto', marginBottom: '32px', borderBottom: '1px solid rgba(26,26,26,0.1)' }}>
+          <button onClick={function() { setActiveOccasion('all') }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === 'all' ? '#185FA5' : '#888', borderBottom: activeOccasion === 'all' ? '2px solid #185FA5' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+            All
+          </button>
+          {WISHLIST_OCCASIONS.map(function(o) {
+            return (
+              <button key={o.id} onClick={function() { setActiveOccasion(o.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === o.id ? o.color : '#888', borderBottom: activeOccasion === o.id ? '2px solid ' + o.color : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+                {o.label}
+              </button>
+            )
+          })}
         </div>
 
+        {filteredLists.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '64px 0' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+              <Heart size={48} color="#185FA5" />
+            </div>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', color: '#1A1A1A', marginBottom: '8px' }}>No lists yet</p>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '15px', color: '#888', fontWeight: 300 }}>Create a list and start saving deals to it.</p>
+          </div>
+        )}
+
+        {filteredLists.map(function(list) {
+          var occ = WISHLIST_OCCASIONS.find(function(o) { return o.id === list.occasion }) || {}
+          var listTotal = list.items.reduce(function(acc, item) {
+            var d = getDealDetails(item.id)
+            return acc + (d ? d.price : item.price)
+          }, 0)
+          var isExpanded = expandedList === list.id
+
+          return (
+            <div key={list.id} style={{ background: 'white', marginBottom: '16px', border: '1px solid rgba(26,26,26,0.08)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px 28px', cursor: 'pointer' }} onClick={function() { setExpandedList(isExpanded ? null : list.id) }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 400, color: '#1A1A1A' }}>{list.name}</span>
+                      <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || '#F5F0E8', color: occ.color || '#888' }}>{occ.label || list.occasion}</span>
+                    </div>
+                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 300 }}>
+                      {list.items.length} item{list.items.length !== 1 ? 's' : ''} · ${listTotal} total · Created {list.created}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <button onClick={function(e) { e.stopPropagation(); navigator.clipboard && navigator.clipboard.writeText(window.location.href).then(function() { alert('Link copied!') }) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', padding: '4px' }}>
+                    <Share2 size={16} />
+                  </button>
+                  <button onClick={function(e) { e.stopPropagation(); deleteList(list.id) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', padding: '4px' }}>
+                    <Trash2 size={16} />
+                  </button>
+                  {isExpanded ? <ChevronUp size={18} color="#888" /> : <ChevronDown size={18} color="#888" />}
+                </div>
+              </div>
+
+              {isExpanded && (
+                <div style={{ borderTop: '1px solid rgba(26,26,26,0.06)', padding: '0 28px' }}>
+                  {list.items.length === 0 && (
+                    <div style={{ padding: '32px 0', textAlign: 'center' }}>
+                      <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 300 }}>No items yet. Save deals using the heart button then assign them here.</p>
+                    </div>
+                  )}
+                  {list.items.map(function(item) {
+                    var deal = getDealDetails(item.id) || item
+                    var retailer = RETAILERS[deal.retailer || item.retailer] || {}
+                    var amazonUrl = deal.affiliateUrl || item.affiliateUrl || '#'
+                    if (deal.comparePrices) {
+                      var ap = deal.comparePrices.find(function(p) { return p.retailer === 'amazon' })
+                      if (ap) amazonUrl = ap.url
+                    }
+                    return (
+                      <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 0', borderBottom: '1px solid rgba(26,26,26,0.06)', flexWrap: 'wrap' }}>
+                        <div style={{ width: '56px', height: '56px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '28px', overflow: 'hidden' }}>
+                          {deal.imageUrl
+                            ? <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} onError={function(e) { e.target.style.display='none' }} />
+                            : deal.emoji || item.emoji}
+                        </div>
+                        <div style={{ flex: 1, minWidth: '160px' }}>
+                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', color: '#1A1A1A', marginBottom: '4px' }}>{deal.name || item.name}</div>
+                          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: retailer.bg || '#F5F0E8', color: retailer.text || '#888' }}>
+                            {retailer.label || (deal.retailer || item.retailer)}
+                          </span>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>${deal.price || item.price}</div>
+                          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>${deal.originalPrice || item.originalPrice}</div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <a href={amazonUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+                            Buy on Amazon
+                          </a>
+                          <button onClick={function() { removeFromList(list.id, item.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: '1px solid rgba(26,26,26,0.1)', padding: '7px 14px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  {list.items.length > 0 && (
+                    <div style={{ padding: '16px 0', display: 'flex', gap: '16px' }}>
+                      <a href="/browse" style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', textDecoration: 'none', fontWeight: 400, letterSpacing: '0.06em', textTransform: 'uppercase', borderBottom: '1px solid #185FA5', paddingBottom: '2px' }}>
+                        + Browse more deals
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
       <Footer />
     </div>
