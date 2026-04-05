@@ -27,7 +27,17 @@ export default function DealCard({ deal, view, delay }) {
         if (saved[i].id === deal.id) { exists = true; break }
       }
       if (!exists) {
-        saved.push({ id: deal.id, name: deal.name, emoji: deal.emoji, price: deal.price, originalPrice: deal.originalPrice, retailer: deal.retailer })
+        saved.push({
+          id: deal.id,
+          name: deal.name,
+          shortName: deal.shortName,
+          emoji: deal.emoji,
+          imageUrl: deal.imageUrl,
+          price: deal.price,
+          originalPrice: deal.originalPrice,
+          retailer: deal.retailer,
+          affiliateUrl: deal.affiliateUrl,
+        })
         localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
         alert('Added ' + deal.shortName + ' to your wishlist!')
       } else {
@@ -58,23 +68,23 @@ export default function DealCard({ deal, view, delay }) {
           <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} onError={handleImgErrorSmall} />
         </div>
         <div style={{ flex: 1, minWidth: '160px' }}>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 400, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: 1.3 }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: 1.3 }}>
             {deal.name}
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
             <RetailerBadge retailer={deal.retailer} />
-            <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', fontWeight: 300 }}>{deal.rating} stars</span>
+            <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', fontWeight: 400 }}>{deal.rating} stars</span>
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>${deal.price}</div>
-          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>${deal.originalPrice}</div>
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</div>
+          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
             Buy on Amazon
           </a>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
             Compare stores
           </Link>
         </div>
@@ -89,7 +99,7 @@ export default function DealCard({ deal, view, delay }) {
       <div style={{ aspectRatio: '4/3', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
         <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '12px' }} onError={handleImgError} />
         {deal.badge === 'hot' && (
-          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', zIndex: 2 }}>
+          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', zIndex: 2 }}>
             Hot deal
           </div>
         )}
@@ -101,18 +111,18 @@ export default function DealCard({ deal, view, delay }) {
         <div style={{ marginBottom: '6px' }}>
           <RetailerBadge retailer={deal.retailer} />
         </div>
-        <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 400, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: '1.3', marginBottom: '10px' }}>
+        <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: '1.3', marginBottom: '10px' }}>
           {deal.name}
         </Link>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px' }}>
-          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '34px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>${deal.price}</span>
-          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>${deal.originalPrice}</span>
-          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 500, color: '#185FA5', marginLeft: 'auto' }}>-{pct}%</span>
+          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '34px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</span>
+          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</span>
+          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, color: '#185FA5', marginLeft: 'auto' }}>-{pct}%</span>
         </div>
-        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
           Buy on Amazon
         </a>
-        <Link href={'/product/' + deal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 400, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', textDecoration: 'none', borderTop: '1px solid rgba(26,26,26,0.06)', paddingTop: '8px' }}>
+        <Link href={'/product/' + deal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', textDecoration: 'none', borderTop: '1px solid rgba(26,26,26,0.06)', paddingTop: '8px' }}>
           Compare all stores
         </Link>
       </div>
