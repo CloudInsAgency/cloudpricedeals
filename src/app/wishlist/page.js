@@ -20,7 +20,6 @@ export default function WishlistPage() {
     try {
       var stored = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
       setSavedItems(stored)
-
       var storedLists = JSON.parse(localStorage.getItem('cpd-lists') || '[]')
       if (storedLists.length === 0) {
         storedLists = [
@@ -32,9 +31,7 @@ export default function WishlistPage() {
       }
       setLists(storedLists)
       if (storedLists.length > 0) setExpandedList(storedLists[0].id)
-    } catch(e) {
-      console.error(e)
-    }
+    } catch(e) { console.error(e) }
   }, [])
 
   function saveLists(updated) {
@@ -115,37 +112,37 @@ export default function WishlistPage() {
 
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '48px', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '64px', fontWeight: 400, color: '#1A1A1A', letterSpacing: '-0.01em', lineHeight: 1 }}>My wishlists</h1>
-            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '16px', fontWeight: 300, color: '#888', marginTop: '12px' }}>Save deals to occasion lists — then share with family and friends</p>
+            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '64px', fontWeight: 500, color: '#1A1A1A', letterSpacing: '-0.01em', lineHeight: 1 }}>My wishlists</h1>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '16px', fontWeight: 400, color: '#888', marginTop: '12px' }}>Save deals to occasion lists — then share with family and friends</p>
           </div>
-          <button onClick={function() { setShowNewList(!showNewList) }} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#185FA5', color: 'white', border: 'none', padding: '14px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
+          <button onClick={function() { setShowNewList(!showNewList) }} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#185FA5', color: 'white', border: 'none', padding: '14px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
             <Plus size={15} /> New list
           </button>
         </div>
 
         {showNewList && (
           <div style={{ background: 'white', padding: '28px', marginBottom: '32px', border: '1px solid rgba(26,26,26,0.08)' }}>
-            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '24px', marginBottom: '20px' }}>Create a new list</p>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '24px', fontWeight: 500, marginBottom: '20px' }}>Create a new list</p>
             <input
               value={newListName}
               onChange={function(e) { setNewListName(e.target.value) }}
               placeholder="List name (e.g. Dad's Birthday 2026)"
-              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '12px', outline: 'none' }}
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', fontWeight: 400, border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '12px', outline: 'none' }}
             />
             <select
               value={newListOccasion}
               onChange={function(e) { setNewListOccasion(e.target.value) }}
-              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '16px', outline: 'none' }}
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', fontWeight: 400, border: '1px solid rgba(26,26,26,0.15)', background: '#F5F0E8', marginBottom: '16px', outline: 'none' }}
             >
               {WISHLIST_OCCASIONS.map(function(o) {
                 return <option key={o.id} value={o.id}>{o.label}</option>
               })}
             </select>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={createList} style={{ background: '#185FA5', color: 'white', border: 'none', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
+              <button onClick={createList} style={{ background: '#185FA5', color: 'white', border: 'none', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 Create list
               </button>
-              <button onClick={function() { setShowNewList(false) }} style={{ background: 'transparent', color: '#888', border: '1px solid rgba(26,26,26,0.15)', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', cursor: 'pointer' }}>
+              <button onClick={function() { setShowNewList(false) }} style={{ background: 'transparent', color: '#888', border: '1px solid rgba(26,26,26,0.15)', padding: '11px 24px', fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, cursor: 'pointer' }}>
                 Cancel
               </button>
             </div>
@@ -160,8 +157,8 @@ export default function WishlistPage() {
           ].map(function(s) {
             return (
               <div key={s.label} style={{ background: 'white', padding: '28px', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '48px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 300, color: '#888', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{s.label}</div>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '48px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, color: '#888', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{s.label}</div>
               </div>
             )
           })}
@@ -169,33 +166,39 @@ export default function WishlistPage() {
 
         {savedItems.length > 0 && (
           <div style={{ background: 'white', padding: '28px', marginBottom: '32px', border: '2px solid #185FA5' }}>
-            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', marginBottom: '6px', color: '#185FA5' }}>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', fontWeight: 500, marginBottom: '6px', color: '#185FA5' }}>
               {savedItems.length} item{savedItems.length !== 1 ? 's' : ''} saved — assign to a list
             </p>
-            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 300, marginBottom: '20px' }}>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 400, marginBottom: '20px' }}>
               These items are in your saved deals. Add them to a list below.
             </p>
             {savedItems.map(function(item) {
               var deal = getDealDetails(item.id) || item
+              var imageUrl = deal.imageUrl || item.imageUrl
               return (
                 <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderTop: '1px solid rgba(26,26,26,0.06)', flexWrap: 'wrap' }}>
-                  <div style={{ fontSize: '32px' }}>{deal.emoji || item.emoji}</div>
+                  <div style={{ width: '56px', height: '56px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', borderRadius: '4px' }}>
+                    {imageUrl
+                      ? <img src={imageUrl} alt={deal.name || item.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} onError={function(e) { e.target.style.display='none'; e.target.parentNode.innerHTML='<span style="font-size:24px">' + (deal.emoji || item.emoji || '') + '</span>' }} />
+                      : <span style={{ fontSize: '24px' }}>{deal.emoji || item.emoji}</span>
+                    }
+                  </div>
                   <div style={{ flex: 1, minWidth: '160px' }}>
-                    <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', color: '#1A1A1A' }}>{deal.name || item.name}</div>
-                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', fontWeight: 500 }}>${deal.price || item.price}</div>
+                    <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A' }}>{deal.name || item.name}</div>
+                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', fontWeight: 600 }}>${deal.price || item.price}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {lists.map(function(l) {
                       var occ = WISHLIST_OCCASIONS.find(function(o) { return o.id === l.occasion }) || {}
                       return (
                         <button key={l.id} onClick={function() { addToList(l.id, item) }}
-                          style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '6px 12px', background: occ.bg || '#F5F0E8', color: occ.color || '#1A1A1A', border: 'none', cursor: 'pointer' }}>
+                          style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '6px 12px', background: occ.bg || '#F5F0E8', color: occ.color || '#1A1A1A', border: 'none', cursor: 'pointer' }}>
                           + {l.name}
                         </button>
                       )
                     })}
                     <button onClick={function() { removeFromSaved(item.id) }}
-                      style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: 'none', cursor: 'pointer', padding: '6px' }}>
+                      style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: 'none', cursor: 'pointer', padding: '6px', fontWeight: 400 }}>
                       Remove
                     </button>
                   </div>
@@ -206,12 +209,12 @@ export default function WishlistPage() {
         )}
 
         <div style={{ display: 'flex', gap: '0', overflowX: 'auto', marginBottom: '32px', borderBottom: '1px solid rgba(26,26,26,0.1)' }}>
-          <button onClick={function() { setActiveOccasion('all') }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === 'all' ? '#185FA5' : '#888', borderBottom: activeOccasion === 'all' ? '2px solid #185FA5' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+          <button onClick={function() { setActiveOccasion('all') }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === 'all' ? '#185FA5' : '#888', borderBottom: activeOccasion === 'all' ? '2px solid #185FA5' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
             All
           </button>
           {WISHLIST_OCCASIONS.map(function(o) {
             return (
-              <button key={o.id} onClick={function() { setActiveOccasion(o.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === o.id ? o.color : '#888', borderBottom: activeOccasion === o.id ? '2px solid ' + o.color : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+              <button key={o.id} onClick={function() { setActiveOccasion(o.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === o.id ? o.color : '#888', borderBottom: activeOccasion === o.id ? '2px solid ' + o.color : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
                 {o.label}
               </button>
             )
@@ -220,11 +223,11 @@ export default function WishlistPage() {
 
         {filteredLists.length === 0 && (
           <div style={{ textAlign: 'center', padding: '64px 0' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+            <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
               <Heart size={48} color="#185FA5" />
             </div>
-            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', color: '#1A1A1A', marginBottom: '8px' }}>No lists yet</p>
-            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '15px', color: '#888', fontWeight: 300 }}>Create a list and start saving deals to it.</p>
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 500, color: '#1A1A1A', marginBottom: '8px' }}>No lists yet</p>
+            <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '15px', color: '#888', fontWeight: 400 }}>Create a list and start saving deals to it.</p>
           </div>
         )}
 
@@ -242,10 +245,10 @@ export default function WishlistPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 400, color: '#1A1A1A' }}>{list.name}</span>
-                      <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || '#F5F0E8', color: occ.color || '#888' }}>{occ.label || list.occasion}</span>
+                      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 500, color: '#1A1A1A' }}>{list.name}</span>
+                      <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || '#F5F0E8', color: occ.color || '#888' }}>{occ.label || list.occasion}</span>
                     </div>
-                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 300 }}>
+                    <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 400 }}>
                       {list.items.length} item{list.items.length !== 1 ? 's' : ''} · ${listTotal} total · Created {list.created}
                     </div>
                   </div>
@@ -265,39 +268,38 @@ export default function WishlistPage() {
                 <div style={{ borderTop: '1px solid rgba(26,26,26,0.06)', padding: '0 28px' }}>
                   {list.items.length === 0 && (
                     <div style={{ padding: '32px 0', textAlign: 'center' }}>
-                      <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 300 }}>No items yet. Save deals using the heart button then assign them here.</p>
+                      <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', color: '#888', fontWeight: 400 }}>No items yet. Save deals using the heart button then assign them here.</p>
                     </div>
                   )}
                   {list.items.map(function(item) {
                     var deal = getDealDetails(item.id) || item
                     var retailer = RETAILERS[deal.retailer || item.retailer] || {}
                     var amazonUrl = deal.affiliateUrl || item.affiliateUrl || '#'
-                    if (deal.comparePrices) {
-                      var ap = deal.comparePrices.find(function(p) { return p.retailer === 'amazon' })
-                      if (ap) amazonUrl = ap.url
-                    }
+                    var imageUrl = deal.imageUrl || item.imageUrl
+
                     return (
                       <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 0', borderBottom: '1px solid rgba(26,26,26,0.06)', flexWrap: 'wrap' }}>
-                        <div style={{ width: '56px', height: '56px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '28px', overflow: 'hidden' }}>
-                          {deal.imageUrl
-                            ? <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} onError={function(e) { e.target.style.display='none' }} />
-                            : deal.emoji || item.emoji}
+                        <div style={{ width: '56px', height: '56px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', borderRadius: '4px' }}>
+                          {imageUrl
+                            ? <img src={imageUrl} alt={deal.name || item.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} onError={function(e) { e.target.style.display='none'; e.target.parentNode.innerHTML='<span style="font-size:24px">' + (deal.emoji || item.emoji || '') + '</span>' }} />
+                            : <span style={{ fontSize: '24px' }}>{deal.emoji || item.emoji}</span>
+                          }
                         </div>
                         <div style={{ flex: 1, minWidth: '160px' }}>
-                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', color: '#1A1A1A', marginBottom: '4px' }}>{deal.name || item.name}</div>
-                          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: retailer.bg || '#F5F0E8', color: retailer.text || '#888' }}>
+                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', marginBottom: '4px' }}>{deal.name || item.name}</div>
+                          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: retailer.bg || '#F5F0E8', color: retailer.text || '#888' }}>
                             {retailer.label || (deal.retailer || item.retailer)}
                           </span>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>${deal.price || item.price}</div>
-                          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 300 }}>${deal.originalPrice || item.originalPrice}</div>
+                          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price || item.price}</div>
+                          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice || item.originalPrice}</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <a href={amazonUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+                          <a href={amazonUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
                             Buy on Amazon
                           </a>
-                          <button onClick={function() { removeFromList(list.id, item.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: '1px solid rgba(26,26,26,0.1)', padding: '7px 14px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                          <button onClick={function() { removeFromList(list.id, item.id) }} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', color: '#ccc', background: 'none', border: '1px solid rgba(26,26,26,0.1)', padding: '7px 14px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 400 }}>
                             Remove
                           </button>
                         </div>
@@ -305,8 +307,8 @@ export default function WishlistPage() {
                     )
                   })}
                   {list.items.length > 0 && (
-                    <div style={{ padding: '16px 0', display: 'flex', gap: '16px' }}>
-                      <a href="/browse" style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', textDecoration: 'none', fontWeight: 400, letterSpacing: '0.06em', textTransform: 'uppercase', borderBottom: '1px solid #185FA5', paddingBottom: '2px' }}>
+                    <div style={{ padding: '16px 0' }}>
+                      <a href="/browse" style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#185FA5', textDecoration: 'none', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', borderBottom: '1px solid #185FA5', paddingBottom: '2px' }}>
                         + Browse more deals
                       </a>
                     </div>
