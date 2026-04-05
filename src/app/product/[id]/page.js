@@ -11,170 +11,179 @@ import { DEALS, RETAILERS } from '@/data/deals'
 
 export default function ProductPage() {
   const params = useParams()
-  const deal = DEALS.find(d => d.id === params.id)
+  const deal = DEALS.find(function(d) { return d.id === params.id })
 
   if (!deal) return (
-    <div className="min-h-screen">
+    <div style={{ minHeight: '100vh', background: '#F5F0E8' }}>
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-        <p className="text-gray-400">Deal not found.</p>
-        <Link href="/" className="btn-primary mt-4 inline-flex">Back to deals</Link>
+      <div style={{ maxWidth: '960px', margin: '0 auto', padding: '80px 40px', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'Jost, sans-serif', color: '#888' }}>Deal not found.</p>
+        <Link href="/" style={{ display: 'inline-block', marginTop: '16px', background: '#185FA5', color: 'white', padding: '12px 24px', textDecoration: 'none', fontFamily: 'Jost, sans-serif', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Back to deals</Link>
       </div>
       <Footer />
     </div>
   )
 
-  const bestPrice = deal.comparePrices.reduce((min, p) => p.price < min.price ? p : min, deal.comparePrices[0])
-  const related = DEALS.filter(d => d.category === deal.category && d.id !== deal.id).slice(0, 4)
+  const bestPrice = deal.comparePrices.reduce(function(min, p) { return p.price < min.price ? p : min }, deal.comparePrices[0])
+  const related = DEALS.filter(function(d) { return d.category === deal.category && d.id !== deal.id }).slice(0, 4)
+  const savingsPct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
+  const savings = deal.originalPrice - deal.price
+
+  function handleWishlist() {
+    try {
+      var saved = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      var exists = saved.find(function(s) { return s.id === deal.id })
+      if (!exists) {
+        saved.push({ id: deal.id, name: deal.name, emoji: deal.emoji, price: deal.price, originalPrice: deal.originalPrice, retailer: deal.retailer })
+        localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
+        alert('Added ' + deal.shortName + ' to your wishlist!')
+      } else {
+        alert(deal.shortName + ' is already in your wishlist.')
+      }
+    } catch(e) { console.error(e) }
+  }
 
   return (
-    <div className="min-h-screen">
+    <div style={{ minHeight: '100vh', background: '#F5F0E8' }}>
       <Navbar />
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-ink transition-colors mb-6">
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 40px 80px' }}>
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'Jost, sans-serif', fontSize: '14px', fontWeight: 400, color: '#888', textDecoration: 'none', marginBottom: '32px', letterSpacing: '0.04em' }}>
           <ArrowLeft size={14} /> Back to deals
         </Link>
 
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '24px', alignItems: 'start' }}>
 
-          {/* Left: product info */}
-          <div className="md:col-span-3">
-            <div className="card p-6 mb-4">
-              <div className="h-40 bg-surface rounded-2xl flex items-center justify-center text-7xl mb-5">
-                {deal.emoji}
+          <div>
+            <div style={{ background: 'white', padding: '32px', marginBottom: '16px' }}>
+              <div style={{ height: '220px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '28px', overflow: 'hidden', position: 'relative' }}>
+                {deal.imageUrl ? (
+                  <img
+                    src={deal.imageUrl}
+                    alt={deal.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px' }}
+                    onError={function(e) {
+                      e.target.style.display = 'none'
+                      var fb = document.createElement('div')
+                      fb.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px'
+                      fb.textContent = deal.emoji
+                      e.target.parentNode.appendChild(fb)
+                    }}
+                  />
+                ) : (
+                  <div style={{ fontSize: '80px' }}>{deal.emoji}</div>
+                )}
               </div>
 
-              <div className="flex items-start justify-between gap-3 mb-2">
-                <h1 className="font-display font-bold text-xl text-ink leading-tight">{deal.name}</h1>
-                <button className="shrink-0 p-2 rounded-xl border border-gray-100 hover:bg-red-50 hover:border-red-100 transition-colors" title="Save to wishlist">
-                  <Heart size={16} className="text-gray-300" />
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
+                <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '36px', fontWeight: 400, color: '#1A1A1A', lineHeight: 1.2 }}>{deal.name}</h1>
+                <button onClick={handleWishlist} style={{ flexShrink: 0, padding: '10px', background: 'none', border: '1px solid rgba(26,26,26,0.12)', cursor: 'pointer', color: '#185FA5' }}>
+                  <Heart size={16} />
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 mb-4">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', flexWrap: 'wrap' }}>
                 <RetailerBadge retailer={deal.retailer} />
-                <span className="text-xs text-gray-400 flex items-center gap-1">
-                  <Star size={11} className="fill-amber-400 text-amber-400" />
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 400, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Star size={12} style={{ fill: '#F59E0B', color: '#F59E0B' }} />
                   {deal.rating} · {deal.reviews.toLocaleString()} reviews
                 </span>
-                <span className="text-xs text-gray-300">·</span>
-                <span className="text-xs text-gray-400">Updated {deal.updatedAt}</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#aaa' }}>·</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 400 }}>Updated {deal.updatedAt}</span>
               </div>
 
-              <div className="flex items-baseline gap-3 mb-5">
-                <span className="font-display font-bold text-4xl price-green">${deal.price}</span>
-                <span className="text-lg text-gray-300 line-through">${deal.originalPrice}</span>
-                <span className="text-sm font-semibold text-brand-400 bg-brand-50 px-2 py-0.5 rounded-full">
-                  Save ${deal.savings} ({deal.savingsPct}% off)
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '24px' }}>
+                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '52px', fontWeight: 400, color: '#185FA5', lineHeight: 1 }}>${deal.price}</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '18px', color: '#bbb', textDecoration: 'line-through', fontWeight: 300 }}>${deal.originalPrice}</span>
+                <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', fontWeight: 600, color: '#185FA5', background: '#D6E8F7', padding: '4px 12px' }}>
+                  Save ${savings} ({savingsPct}% off)
                 </span>
               </div>
 
-              <a
-                href={deal.affiliateUrl}
-                target="_blank"
-                rel="noopener sponsored"
-                className="flex items-center justify-center gap-2 w-full bg-brand-400 text-white font-semibold py-3 rounded-xl hover:bg-brand-500 transition-colors mb-3"
-              >
-                Buy on {RETAILERS[deal.retailer]?.label} <ExternalLink size={15} />
+              <a href={deal.affiliateUrl} target="_blank" rel="noopener sponsored"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', background: '#185FA5', color: 'white', padding: '16px', fontFamily: 'Jost, sans-serif', fontSize: '15px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', marginBottom: '12px' }}>
+                Buy on Amazon <ExternalLink size={15} />
               </a>
 
-              <div className="flex items-center gap-2 text-xs text-gray-400 justify-center mb-5">
-                <Truck size={12} /> {deal.shipping}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', marginBottom: '24px', fontWeight: 400 }}>
+                <Truck size={13} /> {deal.shipping}
               </div>
 
-              <div className="border-t border-gray-50 pt-4">
-                <p className="section-label">About this deal</p>
-                <p className="text-sm text-gray-500 leading-relaxed">{deal.description}</p>
+              <div style={{ borderTop: '1px solid rgba(26,26,26,0.08)', paddingTop: '20px' }}>
+                <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#185FA5', marginBottom: '10px' }}>About this deal</p>
+                <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '15px', color: '#4A4A4A', lineHeight: 1.8, fontWeight: 400 }}>{deal.description}</p>
               </div>
             </div>
 
-            {/* Price history */}
-            <div className="card p-5 mb-4">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingDown size={15} className="text-brand-400" />
-                <p className="font-semibold text-sm text-ink">Price history</p>
+            <div style={{ background: 'white', padding: '28px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                <TrendingDown size={16} color="#185FA5" />
+                <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '14px', fontWeight: 600, color: '#1A1A1A', letterSpacing: '0.04em' }}>Price history</p>
               </div>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-surface rounded-xl p-3 text-center">
-                  <p className="text-xs text-gray-400 mb-1">All-time low</p>
-                  <p className="font-semibold text-sm price-green">${deal.priceHistory.allTimeLow}</p>
-                </div>
-                <div className="bg-surface rounded-xl p-3 text-center">
-                  <p className="text-xs text-gray-400 mb-1">30-day avg</p>
-                  <p className="font-semibold text-sm text-ink">${deal.priceHistory.thirtyDayAvg}</p>
-                </div>
-                <div className="bg-surface rounded-xl p-3 text-center">
-                  <p className="text-xs text-gray-400 mb-1">vs avg</p>
-                  <p className="font-semibold text-sm price-green">{deal.priceHistory.vsAvgPct}%</p>
-                </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                {[
+                  { label: 'All-time low', value: '$' + deal.priceHistory.allTimeLow, color: '#185FA5' },
+                  { label: '30-day avg',   value: '$' + deal.priceHistory.thirtyDayAvg, color: '#1A1A1A' },
+                  { label: 'vs avg',       value: deal.priceHistory.vsAvgPct + '%', color: '#185FA5' },
+                ].map(function(s) {
+                  return (
+                    <div key={s.label} style={{ background: '#F5F0E8', padding: '16px', textAlign: 'center' }}>
+                      <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 400, color: '#888', marginBottom: '6px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
+                      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '28px', fontWeight: 400, color: s.color }}>{s.value}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
             <EmailCapture variant="inline" />
           </div>
 
-          {/* Right: price comparison */}
-          <div className="md:col-span-2">
-            <div className="card p-5 sticky top-20">
-              <p className="section-label">Compare prices</p>
-              <p className="text-xs text-gray-400 mb-4">Updated weekly · Tap to buy</p>
+          <div className="compare-sticky" style={{ position: 'sticky', top: '96px' }}>
+            <div style={{ background: 'white', padding: '28px' }}>
+              <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#185FA5', marginBottom: '6px' }}>Compare prices</p>
+              <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', fontWeight: 400, marginBottom: '20px' }}>Updated weekly · Tap to buy</p>
 
-              <div className="flex flex-col gap-2">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {deal.comparePrices
-                  .sort((a, b) => a.price - b.price)
-                  .map((cp, i) => {
-                    const r = RETAILERS[cp.retailer]
-                    const isBest = cp.retailer === bestPrice.retailer
-                    const diff = cp.price - bestPrice.price
+                  .slice().sort(function(a, b) { return a.price - b.price })
+                  .map(function(cp, i) {
+                    var r = RETAILERS[cp.retailer]
+                    var isBest = cp.retailer === bestPrice.retailer
+                    var diff = cp.price - bestPrice.price
                     return (
-                      <a
-                        key={cp.retailer}
-                        href={cp.url}
-                        target="_blank"
-                        rel="noopener sponsored"
-                        className={`flex items-center gap-3 p-3 rounded-xl border transition-all hover:shadow-sm ${
-                          isBest ? 'border-brand-200 bg-brand-50' : 'border-gray-100 bg-white hover:border-gray-200'
-                        }`}
-                      >
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                          i === 0 ? 'bg-brand-400 text-white' :
-                          i === 1 ? 'bg-blue-100 text-blue-700' :
-                          'bg-gray-100 text-gray-500'
-                        }`}>
+                      <a key={cp.retailer} href={cp.url} target="_blank" rel="noopener sponsored"
+                        style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', border: isBest ? '1px solid #185FA5' : '1px solid rgba(26,26,26,0.08)', background: isBest ? '#EDF4FB' : 'white', textDecoration: 'none', transition: 'all 0.15s' }}>
+                        <div style={{ width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontFamily: 'Jost, sans-serif', fontWeight: 700, flexShrink: 0, background: i === 0 ? '#185FA5' : i === 1 ? '#D6E8F7' : '#F5F0E8', color: i === 0 ? 'white' : i === 1 ? '#0C447C' : '#888' }}>
                           {i + 1}
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-xs font-semibold" style={{ color: r?.text, background: r?.bg, padding: '2px 7px', borderRadius: '4px' }}>
-                            {r?.label}
-                          </span>
-                          <p className="text-xs text-gray-400 mt-0.5 truncate">{cp.shipping}</p>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: r ? r.bg : '#F5F0E8', color: r ? r.text : '#888' }}>{r ? r.label : cp.retailer}</span>
+                          <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', marginTop: '3px', fontWeight: 400 }}>{cp.shipping}</p>
                         </div>
-                        <div className="text-right shrink-0">
-                          <p className={`font-semibold text-sm ${isBest ? 'price-green' : 'text-ink'}`}>${cp.price}</p>
-                          {!isBest && <p className="text-xs text-gray-400">+${diff}</p>}
-                          {isBest && <p className="text-xs font-medium text-brand-400">Best price</p>}
+                        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 400, color: isBest ? '#185FA5' : '#1A1A1A', lineHeight: 1 }}>${cp.price}</p>
+                          {!isBest && <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#aaa', fontWeight: 400 }}>+${diff}</p>}
+                          {isBest && <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, color: '#185FA5' }}>Best price</p>}
                         </div>
-                        <ExternalLink size={12} className="text-gray-300 shrink-0" />
+                        <ExternalLink size={13} color="#ccc" style={{ flexShrink: 0 }} />
                       </a>
                     )
-                  })
-                }
+                  })}
               </div>
 
-              <p className="text-xs text-gray-300 mt-4 text-center leading-relaxed">
+              <p style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#bbb', marginTop: '20px', textAlign: 'center', lineHeight: 1.6, fontWeight: 400 }}>
                 CloudPriceDeals earns a commission on purchases. This never affects the price you pay.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Related deals */}
         {related.length > 0 && (
-          <div className="mt-10">
-            <h2 className="font-display font-bold text-xl text-ink mb-4">More {deal.category} deals</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {related.map((d, i) => <DealCard key={d.id} deal={d} view="grid" delay={i} />)}
+          <div style={{ marginTop: '64px' }}>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '40px', fontWeight: 400, color: '#1A1A1A', marginBottom: '24px' }}>More {deal.category} deals</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1px', background: '#EDE8DF' }}>
+              {related.map(function(d, i) { return <DealCard key={d.id} deal={d} view="grid" delay={i} /> })}
             </div>
           </div>
         )}
