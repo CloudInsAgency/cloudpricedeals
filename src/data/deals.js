@@ -1,536 +1,135 @@
-export const RETAILERS = {
-  amazon:  { label: 'Amazon',   bg: '#FFF3E0', text: '#7A4100' },
-  bestbuy: { label: 'Best Buy', bg: '#E6F1FB', text: '#0C447C' },
-  walmart: { label: 'Walmart',  bg: '#EAF3DE', text: '#27500A' },
-  target:  { label: 'Target',   bg: '#FAECE7', text: '#712B13' },
-  ebay:    { label: 'eBay',     bg: '#EEEDFE', text: '#26215C' },
+'use client'
+import Link from 'next/link'
+import { Heart } from 'lucide-react'
+import RetailerBadge from './RetailerBadge'
+
+export default function DealCard({ deal, view, delay }) {
+  var viewMode = view || 'grid'
+  var d = delay || 0
+  var pct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
+  var amazonLink = deal.affiliateUrl
+  if (deal.comparePrices) {
+    for (var i = 0; i < deal.comparePrices.length; i++) {
+      if (deal.comparePrices[i].retailer === 'amazon') {
+        amazonLink = deal.comparePrices[i].url
+        break
+      }
+    }
+  }
+
+  function handleWishlist(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    try {
+      var saved = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      var exists = false
+      for (var i = 0; i < saved.length; i++) {
+        if (saved[i].id === deal.id) { exists = true; break }
+      }
+      if (!exists) {
+        saved.push({
+          id: deal.id,
+          name: deal.name,
+          shortName: deal.shortName,
+          emoji: deal.emoji,
+          imageUrl: deal.imageUrl,
+          price: deal.price,
+          originalPrice: deal.originalPrice,
+          retailer: deal.retailer,
+          affiliateUrl: deal.affiliateUrl,
+        })
+        localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
+        alert('Added ' + deal.shortName + ' to your wishlist!')
+      } else {
+        alert(deal.shortName + ' is already in your wishlist.')
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
+  function handleImgError(e) {
+    e.target.style.display = 'none'
+    var el = document.createElement('div')
+    el.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px'
+    el.textContent = deal.emoji
+    e.target.parentNode.appendChild(el)
+  }
+
+  function handleImgErrorSmall(e) {
+    e.target.style.display = 'none'
+    e.target.parentNode.innerHTML = '<div style="font-size:32px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + deal.emoji + '</div>'
+  }
+
+  if (viewMode === 'list') {
+    return (
+      <div className="fade-up" style={{ animationDelay: d * 0.06 + 's', background: 'white', borderBottom: '1px solid rgba(26,26,26,0.08)', padding: '20px 16px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <div style={{ width: '80px', height: '80px', background: '#F5F0E8', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+          <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} onError={handleImgErrorSmall} />
+        </div>
+        <div style={{ flex: 1, minWidth: '160px' }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: 1.3 }}>
+            {deal.name}
+          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+            <RetailerBadge retailer={deal.retailer} />
+            <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', fontWeight: 400 }}>{deal.rating} stars</span>
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</div>
+          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
+          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
+            Buy on Amazon
+          </a>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
+            Compare stores
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="fade-up"
+      style={{ animationDelay: d * 0.06 + 's', background: 'white', cursor: 'pointer', transition: 'transform 0.25s ease, box-shadow 0.25s ease', display: 'flex', flexDirection: 'column', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}
+      onMouseEnter={function(e) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(24,95,165,0.12)' }}
+      onMouseLeave={function(e) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)' }}
+    >
+      <div style={{ aspectRatio: '4/3', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+        <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '12px' }} onError={handleImgError} />
+        {deal.badge === 'hot' && (
+          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '6px', zIndex: 2 }}>
+            Hot deal
+          </div>
+        )}
+        <button onClick={handleWishlist} title="Add to wishlist" style={{ position: 'absolute', top: '12px', right: '12px', background: 'white', border: 'none', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#185FA5', zIndex: 2, boxShadow: '0 1px 4px rgba(0,0,0,0.10)' }}>
+          <Heart size={15} />
+        </button>
+      </div>
+
+      <div style={{ padding: '16px 16px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <div style={{ marginBottom: '6px' }}>
+          <RetailerBadge retailer={deal.retailer} />
+        </div>
+        <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: '1.3', marginBottom: '10px' }}>
+          {deal.name}
+        </Link>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px' }}>
+          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '34px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</span>
+          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</span>
+          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, color: '#185FA5', marginLeft: 'auto' }}>-{pct}%</span>
+        </div>
+        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px', borderRadius: '10px' }}>
+          Buy on Amazon
+        </a>
+        <Link href={'/product/' + deal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', textDecoration: 'none', borderTop: '1px solid rgba(26,26,26,0.06)', paddingTop: '8px' }}>
+          Compare all stores
+        </Link>
+      </div>
+    </div>
+  )
 }
-
-export const CATEGORIES = [
-  { id: 'all',         label: 'All deals',   emoji: '⭐' },
-  { id: 'electronics', label: 'Electronics', emoji: '🖥️' },
-  { id: 'kitchen',     label: 'Kitchen',     emoji: '🍲' },
-  { id: 'fitness',     label: 'Fitness',     emoji: '💪' },
-  { id: 'home',        label: 'Home',        emoji: '🏠' },
-  { id: 'gaming',      label: 'Gaming',      emoji: '🎮' },
-  { id: 'style',       label: 'Style',       emoji: '👟' },
-]
-
-export const WISHLIST_OCCASIONS = [
-  { id: 'birthday',   label: 'Birthday',    color: '#72243E', bg: '#FBEAF0' },
-  { id: 'christmas',  label: 'Christmas',   color: '#712B13', bg: '#FAECE7' },
-  { id: 'babyshower', label: 'Baby shower', color: '#0C447C', bg: '#E6F1FB' },
-  { id: 'wedding',    label: 'Wedding',     color: '#3C3489', bg: '#EEEDFE' },
-  { id: 'graduation', label: 'Graduation',  color: '#27500A', bg: '#EAF3DE' },
-  { id: 'general',    label: 'General',     color: '#5F5E5A', bg: '#F1EFE8' },
-]
-
-function img(asin) {
-  return 'https://wsrv.nl/?url=' + encodeURIComponent('https://m.media-amazon.com/images/P/' + asin + '.jpg') + '&w=400&h=400&fit=contain&bg=white'
-}
-
-export const DEALS = [
-  {
-    id: 'ps5-dualsense',
-    name: 'PlayStation 5 DualSense Wireless Controller',
-    shortName: 'PS5 DualSense Controller',
-    category: 'gaming',
-    emoji: '🎮',
-    imageUrl: img('B08FC6C75Y'),
-    retailer: 'amazon',
-    price: 74,
-    originalPrice: 99,
-    affiliateUrl: 'https://amzn.to/4tuD4do',
-    rating: 4.8,
-    reviews: 78900,
-    shipping: 'Free (Prime)',
-    description: 'Haptic feedback, adaptive triggers, built-in microphone, rechargeable battery. Works with PS5 and PC via USB.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 74, url: 'https://amzn.to/4tuD4do', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 79, url: 'https://www.bestbuy.com/site/sony-dualsense/6430163.p', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 79, url: 'https://www.walmart.com/ip/DualSense-Controller', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 84, url: 'https://www.target.com/p/ps5-dualsense', shipping: 'Free over $35' },
-    ],
-    priceHistory: { allTimeLow: 49, thirtyDayAvg: 89, vsAvgPct: -17 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'instant-pot-duo',
-    name: 'Instant Pot Duo 7-in-1 Electric Pressure Cooker 6qt',
-    shortName: 'Instant Pot Duo 7-in-1',
-    category: 'kitchen',
-    emoji: '🍲',
-    imageUrl: img('B00FLYWNYQ'),
-    retailer: 'amazon',
-    price: 139,
-    originalPrice: 199,
-    affiliateUrl: 'https://amzn.to/3NYTXOn',
-    rating: 4.7,
-    reviews: 98200,
-    shipping: 'Free (Prime)',
-    description: 'Replaces 7 kitchen appliances. Pressure cooker, slow cooker, rice cooker, steamer, saute, yogurt maker, and food warmer.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 139, url: 'https://amzn.to/3NYTXOn', shipping: 'Free (Prime)' },
-      { retailer: 'walmart', price: 149, url: 'https://www.walmart.com/ip/Instant-Pot-Duo', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 159, url: 'https://www.target.com/p/instant-pot-duo', shipping: 'Free over $35' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/instant-pot', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 69, thirtyDayAvg: 179, vsAvgPct: -22 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'ninja-air-fryer',
-    name: 'Ninja AF101 Air Fryer 4 Quart',
-    shortName: 'Ninja Air Fryer 4qt',
-    category: 'kitchen',
-    emoji: '🍟',
-    imageUrl: img('B07FDJMC9Q'),
-    retailer: 'amazon',
-    price: 89,
-    originalPrice: 119,
-    affiliateUrl: 'https://amzn.to/47KAlUL',
-    rating: 4.7,
-    reviews: 96919,
-    shipping: 'Free (Prime)',
-    description: 'Up to 75% less fat than deep frying. Wide temperature range 105-400F. Dishwasher-safe parts. 4qt family size.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 89, url: 'https://amzn.to/47KAlUL', shipping: 'Free (Prime)' },
-      { retailer: 'walmart', price: 94, url: 'https://www.walmart.com/ip/ninja-af101', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 99, url: 'https://www.target.com/p/ninja-af101', shipping: 'Free over $35' },
-      { retailer: 'bestbuy', price: 99, url: 'https://www.bestbuy.com/site/ninja-af101', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 69, thirtyDayAvg: 109, vsAvgPct: -18 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'bose-qc45',
-    name: 'Bose QuietComfort 45 Wireless Headphones',
-    shortName: 'Bose QC45 Headphones',
-    category: 'electronics',
-    emoji: '🎧',
-    imageUrl: img('B098FKXT8L'),
-    retailer: 'amazon',
-    price: 144,
-    originalPrice: 279,
-    affiliateUrl: 'https://amzn.to/4c5sP8i',
-    rating: 4.6,
-    reviews: 24800,
-    shipping: 'Free (Prime)',
-    description: 'Legendary Bose noise cancellation. 24-hour battery life. Comfortable over-ear fit for all-day wear.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 144, url: 'https://amzn.to/4c5sP8i', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/bose-qc45', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 169, url: 'https://www.target.com/p/bose-qc45', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 169, url: 'https://www.walmart.com/ip/bose-qc45', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 129, thirtyDayAvg: 199, vsAvgPct: -28 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'keurig-k-slim',
-    name: 'Keurig K-Slim Single Serve Coffee Maker',
-    shortName: 'Keurig K-Slim',
-    category: 'kitchen',
-    emoji: '☕',
-    imageUrl: img('B07GV2S1GS'),
-    retailer: 'amazon',
-    price: 109,
-    originalPrice: 149,
-    affiliateUrl: 'https://amzn.to/4crmVj9',
-    rating: 4.5,
-    reviews: 31400,
-    shipping: 'Free (Prime)',
-    description: 'Slim 5-inch design fits anywhere. Brew 8, 10, or 12oz. 46oz removable reservoir. Compatible with all K-Cup pods.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 109, url: 'https://amzn.to/4crmVj9', shipping: 'Free (Prime)' },
-      { retailer: 'target',  price: 119, url: 'https://www.target.com/p/keurig-k-slim', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 119, url: 'https://www.walmart.com/ip/keurig-k-slim', shipping: 'Free shipping' },
-      { retailer: 'bestbuy', price: 129, url: 'https://www.bestbuy.com/site/keurig-k-slim', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 59, thirtyDayAvg: 129, vsAvgPct: -15 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'echo-show-8',
-    name: 'Amazon Echo Show 8 Smart Display (3rd Gen)',
-    shortName: 'Echo Show 8 (3rd Gen)',
-    category: 'home',
-    emoji: '📡',
-    imageUrl: img('B0BLS3Y632'),
-    retailer: 'amazon',
-    price: 149,
-    originalPrice: 179,
-    affiliateUrl: 'https://amzn.to/4miezxS',
-    rating: 4.6,
-    reviews: 41200,
-    shipping: 'Free (Prime)',
-    description: '8" HD touchscreen, 13MP camera, spatial audio, Alexa+. Smart home hub for lights, cameras, and more.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 149, url: 'https://amzn.to/4miezxS', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/echo-show-8', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 164, url: 'https://www.target.com/p/echo-show-8', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 164, url: 'https://www.walmart.com/ip/echo-show-8', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 89, thirtyDayAvg: 169, vsAvgPct: -12 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'ring-doorbell',
-    name: 'Ring Video Doorbell Wired (2nd Gen)',
-    shortName: 'Ring Video Doorbell',
-    category: 'home',
-    emoji: '🔔',
-    imageUrl: img('B08N5NQ869'),
-    retailer: 'amazon',
-    price: 49,
-    originalPrice: 99,
-    affiliateUrl: 'https://amzn.to/4trXzHs',
-    rating: 4.5,
-    reviews: 41200,
-    shipping: 'Free (Prime)',
-    description: '1080p HD video, advanced motion detection, two-way talk, night vision. Hardwired — no battery needed.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 49, url: 'https://amzn.to/4trXzHs', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 54, url: 'https://www.bestbuy.com/site/ring-doorbell-wired', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 59, url: 'https://www.target.com/p/ring-doorbell-wired', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 59, url: 'https://www.walmart.com/ip/ring-doorbell-wired', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 39, thirtyDayAvg: 79, vsAvgPct: -38 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'apple-airtag-4pack',
-    name: 'Apple AirTag 4-Pack Item Tracker',
-    shortName: 'Apple AirTag 4-Pack',
-    category: 'electronics',
-    emoji: '📍',
-    imageUrl: img('B0932QJ2JZ'),
-    retailer: 'amazon',
-    price: 99,
-    originalPrice: 129,
-    affiliateUrl: 'https://amzn.to/47DJ2jO',
-    rating: 4.8,
-    reviews: 67000,
-    shipping: 'Free (Prime)',
-    description: 'Track keys, wallet, luggage and more. Precision Finding with Ultra Wideband. 1 year battery life.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 99,  url: 'https://amzn.to/47DJ2jO', shipping: 'Free (Prime)' },
-      { retailer: 'target',  price: 109, url: 'https://www.target.com/p/apple-airtag-4pack', shipping: 'Free over $35' },
-      { retailer: 'bestbuy', price: 109, url: 'https://www.bestbuy.com/site/apple-airtag-4pack', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 109, url: 'https://www.walmart.com/ip/apple-airtag-4pack', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 79, thirtyDayAvg: 119, vsAvgPct: -17 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'beats-solo4',
-    name: 'Beats Solo 4 Wireless On-Ear Headphones',
-    shortName: 'Beats Solo 4',
-    category: 'electronics',
-    emoji: '🎵',
-    imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop',
-    retailer: 'amazon',
-    price: 129,
-    originalPrice: 199,
-    affiliateUrl: 'https://amzn.to/48eZUgQ',
-    rating: 4.5,
-    reviews: 8400,
-    shipping: 'Free (Prime)',
-    description: 'Lossless audio via USB-C or 3.5mm. 50-hour battery life. UltraPlush ear cushions. Universal device compatibility.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 129, url: 'https://amzn.to/48eZUgQ', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 139, url: 'https://www.bestbuy.com/site/beats-solo4', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 149, url: 'https://www.target.com/p/beats-solo4', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 149, url: 'https://www.walmart.com/ip/beats-solo4', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 99, thirtyDayAvg: 169, vsAvgPct: -24 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'fitbit-charge6',
-    name: 'Fitbit Charge 6 Fitness Tracker with Google apps',
-    shortName: 'Fitbit Charge 6',
-    category: 'fitness',
-    emoji: '⌚',
-    imageUrl: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=400&fit=crop',
-    retailer: 'amazon',
-    price: 149,
-    originalPrice: 159,
-    affiliateUrl: 'https://amzn.to/4e6091r',
-    rating: 4.4,
-    reviews: 5800,
-    shipping: 'Free (Prime)',
-    description: 'Built-in GPS, heart rate monitoring, ECG app, and Google Maps. Up to 7-day battery life.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 149, url: 'https://amzn.to/4e6091r', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 149, url: 'https://www.bestbuy.com/site/fitbit-charge-6/6554009.p', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 154, url: 'https://www.walmart.com/ip/Fitbit-Charge-6', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 154, url: 'https://www.target.com/p/fitbit-charge-6', shipping: 'Free over $35' },
-    ],
-    priceHistory: { allTimeLow: 89, thirtyDayAvg: 149, vsAvgPct: 0 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'fire-tv-stick-4k-max',
-    name: 'Amazon Fire TV Stick 4K Max Streaming Device',
-    shortName: 'Fire TV Stick 4K Max',
-    category: 'electronics',
-    emoji: '📺',
-    imageUrl: img('B0BP9SNVH9'),
-    retailer: 'amazon',
-    price: 39,
-    originalPrice: 99,
-    affiliateUrl: 'https://amzn.to/4sfHt2Q',
-    rating: 4.7,
-    reviews: 38200,
-    shipping: 'Free (Prime)',
-    description: 'Wi-Fi 6E, 4K Ultra HD, Dolby Vision, Dolby Atmos. AI-powered search with Alexa+. 16GB storage.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 39, url: 'https://amzn.to/4sfHt2Q', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 49, url: 'https://www.bestbuy.com/site/fire-tv-stick-4k-max', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 49, url: 'https://www.target.com/p/fire-tv-stick-4k-max', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 49, url: 'https://www.walmart.com/ip/fire-tv-stick-4k-max', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 24, thirtyDayAvg: 59, vsAvgPct: -34 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'logitech-mx-master-3s',
-    name: 'Logitech MX Master 3S Wireless Mouse',
-    shortName: 'Logitech MX Master 3S',
-    category: 'electronics',
-    emoji: '🖱️',
-    imageUrl: img('B09HM94VDS'),
-    retailer: 'amazon',
-    price: 99,
-    originalPrice: 129,
-    affiliateUrl: 'https://amzn.to/47Iu8ZB',
-    rating: 4.7,
-    reviews: 18600,
-    shipping: 'Free (Prime)',
-    description: 'Ultra-fast scrolling, 8K DPI, ergonomic design. Works on any surface including glass. Connect up to 3 devices.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 99,  url: 'https://amzn.to/47Iu8ZB', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 109, url: 'https://www.bestbuy.com/site/logitech-mx-master-3s', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 114, url: 'https://www.target.com/p/logitech-mx-master-3s', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 114, url: 'https://www.walmart.com/ip/logitech-mx-master-3s', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 79, thirtyDayAvg: 119, vsAvgPct: -17 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'cuisinart-coffee-maker',
-    name: 'Cuisinart DCC-3200 12-Cup Coffee Maker',
-    shortName: 'Cuisinart 12-Cup Coffee Maker',
-    category: 'kitchen',
-    emoji: '☕',
-    imageUrl: 'https://m.media-amazon.com/images/I/71-BocTmDOL._AC_SX679_.jpg',
-    retailer: 'amazon',
-    price: 149,
-    originalPrice: 199,
-    affiliateUrl: 'https://amzn.to/4t0AQ5Q',
-    rating: 4.6,
-    reviews: 32100,
-    shipping: 'Free (Prime)',
-    description: 'Fully automatic 12-cup drip coffee maker. Brew strength control, 1-4 cup setting, 24-hour programmable.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 149, url: 'https://amzn.to/4t0AQ5Q', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/cuisinart-dcc-3200', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 169, url: 'https://www.target.com/p/cuisinart-coffee-maker', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 169, url: 'https://www.walmart.com/ip/cuisinart-dcc-3200', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 99, thirtyDayAvg: 179, vsAvgPct: -17 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'shark-rv2400wd',
-    name: 'Shark RV2400WD IQ 2-in-1 Robot Vacuum & Mop',
-    shortName: 'Shark IQ Robot Vacuum & Mop',
-    category: 'home',
-    emoji: '🤖',
-    imageUrl: 'https://m.media-amazon.com/images/I/71iyrGFumfL._AC_SL1500_.jpg',
-    retailer: 'amazon',
-    price: 129,
-    originalPrice: 299,
-    affiliateUrl: 'https://amzn.to/4e1yEWP',
-    rating: 4.4,
-    reviews: 6200,
-    shipping: 'Free (Prime)',
-    description: 'Matrix Clean home mapping, Sonic Mopping, self-cleaning brushroll. Vacuums and mops simultaneously.',
-    badge: 'hot',
-    comparePrices: [
-      { retailer: 'amazon',  price: 129, url: 'https://amzn.to/4e1yEWP', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 149, url: 'https://www.bestbuy.com/site/shark-rv2400wd', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 159, url: 'https://www.walmart.com/ip/shark-rv2400wd', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 159, url: 'https://www.target.com/p/shark-rv2400wd', shipping: 'Free over $35' },
-    ],
-    priceHistory: { allTimeLow: 99, thirtyDayAvg: 199, vsAvgPct: -35 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'garmin-forerunner-55',
-    name: 'Garmin Forerunner 55 GPS Running Watch',
-    shortName: 'Garmin Forerunner 55',
-    category: 'fitness',
-    emoji: '⌚',
-    imageUrl: 'https://m.media-amazon.com/images/I/51zIauUO1OL._AC_SX679_.jpg',
-    retailer: 'amazon',
-    price: 149,
-    originalPrice: 199,
-    affiliateUrl: 'https://amzn.to/41kuH8e',
-    rating: 4.6,
-    reviews: 14300,
-    shipping: 'Free (Prime)',
-    description: 'Built-in GPS, heart rate monitoring, up to 20 days battery life. Recommended daily workouts and recovery time.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 149, url: 'https://amzn.to/41kuH8e', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/garmin-forerunner-55', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 169, url: 'https://www.walmart.com/ip/garmin-forerunner-55', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 169, url: 'https://www.target.com/p/garmin-forerunner-55', shipping: 'Free over $35' },
-    ],
-    priceHistory: { allTimeLow: 129, thirtyDayAvg: 179, vsAvgPct: -17 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'jbl-flip-6',
-    name: 'JBL Flip 6 Portable Bluetooth Speaker',
-    shortName: 'JBL Flip 6 Speaker',
-    category: 'electronics',
-    emoji: '🔊',
-    imageUrl: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop',
-    retailer: 'amazon',
-    price: 109,
-    originalPrice: 129,
-    affiliateUrl: 'https://amzn.to/4vi5glC',
-    rating: 4.7,
-    reviews: 41800,
-    shipping: 'Free (Prime)',
-    description: 'IP67 waterproof, 12-hour playtime, PartyBoost for multiple speakers. Bold JBL Original Pro Sound.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 109, url: 'https://amzn.to/4vi5glC', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 119, url: 'https://www.bestbuy.com/site/jbl-flip-6', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 119, url: 'https://www.target.com/p/jbl-flip-6', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 119, url: 'https://www.walmart.com/ip/jbl-flip-6', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 89, thirtyDayAvg: 119, vsAvgPct: -8 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'irobot-braava-m6',
-    name: 'iRobot Braava Jet m6 Robot Mop',
-    shortName: 'iRobot Braava Jet m6',
-    category: 'home',
-    emoji: '🧹',
-    imageUrl: 'https://m.media-amazon.com/images/I/81rv10KuoWL._AC_SX679_.jpg',
-    retailer: 'amazon',
-    price: 144,
-    originalPrice: 249,
-    affiliateUrl: 'https://amzn.to/47KDX9h',
-    rating: 4.3,
-    reviews: 9800,
-    shipping: 'Free (Prime)',
-    description: 'Precision Jet Spray, smart mapping, works with Alexa. Wet and damp mopping modes for hard floors.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 144, url: 'https://amzn.to/47KDX9h', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 159, url: 'https://www.bestbuy.com/site/irobot-braava-m6', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 169, url: 'https://www.target.com/p/irobot-braava-m6', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 169, url: 'https://www.walmart.com/ip/irobot-braava-m6', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 119, thirtyDayAvg: 199, vsAvgPct: -28 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'levis-501-jeans',
-    name: "Levi's Men's 501 Original Fit Jeans",
-    shortName: "Levi's 501 Jeans",
-    category: 'style',
-    emoji: '👖',
-    imageUrl: 'https://m.media-amazon.com/images/I/41NgDv59BaL._AC_SX679_.jpg',
-    retailer: 'amazon',
-    price: 44,
-    originalPrice: 79,
-    affiliateUrl: 'https://amzn.to/4bSZ6Rd',
-    rating: 4.5,
-    reviews: 52300,
-    shipping: 'Free (Prime)',
-    description: 'The original straight fit jean since 1873. Button fly, sits at waist, straight through hip and thigh.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 44, url: 'https://amzn.to/4bSZ6Rd', shipping: 'Free (Prime)' },
-      { retailer: 'target',  price: 54, url: 'https://www.target.com/p/levis-501-jeans', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 54, url: 'https://www.walmart.com/ip/levis-501-jeans', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 34, thirtyDayAvg: 64, vsAvgPct: -31 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'instant-pot-duo-crisp',
-    name: 'Instant Pot Duo Crisp 11-in-1 Air Fryer & Pressure Cooker',
-    shortName: 'Instant Pot Duo Crisp',
-    category: 'kitchen',
-    emoji: '🍳',
-    imageUrl: 'https://m.media-amazon.com/images/I/81vc3qXKPpL._AC_SX679_.jpg',
-    retailer: 'amazon',
-    price: 129,
-    originalPrice: 199,
-    affiliateUrl: 'https://amzn.to/3PVoBZu',
-    rating: 4.6,
-    reviews: 28400,
-    shipping: 'Free (Prime)',
-    description: '11-in-1 functionality: pressure cook, air fry, roast, bake, broil, dehydrate and more. 8qt capacity.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 129, url: 'https://amzn.to/3PVoBZu', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 139, url: 'https://www.bestbuy.com/site/instant-pot-duo-crisp', shipping: 'Free shipping' },
-      { retailer: 'target',  price: 149, url: 'https://www.target.com/p/instant-pot-duo-crisp', shipping: 'Free over $35' },
-      { retailer: 'walmart', price: 149, url: 'https://www.walmart.com/ip/instant-pot-duo-crisp', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 99, thirtyDayAvg: 169, vsAvgPct: -24 },
-    updatedAt: '2026-04-05',
-  },
-  {
-    id: 'anker-soundcore-q35',
-    name: 'Anker Soundcore Life Q35 Wireless Headphones',
-    shortName: 'Anker Soundcore Q35',
-    category: 'electronics',
-    emoji: '🎧',
-    imageUrl: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop',
-    retailer: 'amazon',
-    price: 139,
-    originalPrice: 149,
-    affiliateUrl: 'https://amzn.to/4c6ApQ9',
-    rating: 4.5,
-    reviews: 22100,
-    shipping: 'Free (Prime)',
-    description: 'Hybrid active noise cancellation, LDAC hi-res audio, 40-hour battery life. Multi-mode ANC for travel, indoor and outdoor.',
-    badge: 'deal',
-    comparePrices: [
-      { retailer: 'amazon',  price: 139, url: 'https://amzn.to/4c6ApQ9', shipping: 'Free (Prime)' },
-      { retailer: 'bestbuy', price: 149, url: 'https://www.bestbuy.com/site/anker-soundcore-q35', shipping: 'Free shipping' },
-      { retailer: 'walmart', price: 149, url: 'https://www.walmart.com/ip/anker-soundcore-q35', shipping: 'Free shipping' },
-    ],
-    priceHistory: { allTimeLow: 59, thirtyDayAvg: 79, vsAvgPct: -9 },
-    updatedAt: '2026-04-05',
-  },
-]
-
-export function getDealById(id) { return DEALS.find(function(d) { return d.id === id }) }
-export function getDealsByCategory(cat) { return cat === 'all' ? DEALS : DEALS.filter(function(d) { return d.category === cat }) }
-export function getHotDeals() { return DEALS.filter(function(d) { return d.badge === 'hot' }) }
-export function getDiscount(price, original) { return Math.round(((original - price) / original) * 100) }
