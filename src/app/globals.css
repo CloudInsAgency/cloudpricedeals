@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,10 +12,10 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 18px; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   background: var(--cream);
   color: var(--ink);
@@ -24,8 +24,8 @@ body {
 }
 
 h1,h2,h3,h4,h5 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
   line-height: 1.1;
 }
 
@@ -85,7 +85,7 @@ h1,h2,h3,h4,h5 {
 ::-webkit-scrollbar-thumb { background: var(--blue-lt); border-radius: 4px; }
 
 @media (max-width: 768px) {
-  html { font-size: 16px; }
+  html { font-size: 15px; }
   .hero-cloud { display: none !important; }
   .hero-heading { font-size: clamp(42px, 10vw, 60px) !important; }
   .deals-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
