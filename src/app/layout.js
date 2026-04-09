@@ -1,27 +1,52 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'CloudPriceDeals — Best Deals Across Amazon, Best Buy, Walmart & More',
-  description: 'Discover the best deals on electronics, home, fitness, and more — $50 to $150 sweet spot, compared across Amazon, Best Buy, Walmart, Target, and eBay.',
-  keywords: 'deals, price comparison, Amazon deals, Best Buy deals, Walmart deals, electronics deals, discount shopping',
+  metadataBase: new URL('https://cloudpricedeals.com'),
+  title: {
+    default: 'CloudPriceDeals — Best Amazon Deals $50-$150 | Compare Prices Weekly',
+    template: '%s | CloudPriceDeals',
+  },
+  description: 'Discover the best Amazon deals between $50 and $150. We compare prices across Amazon, Best Buy, Walmart, Target and eBay every week so you always buy at the lowest price.',
+  keywords: ['amazon deals', 'best deals under $150', 'price comparison', 'amazon coupons', 'best buy deals', 'walmart deals', 'weekly deals', 'online shopping deals'],
+  authors: [{ name: 'CloudPriceDeals', url: 'https://cloudpricedeals.com' }],
+  creator: 'Cloud Design Studio LLC',
+  publisher: 'CloudPriceDeals',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
-    title: 'CloudPriceDeals — Never Overpay Again',
-    description: 'Best deals $50–$150, compared across 5 major retailers.',
+    type: 'website',
+    locale: 'en_US',
     url: 'https://cloudpricedeals.com',
     siteName: 'CloudPriceDeals',
-    type: 'website',
+    title: 'CloudPriceDeals — Best Amazon Deals $50-$150 | Compare Prices Weekly',
+    description: 'Discover the best Amazon deals between $50 and $150. Compare prices across Amazon, Best Buy, Walmart, Target and eBay — updated every week.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'CloudPriceDeals — Best Amazon Deals $50-$150' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CloudPriceDeals',
-    description: 'Best deals compared across Amazon, Best Buy, Walmart, Target & eBay.',
+    title: 'CloudPriceDeals — Best Amazon Deals $50-$150',
+    description: 'Compare prices across Amazon, Best Buy, Walmart, Target and eBay — updated every week.',
+    images: ['/og-image.png'],
   },
-  metadataBase: new URL('https://cloudpricedeals.com'),
+  alternates: { canonical: 'https://cloudpricedeals.com' },
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#185FA5" />
+      </head>
       <body>{children}</body>
     </html>
   )
