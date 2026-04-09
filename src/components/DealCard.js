@@ -63,8 +63,8 @@ export default function DealCard({ deal, view, delay }) {
 
   if (viewMode === 'list') {
     return (
-      <div className="fade-up" style={{ animationDelay: d * 0.06 + 's', background: 'white', borderBottom: '1px solid rgba(26,26,26,0.08)', padding: '20px 0', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-        <div style={{ width: '80px', height: '80px', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+      <div className="fade-up" style={{ animationDelay: d * 0.06 + 's', background: 'white', borderBottom: '1px solid rgba(26,26,26,0.08)', padding: '20px 16px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <div style={{ width: '80px', height: '80px', background: '#F5F0E8', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
           <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} onError={handleImgErrorSmall} />
         </div>
         <div style={{ flex: 1, minWidth: '160px' }}>
@@ -81,10 +81,10 @@ export default function DealCard({ deal, view, delay }) {
           <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
             Buy on Amazon
           </a>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block' }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
             Compare stores
           </Link>
         </div>
@@ -93,20 +93,24 @@ export default function DealCard({ deal, view, delay }) {
   }
 
   return (
-    <div className="fade-up" style={{ animationDelay: d * 0.06 + 's', background: 'white', cursor: 'pointer', transition: 'transform 0.25s ease', display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={function(e) { e.currentTarget.style.transform = 'translateY(-4px)' }}
-      onMouseLeave={function(e) { e.currentTarget.style.transform = 'translateY(0)' }}>
+    <div
+      className="fade-up"
+      style={{ animationDelay: d * 0.06 + 's', background: 'white', cursor: 'pointer', transition: 'transform 0.25s ease, box-shadow 0.25s ease', display: 'flex', flexDirection: 'column', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}
+      onMouseEnter={function(e) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(24,95,165,0.12)' }}
+      onMouseLeave={function(e) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)' }}
+    >
       <div style={{ aspectRatio: '4/3', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
         <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '12px' }} onError={handleImgError} />
         {deal.badge === 'hot' && (
-          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', zIndex: 2 }}>
+          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '6px', zIndex: 2 }}>
             Hot deal
           </div>
         )}
-        <button onClick={handleWishlist} title="Add to wishlist" style={{ position: 'absolute', top: '12px', right: '12px', background: 'white', border: 'none', width: '34px', height: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#185FA5', zIndex: 2, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+        <button onClick={handleWishlist} title="Add to wishlist" style={{ position: 'absolute', top: '12px', right: '12px', background: 'white', border: 'none', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#185FA5', zIndex: 2, boxShadow: '0 1px 4px rgba(0,0,0,0.10)' }}>
           <Heart size={15} />
         </button>
       </div>
+
       <div style={{ padding: '16px 16px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div style={{ marginBottom: '6px' }}>
           <RetailerBadge retailer={deal.retailer} />
@@ -119,7 +123,7 @@ export default function DealCard({ deal, view, delay }) {
           <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</span>
           <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, color: '#185FA5', marginLeft: 'auto' }}>-{pct}%</span>
         </div>
-        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px', borderRadius: '10px' }}>
           Buy on Amazon
         </a>
         <Link href={'/product/' + deal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', textDecoration: 'none', borderTop: '1px solid rgba(26,26,26,0.06)', paddingTop: '8px' }}>
