@@ -72,19 +72,19 @@ const GUIDES = [
 
 export default function GuidesPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0E1A' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
       <Navbar />
 
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg, #0D1420 0%, #0A0E1A 100%)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '64px 24px 56px' }}>
+      <div style={{ background: 'var(--bg-main)', borderBottom: '1px solid var(--border)', padding: '64px 24px 56px' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: 'rgba(0,208,132,0.12)', border: '1px solid rgba(0,208,132,0.25)', borderRadius: '100px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: '#00D084', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Buying Guides</span>
+          <div style={{ display: 'inline-block', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '100px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Buying Guides</span>
           </div>
-          <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(32px, 5vw, 52px)', color: '#F0F4FF', lineHeight: 1.1, marginBottom: '16px' }}>
+          <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: '16px' }}>
             Shop smarter.<br />Buy once.
           </h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '18px', color: '#94A3B8', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto' }}>
             Data-backed guides that show you exactly what to buy and where to buy it cheapest.
           </p>
         </div>
@@ -96,8 +96,8 @@ export default function GuidesPage() {
           {GUIDES.map(function(guide) {
             return (
               <Link key={guide.id} href={'/guides/' + guide.id} style={{ textDecoration: 'none' }}>
-                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', overflow: 'hidden', height: '100%' }}>
-                  <div style={{ height: '6px', background: 'linear-gradient(90deg, #00D084, #059669)' }} />
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', height: '100%' }}>
+                  <div style={{ height: '6px', background: 'linear-gradient(90deg, var(--accent), #059669)' }} />
                   <div style={{ padding: '28px' }}>
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
                       <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: guide.tagBg, color: guide.tagColor, borderRadius: '100px' }}>{guide.tag}</span>
@@ -105,11 +105,11 @@ export default function GuidesPage() {
                         <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: guide.badgeBg, color: guide.badgeColor, borderRadius: '100px' }}>{guide.badge}</span>
                       )}
                     </div>
-                    <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: '#F0F4FF', lineHeight: 1.3, marginBottom: '12px' }}>{guide.title}</h2>
-                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#94A3B8', lineHeight: 1.7, marginBottom: '24px' }}>{guide.excerpt}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#475569' }}>{guide.date} · {guide.readTime}</span>
-                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#00D084', fontWeight: 600 }}>Read →</span>
+                    <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)', lineHeight: 1.3, marginBottom: '12px' }}>{guide.title}</h2>
+                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '24px' }}>{guide.excerpt}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>{guide.date} · {guide.readTime}</span>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--accent)', fontWeight: 600 }}>Read →</span>
                     </div>
                   </div>
                 </div>
