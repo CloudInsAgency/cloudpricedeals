@@ -11,6 +11,15 @@ export const metadata = {
   authors: [{ name: 'CloudPriceDeals', url: 'https://cloudpricedeals.com' }],
   creator: 'Cloud Design Studio LLC',
   publisher: 'CloudPriceDeals',
+
+  // ── GOOGLE SEARCH CONSOLE VERIFICATION ──
+  // Replace YOUR_CODE_HERE with the content value from Google's HTML tag
+  // e.g. if Google gives you: <meta name="google-site-verification" content="abc123xyz" />
+  // then put: verification: { google: 'abc123xyz' }
+  verification: {
+    google: '<meta name="google-site-verification" content="q3dzwJoaHqaZuCcc_oKxzjPkKQSnmDfy5hSYt-N9WB4" />',
+  },
+
   robots: {
     index: true,
     follow: true,
