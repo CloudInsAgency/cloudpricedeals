@@ -21,10 +21,12 @@ export default function Footer() {
   ]
   var retailers = ['Amazon', 'Best Buy', 'Walmart', 'Target', 'eBay']
 
-  var linkStyle = { fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#94A3B8', textDecoration: 'none', transition: 'color 0.15s', display: 'block' }
-
   return (
     <footer style={{ background: '#111827', borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: 'auto' }}>
+      <style>{`
+        .footer-link { color: #94A3B8 !important; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 14px; display: block; transition: color 0.15s; }
+        .footer-link:hover { color: #00D084 !important; }
+      `}</style>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 40px' }}>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '40px', marginBottom: '48px' }}>
@@ -51,7 +53,7 @@ export default function Footer() {
             <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#475569', marginBottom: '16px' }}>Categories</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {categories.map(function(c) {
-                return <Link key={c.href} href={c.href} style={linkStyle}>{c.label}</Link>
+                return <Link key={c.href} href={c.href} className="footer-link">{c.label}</Link>
               })}
             </div>
           </div>
@@ -60,7 +62,7 @@ export default function Footer() {
             <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#475569', marginBottom: '16px' }}>Company</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {company.map(function(c) {
-                return <Link key={c.href} href={c.href} style={linkStyle}>{c.label}</Link>
+                return <Link key={c.href} href={c.href} className="footer-link">{c.label}</Link>
               })}
             </div>
           </div>
@@ -79,9 +81,9 @@ export default function Footer() {
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#475569', lineHeight: 1.6, maxWidth: '560px' }}>
             <strong style={{ color: '#94A3B8' }}>Affiliate Disclosure:</strong> CloudPriceDeals earns a commission when you purchase through links on this site. This never affects the price you pay or our editorial recommendations. We are a participant in the Amazon Associates Program.
           </p>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#475569', whiteSpace: 'nowrap', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#475569', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
             © {currentYear} CloudPriceDeals · Made with
-            <Heart size={12} style={{ color: '#FF4757', verticalAlign: 'middle' }} />
+            <Heart size={12} style={{ color: '#FF4757', display: 'inline', verticalAlign: 'middle' }} />
             by Cloud Design Studio LLC
           </p>
         </div>
