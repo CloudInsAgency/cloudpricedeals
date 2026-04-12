@@ -1,66 +1,106 @@
 'use client'
 import { useState } from 'react'
-import { ArrowRight, Check, Smartphone } from 'lucide-react'
+import { Bell, ArrowRight, Check } from 'lucide-react'
 
-export default function EmailCapture({ variant = 'banner' }) {
+export default function EmailCapture({ variant }) {
   const [email, setEmail] = useState('')
-  const [done, setDone] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const submit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault()
-    if (!email) return
-    console.log('Waitlist:', email)
-    setDone(true)
+    if (!email || !email.includes('@')) return
+    setLoading(true)
+    setTimeout(function() {
+      setLoading(false)
+      setSubmitted(true)
+    }, 800)
   }
 
-  if (variant === 'inline') {
+  if (variant === 'banner') {
     return (
-      <div style={{ background: '#EBF3FC', borderRadius: '16px', padding: '24px', textAlign: 'center' }}>
-        <Smartphone size={20} style={{ color: '#185FA5', margin: '0 auto 8px' }} />
-        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 600, color: '#0D1B2A', marginBottom: '4px' }}>App coming soon</p>
-        <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '13px', color: '#7B93A8', marginBottom: '16px', fontWeight: 300 }}>Early access + exclusive deals</p>
-        {done ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#185FA5', fontFamily: 'Outfit, sans-serif', fontSize: '14px', fontWeight: 500 }}>
-            <Check size={16} /> You're on the list!
+      <div style={{ background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)', border: '1px solid var(--border)', borderRadius: '16px', padding: '48px 40px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(0,208,132,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: '20%', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ width: '48px', height: '48px', background: 'rgba(0,208,132,0.12)', border: '1px solid rgba(0,208,132,0.25)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'var(--green)' }}>
+            <Bell size={22} />
           </div>
-        ) : (
-          <form onSubmit={submit} style={{ display: 'flex', gap: '8px' }}>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" required
-              style={{ flex: 1, fontFamily: 'Outfit, sans-serif', fontSize: '13px', padding: '10px 14px', borderRadius: '100px', border: '1px solid rgba(24,95,165,0.2)', background: 'white', outline: 'none', color: '#0D1B2A' }} />
-            <button type="submit" style={{ background: '#185FA5', color: 'white', border: 'none', borderRadius: '100px', padding: '10px 18px', fontFamily: 'Outfit, sans-serif', fontSize: '13px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-              Notify me
-            </button>
-          </form>
-        )}
+          <p className="section-eyebrow" style={{ justifyContent: 'center', marginBottom: '14px' }}>
+            Price drop alerts
+          </p>
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', marginBottom: '12px' }}>
+            Get notified when prices drop
+          </h2>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, marginBottom: '32px' }}>
+            We'll email you the moment any of our tracked products hits a new low price. No spam — just deals.
+          </p>
+
+          {submitted ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'rgba(0,208,132,0.1)', border: '1px solid rgba(0,208,132,0.25)', borderRadius: '12px', padding: '16px 24px' }}>
+              <Check size={20} color="var(--green)" />
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 600, color: 'var(--green)' }}>You're in! We'll alert you on the next price drop.</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', maxWidth: '440px', margin: '0 auto', flexWrap: 'wrap' }}>
+              <input
+                type="email"
+                value={email}
+                onChange={function(e) { setEmail(e.target.value) }}
+                placeholder="Enter your email address"
+                required
+                style={{ flex: 1, minWidth: '200px', background: 'var(--bg)', border: '1px solid var(--border2)', borderRadius: '8px', padding: '13px 16px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text)', outline: 'none', transition: 'border-color 0.15s' }}
+                onFocus={function(e) { e.target.style.borderColor = 'var(--green)' }}
+                onBlur={function(e) { e.target.style.borderColor = 'var(--border2)' }}
+              />
+              <button type="submit" className="btn-primary" disabled={loading} style={{ opacity: loading ? 0.7 : 1, padding: '13px 24px' }}>
+                {loading ? 'Saving...' : (<>Alert me <ArrowRight size={15} /></>)}
+              </button>
+            </form>
+          )}
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-3)', marginTop: '14px' }}>
+            Free forever · Unsubscribe anytime · No spam
+          </p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div style={{ background: '#0D1B2A', borderRadius: '24px', padding: '48px 40px', display: 'flex', alignItems: 'center', gap: '40px', flexWrap: 'wrap' }}>
-      <div style={{ flex: 1, minWidth: '240px' }}>
-        <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#2B7CD3', marginBottom: '10px' }}>App dropping soon</p>
-        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '36px', fontWeight: 500, color: 'white', lineHeight: 1.2, marginBottom: '10px' }}>
-          Get deals delivered<br /><em>before anyone else.</em>
-        </h3>
-        <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: '14px', color: '#7B93A8', fontWeight: 300, lineHeight: '1.6' }}>
-          Push alerts for price drops. App-exclusive deals. Wishlist sharing.
-        </p>
-      </div>
-      <div style={{ flex: 1, minWidth: '280px' }}>
-        {done ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#85B7EB', fontFamily: 'Outfit, sans-serif', fontSize: '16px', fontWeight: 500 }}>
-            <Check size={20} /> You're on the list — we'll be in touch!
-          </div>
-        ) : (
-          <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" required
-              style={{ fontFamily: 'Outfit, sans-serif', fontSize: '15px', fontWeight: 300, padding: '14px 20px', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.06)', color: 'white', outline: 'none' }} />
-            <button type="submit" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#185FA5', color: 'white', border: 'none', borderRadius: '100px', padding: '14px 24px', fontFamily: 'Outfit, sans-serif', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}>
-              Get early access <ArrowRight size={15} />
-            </button>
-          </form>
-        )}
+    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '28px 24px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+        <div style={{ width: '40px', height: '40px', background: 'rgba(0,208,132,0.12)', border: '1px solid rgba(0,208,132,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--green)' }}>
+          <Bell size={18} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', marginBottom: '6px' }}>Get price drop alerts</h3>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.6, marginBottom: '16px' }}>
+            We'll notify you when this or similar products hit a new low.
+          </p>
+          {submitted ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--green)' }}>
+              <Check size={16} />
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600 }}>You're on the list!</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <input
+                type="email"
+                value={email}
+                onChange={function(e) { setEmail(e.target.value) }}
+                placeholder="Your email"
+                required
+                style={{ flex: 1, minWidth: '160px', background: 'var(--bg)', border: '1px solid var(--border2)', borderRadius: '8px', padding: '10px 14px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text)', outline: 'none' }}
+                onFocus={function(e) { e.target.style.borderColor = 'var(--green)' }}
+                onBlur={function(e) { e.target.style.borderColor = 'var(--border2)' }}
+              />
+              <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '10px 20px', fontSize: '12px', opacity: loading ? 0.7 : 1 }}>
+                {loading ? '...' : <ArrowRight size={15} />}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   )
