@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Heart } from 'lucide-react'
+import { Heart, ExternalLink } from 'lucide-react'
 import RetailerBadge from './RetailerBadge'
 
 export default function DealCard({ deal, view, delay }) {
@@ -28,14 +28,9 @@ export default function DealCard({ deal, view, delay }) {
       }
       if (!exists) {
         saved.push({
-          id: deal.id,
-          name: deal.name,
-          shortName: deal.shortName,
-          emoji: deal.emoji,
-          imageUrl: deal.imageUrl,
-          price: deal.price,
-          originalPrice: deal.originalPrice,
-          retailer: deal.retailer,
+          id: deal.id, name: deal.name, shortName: deal.shortName,
+          emoji: deal.emoji, imageUrl: deal.imageUrl, price: deal.price,
+          originalPrice: deal.originalPrice, retailer: deal.retailer,
           affiliateUrl: deal.affiliateUrl,
         })
         localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
@@ -43,48 +38,44 @@ export default function DealCard({ deal, view, delay }) {
       } else {
         alert(deal.shortName + ' is already in your wishlist.')
       }
-    } catch(err) {
-      console.error(err)
-    }
+    } catch(err) { console.error(err) }
   }
 
   function handleImgError(e) {
     e.target.style.display = 'none'
     var el = document.createElement('div')
-    el.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px'
+    el.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;'
     el.textContent = deal.emoji
     e.target.parentNode.appendChild(el)
   }
 
-  function handleImgErrorSmall(e) {
-    e.target.style.display = 'none'
-    e.target.parentNode.innerHTML = '<div style="font-size:32px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + deal.emoji + '</div>'
-  }
-
   if (viewMode === 'list') {
     return (
-      <div className="fade-up" style={{ animationDelay: d * 0.06 + 's', background: 'white', borderBottom: '1px solid rgba(26,26,26,0.08)', padding: '20px 16px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-        <div style={{ width: '80px', height: '80px', background: '#F5F0E8', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-          <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} onError={handleImgErrorSmall} />
+      <div className="fade-up" style={{ animationDelay: d * 0.05 + 's', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '8px', transition: 'border-color 0.2s' }}
+        onMouseEnter={function(e) { e.currentTarget.style.borderColor = 'rgba(0,208,132,0.3)' }}
+        onMouseLeave={function(e) { e.currentTarget.style.borderColor = 'var(--border)' }}>
+        <div style={{ width: '72px', height: '72px', background: 'var(--surface2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+          <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
+            onError={function(e) { e.target.style.display='none'; e.target.parentNode.innerHTML='<span style="font-size:28px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + deal.emoji + '</span>' }} />
         </div>
-        <div style={{ flex: 1, minWidth: '160px' }}>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: 1.3 }}>
+        <div style={{ flex: 1, minWidth: '140px' }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'DM Serif Display, serif', fontSize: '17px', color: 'var(--text)', textDecoration: 'none', display: 'block', lineHeight: 1.3, marginBottom: '6px' }}>
             {deal.name}
           </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <RetailerBadge retailer={deal.retailer} />
-            <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', fontWeight: 400 }}>{deal.rating} stars</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-3)', fontWeight: 400 }}>★ {deal.rating} · {deal.reviews.toLocaleString()} reviews</span>
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '32px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</div>
-          <div style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</div>
+          <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--green)', lineHeight: 1 }}>${deal.price}</div>
+          <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-3)', textDecoration: 'line-through', marginTop: '2px' }}>${deal.originalPrice}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-          <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'white', background: '#185FA5', padding: '8px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
-            Buy on Amazon
+          <a href={amazonLink} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '9px 18px', fontSize: '11px', gap: '6px' }}>
+            Buy on Amazon <ExternalLink size={12} />
           </a>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#185FA5', border: '1px solid #185FA5', padding: '7px 14px', textDecoration: 'none', whiteSpace: 'nowrap', textAlign: 'center', display: 'block', borderRadius: '8px' }}>
+          <Link href={'/product/' + deal.id} className="btn-secondary" style={{ padding: '8px 18px', fontSize: '11px', justifyContent: 'center' }}>
             Compare stores
           </Link>
         </div>
@@ -93,41 +84,60 @@ export default function DealCard({ deal, view, delay }) {
   }
 
   return (
-    <div
-      className="fade-up"
-      style={{ animationDelay: d * 0.06 + 's', background: 'white', cursor: 'pointer', transition: 'transform 0.25s ease, box-shadow 0.25s ease', display: 'flex', flexDirection: 'column', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}
-      onMouseEnter={function(e) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(24,95,165,0.12)' }}
-      onMouseLeave={function(e) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)' }}
-    >
-      <div style={{ aspectRatio: '4/3', background: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-        <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '12px' }} onError={handleImgError} />
-        {deal.badge === 'hot' && (
-          <div style={{ position: 'absolute', top: '12px', left: '12px', background: '#185FA5', color: 'white', fontFamily: 'Jost, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: '6px', zIndex: 2 }}>
-            Hot deal
-          </div>
-        )}
-        <button onClick={handleWishlist} title="Add to wishlist" style={{ position: 'absolute', top: '12px', right: '12px', background: 'white', border: 'none', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#185FA5', zIndex: 2, boxShadow: '0 1px 4px rgba(0,0,0,0.10)' }}>
-          <Heart size={15} />
+    <div className="deal-card fade-up" style={{ animationDelay: d * 0.05 + 's' }}>
+      <div style={{ position: 'relative', aspectRatio: '4/3', background: 'var(--surface2)', overflow: 'hidden' }}>
+        <img
+          src={deal.imageUrl}
+          alt={deal.name}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
+          onError={handleImgError}
+          onMouseEnter={function(e) { e.target.style.transform = 'scale(1.05)' }}
+          onMouseLeave={function(e) { e.target.style.transform = 'scale(1)' }}
+        />
+
+        <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {deal.badge === 'hot' && (
+            <span className="badge-hot">🔥 Hot Deal</span>
+          )}
+          <span className="badge-green">-{pct}%</span>
+        </div>
+
+        <button
+          onClick={handleWishlist}
+          title="Save to wishlist"
+          style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(10,14,26,0.7)', backdropFilter: 'blur(4px)', border: '1px solid var(--border2)', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2)', transition: 'all 0.15s', zIndex: 2 }}
+          onMouseEnter={function(e) { e.currentTarget.style.background = 'rgba(255,71,87,0.2)'; e.currentTarget.style.color = '#FF4757'; e.currentTarget.style.borderColor = '#FF4757' }}
+          onMouseLeave={function(e) { e.currentTarget.style.background = 'rgba(10,14,26,0.7)'; e.currentTarget.style.color = 'var(--text-2)'; e.currentTarget.style.borderColor = 'var(--border2)' }}>
+          <Heart size={14} />
         </button>
       </div>
 
-      <div style={{ padding: '16px 16px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ marginBottom: '6px' }}>
+      <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <RetailerBadge retailer={deal.retailer} />
+          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-3)' }}>★ {deal.rating}</span>
         </div>
-        <Link href={'/product/' + deal.id} style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '20px', fontWeight: 500, color: '#1A1A1A', textDecoration: 'none', display: 'block', lineHeight: '1.3', marginBottom: '10px' }}>
+
+        <Link href={'/product/' + deal.id} style={{ fontFamily: 'DM Serif Display, serif', fontSize: '18px', fontWeight: 400, color: 'var(--text)', textDecoration: 'none', lineHeight: 1.3, display: 'block', flex: 1 }}
+          onMouseEnter={function(e) { e.target.style.color = 'var(--green)' }}
+          onMouseLeave={function(e) { e.target.style.color = 'var(--text)' }}>
           {deal.name}
         </Link>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px' }}>
-          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '34px', fontWeight: 500, color: '#185FA5', lineHeight: 1 }}>${deal.price}</span>
-          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '13px', color: '#888', textDecoration: 'line-through', fontWeight: 400 }}>${deal.originalPrice}</span>
-          <span style={{ fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, color: '#185FA5', marginLeft: 'auto' }}>-{pct}%</span>
+
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+          <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '32px', color: 'var(--green)', lineHeight: 1 }}>${deal.price}</span>
+          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-3)', textDecoration: 'line-through' }}>${deal.originalPrice}</span>
+          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-2)', marginLeft: 'auto' }}>Save ${deal.originalPrice - deal.price}</span>
         </div>
-        <a href={amazonLink} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#185FA5', color: 'white', textDecoration: 'none', padding: '12px 16px', fontFamily: 'Jost, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px', borderRadius: '10px' }}>
-          Buy on Amazon
+
+        <a href={amazonLink} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ justifyContent: 'center', padding: '11px 16px', fontSize: '12px' }}>
+          Buy on Amazon <ExternalLink size={13} />
         </a>
-        <Link href={'/product/' + deal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Jost, sans-serif', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', textDecoration: 'none', borderTop: '1px solid rgba(26,26,26,0.06)', paddingTop: '8px' }}>
-          Compare all stores
+
+        <Link href={'/product/' + deal.id} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--text-3)', textDecoration: 'none', textAlign: 'center', paddingTop: '4px', transition: 'color 0.15s' }}
+          onMouseEnter={function(e) { e.target.style.color = 'var(--green)' }}
+          onMouseLeave={function(e) { e.target.style.color = 'var(--text-3)' }}>
+          Compare all stores →
         </Link>
       </div>
     </div>
