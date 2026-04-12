@@ -131,14 +131,3 @@ export default function GuidesPage() {
     </div>
   )
 }
-```
-
----
-
-### Fix 2 — Ticker speed + top deal image
-
-In `src/app/page.js`, find the ticker animation and the top deals image. Here are the two targeted changes:
-
-**Ticker — slow it down:** Find this in your `page.js`:
-```
-@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); }
