@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5 {
 .fade-up-5 { animation-delay: 0.40s; }
 
 .marquee-wrap  { overflow: hidden; }
-.marquee-track { animation: marquee 35s linear infinite; display: flex; width: max-content; }
+.marquee-track { animation: marquee 50s linear infinite; display: flex; width: max-content; }
 .float-anim    { animation: float 4s ease-in-out infinite; }
 
 .live-dot {
