@@ -26,7 +26,7 @@ export const WISHLIST_OCCASIONS = [
 ]
 
 function img(asin) {
-  return 'https://wsrv.nl/?url=' + encodeURIComponent('https://m.media-amazon.com/images/P/' + asin + '.01._SCLZZZZZZZ_SX500_.jpg') + '&w=400&h=400&fit=contain&bg=white'
+  return 'https://wsrv.nl/?url=' + encodeURIComponent('https://images-na.ssl-images-amazon.com/images/P/' + asin + '.01._AC_SL500_.jpg') + '&w=400&h=400&fit=contain&bg=white'
 }
 
 export const DEALS = [
