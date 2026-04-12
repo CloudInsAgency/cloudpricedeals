@@ -133,4 +133,89 @@ export default function HomePage() {
       </section>
 
       <div style={{ background: '#111827', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '24px' }}>
-        <div style={{ maxWidth: '1280px', margi
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
+          {[
+            { icon: <RefreshCw size={16} />, text: 'Updated every week' },
+            { icon: <TrendingDown size={16} />, text: 'Real price history tracked' },
+            { icon: <Shield size={16} />, text: 'Honest affiliate disclosure' },
+          ].map(function(t) {
+            return (
+              <div key={t.text} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#00D084' }}>{t.icon}</span>
+                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 500, color: '#94A3B8' }}>{t.text}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '72px 24px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00D084', display: 'inline-block' }} />
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00D084' }}>Hot this week</span>
+            </div>
+            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(28px, 4vw, 42px)', color: '#F0F4FF' }}>This week's best deals</h2>
+          </div>
+          <Link href="/browse" style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: '#00D084', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+            View all <ChevronRight size={16} />
+          </Link>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }} className="grid-2-mobile">
+          {hotDeals.map(function(deal, i) {
+            return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
+          })}
+        </div>
+      </section>
+
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '72px 24px 0' }}>
+        <EmailCapture variant="banner" />
+      </section>
+
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '72px 24px 96px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00D084', marginBottom: '10px' }}>All deals</p>
+            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(28px, 4vw, 42px)', color: '#F0F4FF' }}>Browse & compare</h2>
+          </div>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button onClick={function() { setViewMode('grid') }} style={{ padding: '9px 12px', background: viewMode === 'grid' ? '#00D084' : '#111827', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'grid' ? '#0A0E1A' : '#94A3B8', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
+              <LayoutGrid size={16} />
+            </button>
+            <button onClick={function() { setViewMode('list') }} style={{ padding: '9px 12px', background: viewMode === 'list' ? '#00D084' : '#111827', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'list' ? '#0A0E1A' : '#94A3B8', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
+              <List size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', overflowX: 'auto', marginBottom: '32px', borderBottom: '1px solid rgba(255,255,255,0.06)', WebkitOverflowScrolling: 'touch' }}>
+          {CATEGORIES.map(function(cat) {
+            var isActive = activeCategory === cat.id
+            return (
+              <button key={cat.id} onClick={function() { setActiveCategory(cat.id) }} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: isActive ? 600 : 400, padding: '12px 18px', whiteSpace: 'nowrap', border: 'none', background: 'transparent', cursor: 'pointer', color: isActive ? '#00D084' : '#475569', borderBottom: isActive ? '2px solid #00D084' : '2px solid transparent', marginBottom: '-1px', transition: 'all 0.15s', flexShrink: 0 }}>
+                {cat.emoji} {cat.label}
+              </button>
+            )
+          })}
+        </div>
+
+        {viewMode === 'grid' ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }} className="grid-2-mobile">
+            {filtered.map(function(deal, i) {
+              return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
+            })}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {filtered.map(function(deal, i) {
+              return <DealCard key={deal.id} deal={deal} view="list" delay={i} />
+            })}
+          </div>
+        )}
+      </section>
+
+      <Footer />
+    </div>
+  )
+}
