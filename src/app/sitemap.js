@@ -22,6 +22,18 @@ export default function sitemap() {
       priority: 0.8,
     },
     {
+      url: `${base}/compare`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${base}/compare/amazon-vs-best-buy`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${base}/guides/amazon-vs-bestbuy-electronics`,
       lastModified: now,
       changeFrequency: 'monthly',
