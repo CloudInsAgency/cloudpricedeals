@@ -65,7 +65,7 @@ export default function HomePage() {
               We compare prices across Amazon, Best Buy, Walmart, Target and eBay every week — so you always buy at the lowest price.
             </p>
             <div className="fade-up fade-up-3" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <Link href="/browse" style={{ background: 'var(--accent)', color: '#0A0E1A', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '13px 28px', borderRadius: '8px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <Link href="/browse" style={{ background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '13px 28px', borderRadius: '8px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 Browse All Deals <ChevronRight size={16} />
               </Link>
               <Link href="/guides" style={{ background: 'transparent', color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '12px 28px', borderRadius: '8px', border: '1px solid var(--border)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
@@ -130,7 +130,7 @@ export default function HomePage() {
                 )
               })}
 
-              <Link href="/browse" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: 'var(--accent)', color: '#0A0E1A', textDecoration: 'none', padding: '12px', borderRadius: '8px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '4px' }}>
+              <Link href="/browse" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: 'var(--accent)', color: '#FFFFFF', textDecoration: 'none', padding: '12px', borderRadius: '8px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '4px' }}>
                 See all {DEALS.length} deals <ChevronRight size={14} />
               </Link>
             </div>
@@ -199,10 +199,10 @@ export default function HomePage() {
             <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(28px, 4vw, 42px)', color: 'var(--text-primary)' }}>Browse & compare</h2>
           </div>
           <div style={{ display: 'flex', gap: '6px' }}>
-            <button onClick={function() { setViewMode('grid') }} style={{ padding: '9px 12px', background: viewMode === 'grid' ? 'var(--accent)' : 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'grid' ? '#0A0E1A' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
+            <button onClick={function() { setViewMode('grid') }} style={{ padding: '9px 12px', background: viewMode === 'grid' ? 'var(--accent)' : 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'grid' ? '#FFFFFF' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
               <LayoutGrid size={16} />
             </button>
-            <button onClick={function() { setViewMode('list') }} style={{ padding: '9px 12px', background: viewMode === 'list' ? 'var(--accent)' : 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'list' ? '#0A0E1A' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
+            <button onClick={function() { setViewMode('list') }} style={{ padding: '9px 12px', background: viewMode === 'list' ? 'var(--accent)' : 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer', color: viewMode === 'list' ? '#FFFFFF' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}>
               <List size={16} />
             </button>
           </div>

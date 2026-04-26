@@ -1,42 +1,8 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import { Menu, X, Heart, Zap, Sun, Moon } from 'lucide-react'
-
-function ThemeToggle() {
-  const [theme, setTheme] = useState('dark')
-
-  useEffect(function() {
-    const saved = localStorage.getItem('cpd-theme') || 'dark'
-    setTheme(saved)
-    document.documentElement.setAttribute('data-theme', saved)
-  }, [])
-
-  function toggle() {
-    const next = theme === 'dark' ? 'light' : 'dark'
-    setTheme(next)
-    document.documentElement.setAttribute('data-theme', next)
-    localStorage.setItem('cpd-theme', next)
-  }
-
-  return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle dark/light mode"
-      style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        width: '36px', height: '36px', borderRadius: '8px',
-        border: '1px solid rgba(255,255,255,0.14)',
-        background: 'transparent', cursor: 'pointer',
-        color: theme === 'dark' ? '#94A3B8' : '#475569',
-        flexShrink: 0, transition: 'all 0.15s',
-      }}
-    >
-      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-    </button>
-  )
-}
+import { useState } from 'react'
+import { Menu, X, Heart, Zap } from 'lucide-react'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -55,7 +21,7 @@ export default function Navbar() {
 
       {/* Announcement bar */}
       <div style={{ background: 'var(--accent)', padding: '8px 16px', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: '#0A0E1A', letterSpacing: '0.02em' }}>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '0.02em' }}>
           🔥 Updated weekly — 20 deals compared across Amazon, Best Buy, Walmart, Target & eBay
         </p>
       </div>
@@ -66,7 +32,7 @@ export default function Navbar() {
         <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', background: 'var(--accent)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Zap size={18} color="#0A0E1A" fill="#0A0E1A" />
+              <Zap size={18} color="#FFFFFF" fill="#FFFFFF" />
             </div>
             <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)' }}>
               Cloud<span style={{ color: 'var(--accent)' }}>Price</span>Deals
@@ -93,13 +59,12 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Desktop right buttons — toggle sits between My Lists and Browse Deals */}
+        {/* Desktop right buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }} className="cpd-desktop-nav">
-          <ThemeToggle />
           <Link href="/wishlist" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px 16px', border: '1px solid var(--border)', borderRadius: '8px', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
             <Heart size={14} /> My Lists
           </Link>
-          <Link href="/browse" style={{ background: 'var(--accent)', color: '#0A0E1A', fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <Link href="/browse" style={{ background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
             Browse Deals
           </Link>
         </div>
@@ -130,20 +95,13 @@ export default function Navbar() {
           })}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
             <Link href="/browse" onClick={function() { setOpen(false) }}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: '#0A0E1A', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '14px', borderRadius: '8px', textDecoration: 'none' }}>
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '14px', borderRadius: '8px', textDecoration: 'none' }}>
               Browse All Deals
             </Link>
             <Link href="/wishlist" onClick={function() { setOpen(false) }}
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'transparent', color: 'var(--text-primary)', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, padding: '13px', borderRadius: '8px', border: '1px solid var(--border)', textDecoration: 'none' }}>
               <Heart size={14} /> My Wishlists
             </Link>
-            {/* Theme toggle in mobile menu */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '13px 16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
-              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                Switch theme
-              </span>
-              <ThemeToggle />
-            </div>
           </div>
         </div>
       )}

@@ -22,10 +22,10 @@ export default function Footer() {
   var retailers = ['Amazon', 'Best Buy', 'Walmart', 'Target', 'eBay']
 
   return (
-    <footer style={{ background: '#111827', borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: 'auto' }}>
+    <footer style={{ background: 'var(--bg-section)', borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
       <style>{`
-        .footer-link { color: #94A3B8 !important; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 14px; display: block; transition: color 0.15s; }
-        .footer-link:hover { color: #00D084 !important; }
+        .footer-link { color: var(--text-secondary) !important; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 14px; display: block; transition: color 0.15s; }
+        .footer-link:hover { color: var(--accent) !important; }
       `}</style>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 40px' }}>
 
@@ -33,24 +33,24 @@ export default function Footer() {
 
           <div>
             <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-              <div style={{ width: '28px', height: '28px', background: '#00D084', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Zap size={15} color="#0A0E1A" fill="#0A0E1A" />
+              <div style={{ width: '28px', height: '28px', background: 'var(--accent)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Zap size={15} color="#FFFFFF" fill="#FFFFFF" />
               </div>
-              <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', color: '#F0F4FF' }}>
-                Cloud<span style={{ color: '#00D084' }}>Price</span>Deals
+              <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', color: 'var(--text-primary)' }}>
+                Cloud<span style={{ color: 'var(--accent)' }}>Price</span>Deals
               </span>
             </Link>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#94A3B8', lineHeight: 1.7, marginBottom: '20px', maxWidth: '240px' }}>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '20px', maxWidth: '240px' }}>
               We compare prices across 5 major retailers every week so you always buy at the lowest price.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00D084', display: 'inline-block', flexShrink: 0 }} />
-              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#00D084', fontWeight: 600 }}>Updated weekly</span>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block', flexShrink: 0 }} />
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--accent)', fontWeight: 600 }}>Updated weekly</span>
             </div>
           </div>
 
           <div>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#475569', marginBottom: '16px' }}>Categories</p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '16px' }}>Categories</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {categories.map(function(c) {
                 return <Link key={c.href} href={c.href} className="footer-link">{c.label}</Link>
@@ -59,7 +59,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#475569', marginBottom: '16px' }}>Company</p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '16px' }}>Company</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {company.map(function(c) {
                 return <Link key={c.href} href={c.href} className="footer-link">{c.label}</Link>
@@ -68,22 +68,22 @@ export default function Footer() {
           </div>
 
           <div>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#475569', marginBottom: '16px' }}>We Compare</p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '16px' }}>We Compare</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {retailers.map(function(r) {
-                return <span key={r} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#94A3B8' }}>{r}</span>
+                return <span key={r} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)' }}>{r}</span>
               })}
             </div>
           </div>
         </div>
 
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '28px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#475569', lineHeight: 1.6, maxWidth: '560px' }}>
-            <strong style={{ color: '#94A3B8' }}>Affiliate Disclosure:</strong> CloudPriceDeals earns a commission when you purchase through links on this site. This never affects the price you pay or our editorial recommendations. We are a participant in the Amazon Associates Program.
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: '560px' }}>
+            <strong style={{ color: 'var(--text-secondary)' }}>Affiliate Disclosure:</strong> CloudPriceDeals earns a commission when you purchase through links on this site. This never affects the price you pay or our editorial recommendations. We are a participant in the Amazon Associates Program.
           </p>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#475569', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
             © {currentYear} CloudPriceDeals · Made with
-            <Heart size={12} style={{ color: '#FF4757', display: 'inline', verticalAlign: 'middle' }} />
+            <Heart size={12} style={{ color: 'var(--hot)', display: 'inline', verticalAlign: 'middle' }} />
             by Cloud Design Studio LLC
           </p>
         </div>

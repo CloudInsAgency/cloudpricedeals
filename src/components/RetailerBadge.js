@@ -6,7 +6,7 @@ export default function RetailerBadge({ retailer }) {
     target:  { label: 'Target',   bg: 'rgba(204,0,0,0.12)',    color: '#CC0000', border: 'rgba(204,0,0,0.25)' },
     ebay:    { label: 'eBay',     bg: 'rgba(14,97,175,0.12)',  color: '#0E61AF', border: 'rgba(14,97,175,0.25)' },
   }
-  var r = config[retailer] || { label: retailer, bg: 'rgba(255,255,255,0.08)', color: 'var(--text-2)', border: 'rgba(255,255,255,0.14)' }
+  var r = config[retailer] || { label: retailer, bg: 'var(--bg-section)', color: 'var(--text-2)', border: 'var(--border2)' }
   return (
     <span style={{
       fontFamily: 'DM Sans, sans-serif',

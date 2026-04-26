@@ -52,7 +52,7 @@ export default function DealCard({ deal, view, delay }) {
   if (viewMode === 'list') {
     return (
       <div className="fade-up" style={{ animationDelay: d * 0.05 + 's', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '8px', transition: 'border-color 0.2s' }}
-        onMouseEnter={function(e) { e.currentTarget.style.borderColor = 'rgba(0,208,132,0.3)' }}
+        onMouseEnter={function(e) { e.currentTarget.style.borderColor = 'var(--border-accent)' }}
         onMouseLeave={function(e) { e.currentTarget.style.borderColor = 'var(--border)' }}>
         <div style={{ width: '72px', height: '72px', background: 'var(--surface2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
           <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
@@ -105,9 +105,9 @@ export default function DealCard({ deal, view, delay }) {
         <button
           onClick={handleWishlist}
           title="Save to wishlist"
-          style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(10,14,26,0.7)', backdropFilter: 'blur(4px)', border: '1px solid var(--border2)', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2)', transition: 'all 0.15s', zIndex: 2 }}
-          onMouseEnter={function(e) { e.currentTarget.style.background = 'rgba(255,71,87,0.2)'; e.currentTarget.style.color = '#FF4757'; e.currentTarget.style.borderColor = '#FF4757' }}
-          onMouseLeave={function(e) { e.currentTarget.style.background = 'rgba(10,14,26,0.7)'; e.currentTarget.style.color = 'var(--text-2)'; e.currentTarget.style.borderColor = 'var(--border2)' }}>
+          style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(4px)', border: '1px solid var(--border2)', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2)', transition: 'all 0.15s', zIndex: 2 }}
+          onMouseEnter={function(e) { e.currentTarget.style.background = 'rgba(255,71,87,0.15)'; e.currentTarget.style.color = 'var(--red)'; e.currentTarget.style.borderColor = 'var(--red)' }}
+          onMouseLeave={function(e) { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.color = 'var(--text-2)'; e.currentTarget.style.borderColor = 'var(--border2)' }}>
           <Heart size={14} />
         </button>
       </div>

@@ -18,7 +18,7 @@ export const CATEGORIES = [
 
 export const WISHLIST_OCCASIONS = [
   { id: 'birthday',   label: 'Birthday',    color: '#FF4757', bg: 'rgba(255,71,87,0.12)' },
-  { id: 'christmas',  label: 'Christmas',   color: '#00D084', bg: 'rgba(0,208,132,0.12)' },
+  { id: 'christmas',  label: 'Christmas',   color: '#00A86B', bg: 'rgba(0,168,107,0.12)' },
   { id: 'babyshower', label: 'Baby shower', color: '#3B82F6', bg: 'rgba(59,130,246,0.12)' },
   { id: 'wedding',    label: 'Wedding',     color: '#F59E0B', bg: 'rgba(245,158,11,0.12)' },
   { id: 'graduation', label: 'Graduation',  color: '#A855F7', bg: 'rgba(168,85,247,0.12)' },

@@ -116,7 +116,7 @@ export default function WishlistPage() {
             <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-secondary)', fontWeight: 400 }}>Save deals to occasion lists — then share with family and friends</p>
           </div>
           <button onClick={function() { setShowNewList(!showNewList) }}
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#0A0E1A', border: 'none', padding: '13px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px', whiteSpace: 'nowrap' }}>
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '13px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px', whiteSpace: 'nowrap' }}>
             <Plus size={15} /> New list
           </button>
         </div>
@@ -144,7 +144,7 @@ export default function WishlistPage() {
             </select>
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={createList}
-                style={{ background: 'var(--accent)', color: '#0A0E1A', border: 'none', padding: '11px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px' }}>
+                style={{ background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '11px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px' }}>
                 Create list
               </button>
               <button onClick={function() { setShowNewList(false) }}
@@ -309,7 +309,7 @@ export default function WishlistPage() {
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                           <a href={amazonUrl} target="_blank" rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--accent)', color: '#0A0E1A', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '8px 14px', textDecoration: 'none', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '8px 14px', textDecoration: 'none', borderRadius: '6px', whiteSpace: 'nowrap' }}>
                             Buy <ExternalLink size={11} />
                           </a>
                           <button onClick={function() { removeFromList(list.id, item.id) }}
