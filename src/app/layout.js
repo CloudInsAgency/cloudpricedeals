@@ -12,12 +12,8 @@ export const metadata = {
   creator: 'Cloud Design Studio LLC',
   publisher: 'CloudPriceDeals',
 
-  // ── GOOGLE SEARCH CONSOLE VERIFICATION ──
-  // Replace YOUR_CODE_HERE with the content value from Google's HTML tag
-  // e.g. if Google gives you: <meta name="google-site-verification" content="abc123xyz" />
-  // then put: verification: { google: 'abc123xyz' }
   verification: {
-    google: '<meta name="google-site-verification" content="q3dzwJoaHqaZuCcc_oKxzjPkKQSnmDfy5hSYt-N9WB4" />',
+    google: 'q3dzwJoaHqaZuCcc_oKxzjPkKQSnmDfy5hSYt-N9WB4',
   },
 
   robots: {
@@ -53,7 +49,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
         <meta name="theme-color" content="#00A86B" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>

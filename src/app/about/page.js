@@ -5,6 +5,7 @@ import EmailCapture from '@/components/EmailCapture'
 export const metadata = {
   title: 'About — CloudPriceDeals',
   description: 'How CloudPriceDeals works and how we find the best deals across all major retailers.',
+  alternates: { canonical: '/about' },
 }
 
 export default function AboutPage() {

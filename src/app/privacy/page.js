@@ -3,6 +3,7 @@ import Footer from '@/components/Footer'
 
 export const metadata = {
   title: 'Privacy Policy — CloudPriceDeals',
+  alternates: { canonical: '/privacy' },
 }
 
 export default function PrivacyPage() {

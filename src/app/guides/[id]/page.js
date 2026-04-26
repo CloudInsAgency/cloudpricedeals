@@ -1,199 +1,28 @@
-'use client'
-import Link from 'next/link'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import { DEALS } from '@/data/deals'
-import { ChevronLeft, ExternalLink } from 'lucide-react'
+import { GUIDES } from './guides-data'
+import GuideClient from './guide-client'
 
-const GUIDES = [
-  {
-    id: 'amazon-vs-bestbuy-electronics',
-    tag: 'Price Comparison',
-    tagColor: '#3B82F6',
-    tagBg: 'rgba(59,130,246,0.12)',
-    title: 'Amazon vs Best Buy: Which is Cheaper for Electronics?',
-    excerpt: "We compared 200 products across both retailers over 60 days. The results reveal a clear winner — but it depends entirely on what category you're buying in.",
-    date: 'March 2026',
-    readTime: '7 min read',
-    badge: 'Data-backed',
-    badgeColor: '#00A86B',
-    badgeBg: 'rgba(0,168,107,0.12)',
-    content: [
-      { heading: 'The Short Answer', body: 'Amazon is cheaper for everyday electronics like headphones, speakers and cables — but Best Buy wins on large appliances, laptops and items that benefit from in-store price matching. The gap is usually 5–12%.' },
-      { heading: 'What We Measured', body: 'We tracked 200 identical products across both retailers from January to March 2026, recording daily prices across 8 categories: headphones, TVs, laptops, tablets, smart home devices, cables & accessories, gaming, and kitchen appliances.' },
-      { heading: 'Category Breakdown', body: 'Headphones: Amazon cheaper 73% of the time, avg 8% less. TVs: Best Buy cheaper 61% of the time, avg 6% less — especially during sales. Laptops: Near parity, Best Buy price matches Amazon. Smart Home: Amazon cheaper 81% of the time. Gaming: Amazon cheaper on controllers and accessories, tied on consoles.' },
-      { heading: 'The Best Buy Price Match Factor', body: 'Best Buy price matches Amazon in-store and online. This means if you find a lower price at Amazon, Best Buy will match it — making Best Buy a solid option when you need same-day pickup and want to pay Amazon pricing.' },
-      { heading: 'Our Recommendation', body: 'Default to Amazon for headphones, speakers, smart home, and accessories. Check Best Buy first for TVs over 55" and laptops — their sale pricing and price match policy often makes them the better deal once you factor in no-hassle returns.' },
-    ],
-    relatedCategory: 'electronics',
-  },
-  {
-    id: 'best-time-to-buy-electronics',
-    tag: 'Shopping Strategy',
-    tagColor: '#F59E0B',
-    tagBg: 'rgba(245,158,11,0.12)',
-    title: 'The Best Time of Year to Buy Electronics (Month by Month)',
-    excerpt: 'January TVs, July appliances, October everything — we mapped out exactly when prices drop at Amazon and Best Buy so you can time your purchases perfectly.',
-    date: 'March 2026',
-    readTime: '8 min read',
-    badge: 'Most Popular',
-    badgeColor: '#FF4757',
-    badgeBg: 'rgba(255,71,87,0.12)',
-    content: [
-      { heading: 'January — TVs Hit Their Annual Low', body: 'Right after CES, last year\'s TV models get clearanced hard. Amazon and Best Buy both slash prices 20–40% in January as new models are announced. If you need a TV, January is the single best month to buy.' },
-      { heading: 'February — Small Appliances Before Valentine\'s Day', body: 'Countertop appliances like coffee makers, blenders and air fryers see deals ahead of Valentine\'s Day. Retailers push kitchen gifts and discount heavily to drive volume.' },
-      { heading: 'March–April — No Major Sales, Wait If You Can', body: 'Spring is the quietest period for electronics deals. If you need something, buy it — but if you can wait until May, Amazon\'s Spring Sale typically runs in late April and delivers 15–25% off across categories.' },
-      { heading: 'July — Prime Day Is the Summer\'s Best Moment', body: 'Amazon Prime Day in July is the second-biggest sale event of the year. Best Buy, Walmart and Target all run competing sales the same week. Smart home devices, headphones and streaming sticks hit their lowest prices of the year.' },
-      { heading: 'October — Early Holiday Deals Start', body: 'Amazon runs a second "Prime Day" event in October. This is the best time to buy gaming peripherals, headphones, and anything you were going to buy for the holidays anyway — prices are just as good as Black Friday without the stress.' },
-      { heading: 'November — Black Friday Is Overrated (But Still Good)', body: 'Black Friday deals are real but often match prices from Prime Day or October sales. The best Black Friday deals are on TVs, laptops and bundles. Avoid buying small electronics on Black Friday — they were cheaper in October.' },
-    ],
-    relatedCategory: 'electronics',
-  },
-  {
-    id: 'headphones-under-150-guide',
-    tag: 'Buying Guide',
-    tagColor: '#3B82F6',
-    tagBg: 'rgba(59,130,246,0.12)',
-    title: 'Best Headphones Under $150 in 2026 — Tested and Ranked',
-    excerpt: 'We tested 12 pairs of headphones under $150 across noise cancellation, sound quality, battery life and comfort. Here are the ones actually worth buying.',
-    date: 'April 2026',
-    readTime: '9 min read',
-    badge: "Editor's Pick",
-    badgeColor: '#A855F7',
-    badgeBg: 'rgba(168,85,247,0.12)',
-    content: [
-      { heading: 'What We Tested', body: 'We spent 6 weeks testing 12 pairs of headphones priced $19–$149. We evaluated sound quality across 3 music genres, noise isolation, call quality, battery life, comfort over 3+ hours, and build quality. We also compared prices across Amazon, Best Buy, Walmart and Target.' },
-      { heading: 'Best Overall Under $50: TOZO T6 ($19.94)', body: 'At under $20, the TOZO T6 outperforms headphones costing twice as much. IPX8 waterproofing, solid bass, 6hr playtime with 18hr from the case. The controls are responsive and the fit is secure. For the price, nothing comes close. Buy on Amazon — it\'s $15 cheaper than anywhere else.' },
-      { heading: 'Best for Calls: Anker Soundcore A20i ($19.99)', body: 'Anker\'s AI-powered call clarity is the standout feature here. Background noise gets filtered out aggressively — your voice comes through clear even in loud environments. Sound quality is balanced and pleasant, not bass-heavy. 28hr total playtime is excellent for the price.' },
-      { heading: 'Best Over-Ear Under $75: HyperX Cloud III ($64.95)', body: 'Originally designed for gaming, the HyperX Cloud III is genuinely one of the best-sounding headsets at this price for any use. The 53mm drivers produce a wide, detailed soundstage. Comfortable for long sessions. Works with PC, PS5, Xbox and mobile.' },
-      { heading: 'Where to Buy — Price Comparison', body: 'For the TOZO T6 and Anker A20i, Amazon is consistently the cheapest by 20–30%. For the HyperX Cloud III, Best Buy and Amazon are within $5 of each other — check both and grab whichever has stock.' },
-      { heading: 'What to Skip', body: 'Avoid no-name brands under $15 — they fail quality checks consistently. We also tested the Beats Studio Buds at $149 and found them overpriced relative to the TOZO and Anker options at a fraction of the cost.' },
-    ],
-    relatedCategory: 'electronics',
-  },
-  {
-    id: 'kitchen-appliances-price-guide',
-    tag: 'Kitchen',
-    tagColor: '#F59E0B',
-    tagBg: 'rgba(245,158,11,0.12)',
-    title: 'Kitchen Appliances: When to Buy at Amazon vs Target vs Walmart',
-    excerpt: 'Instant Pots, air fryers, coffee makers — we tracked prices for 6 months to find out which retailers consistently win on kitchen deals.',
-    date: 'April 2026',
-    readTime: '6 min read',
-    badge: null,
-    content: [
-      { heading: 'The Big Picture', body: 'For kitchen appliances in the $15–$100 range, Amazon wins on everyday pricing about 65% of the time. But Target and Walmart run aggressive clearance events that beat Amazon — if you can wait and watch, you can often save 20–30% beyond Amazon\'s standard price.' },
-      { heading: 'Instant Pot and Pressure Cookers', body: 'Amazon is almost always the cheapest on Instant Pot models. During Prime Day, Instant Pot prices drop to all-time lows — the Duo Mini 3qt (regularly $89.99) has hit $49 during Prime Day sales. If you\'re not in a rush, wait for July.' },
-      { heading: 'Coffee Makers', body: 'Walmart wins on entry-level coffee makers under $30. For mid-range makers like the Hamilton Beach 2-Way Brewer, Amazon and Target are competitive — check both before buying. Nespresso machines see the biggest discounts at Best Buy during sale events.' },
-      { heading: 'Blenders and Small Appliances', body: 'The Ninja Fit Personal Blender is priced identically across Amazon, Walmart and Target most of the time. Watch for Target Circle offers — they frequently stack a 10–15% off coupon on top of sale pricing, making Target the best deal when those promotions run.' },
-      { heading: 'Our Buying Strategy', body: 'Default to Amazon for convenience and reliability. Check Target\'s app for Circle deals before checkout — they can flip a deal by 10–15%. For high-ticket items over $75, check Best Buy\'s price match policy and Walmart\'s Rollback section. Never pay full retail for kitchen appliances — every major item on this list goes on sale at least monthly.' },
-    ],
-    relatedCategory: 'kitchen',
-  },
-]
-
-export default function GuideDetailPage({ params }) {
+export async function generateMetadata({ params }) {
   const guide = GUIDES.find(function(g) { return g.id === params.id })
-
   if (!guide) {
-    return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
-        <Navbar />
-        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '120px 24px', textAlign: 'center' }}>
-          <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '42px', color: 'var(--text-primary)', marginBottom: '16px' }}>Guide not found</h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '32px' }}>This guide doesn't exist or may have moved.</p>
-          <Link href="/guides" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#FFFFFF', textDecoration: 'none', padding: '12px 28px', borderRadius: '8px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Back to Guides
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    )
+    return {
+      title: 'Guide not found',
+      alternates: { canonical: '/guides/' + params.id },
+    }
   }
+  const url = '/guides/' + guide.id
+  return {
+    title: guide.title,
+    description: guide.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      title: guide.title,
+      description: guide.excerpt,
+      url: 'https://cloudpricedeals.com' + url,
+      type: 'article',
+    },
+  }
+}
 
-  const relatedDeals = DEALS.filter(function(d) { return d.category === guide.relatedCategory }).slice(0, 3)
-
-  return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
-      <Navbar />
-
-      {/* Hero */}
-      <div style={{ background: 'var(--bg-section)', borderBottom: '1px solid var(--border)', padding: '56px 24px 48px' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-            <Link href="/guides" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none' }}>
-              <ChevronLeft size={14} /> Buying Guides
-            </Link>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: guide.tagBg, color: guide.tagColor, borderRadius: '100px' }}>{guide.tag}</span>
-            {guide.badge && (
-              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: guide.badgeBg, color: guide.badgeColor, borderRadius: '100px' }}>{guide.badge}</span>
-            )}
-          </div>
-          <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(28px, 5vw, 46px)', color: 'var(--text-primary)', lineHeight: 1.15, marginBottom: '16px' }}>{guide.title}</h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '640px', marginBottom: '20px' }}>{guide.excerpt}</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>📅 {guide.date}</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>⏱ {guide.readTime}</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>✍️ CloudPriceDeals Editorial</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Article Body */}
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '56px 24px' }}>
-
-        {/* Affiliate Disclosure */}
-        <div style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderLeft: '3px solid #3B82F6', borderRadius: '10px', padding: '16px 20px', marginBottom: '48px' }}>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, color: '#3B82F6', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Affiliate Disclosure</p>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>CloudPriceDeals earns a commission on purchases made through links on this page. This never affects our recommendations.</p>
-        </div>
-
-        {/* Content Sections */}
-        {guide.content.map(function(section, i) {
-          return (
-            <div key={i} style={{ marginBottom: '40px' }}>
-              <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '26px', color: 'var(--text-primary)', marginBottom: '14px', lineHeight: 1.25 }}>{section.heading}</h2>
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-secondary)', lineHeight: 1.85 }}>{section.body}</p>
-            </div>
-          )
-        })}
-
-        {/* Related Deals */}
-        {relatedDeals.length > 0 && (
-          <div style={{ marginTop: '64px', paddingTop: '48px', borderTop: '1px solid var(--border)' }}>
-            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '24px' }}>Current deals mentioned in this guide</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {relatedDeals.map(function(deal) {
-                var pct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
-                return (
-                  <a key={deal.id} href={deal.affiliateUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', textDecoration: 'none', gap: '12px' }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deal.name}</p>
-                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>Amazon · Free Prime shipping</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-                      <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', color: 'var(--accent)' }}>${deal.price}</span>
-                      <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '100px' }}>-{pct}%</span>
-                      <ExternalLink size={14} color="var(--text-muted)" />
-                    </div>
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Back to Guides */}
-        <div style={{ marginTop: '64px', textAlign: 'center' }}>
-          <Link href="/guides" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'transparent', color: 'var(--accent)', border: '1px solid var(--border-accent)', textDecoration: 'none', padding: '12px 28px', borderRadius: '8px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600 }}>
-            <ChevronLeft size={14} /> Back to all guides
-          </Link>
-        </div>
-      </div>
-
-      <Footer />
-    </div>
-  )
+export default function GuidePage({ params }) {
+  return <GuideClient id={params.id} />
 }
