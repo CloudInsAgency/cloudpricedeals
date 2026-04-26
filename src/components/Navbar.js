@@ -12,6 +12,7 @@ export default function Navbar() {
     { href: '/',         label: 'Deals' },
     { href: '/browse',   label: 'Browse' },
     { href: '/guides',   label: 'Guides' },
+    { href: '/compare',  label: 'Compare' },
     { href: '/wishlist', label: 'Wishlists' },
     { href: '/about',    label: 'About' },
   ]

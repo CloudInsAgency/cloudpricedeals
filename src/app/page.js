@@ -7,6 +7,8 @@ import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
 import EmailCapture from '@/components/EmailCapture'
 import { DEALS, CATEGORIES } from '@/data/deals'
+import { COMPARISONS } from '@/data/comparisons'
+import ComparisonCard from '@/components/ComparisonCard'
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all')
@@ -183,6 +185,28 @@ export default function HomePage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }} className="grid-2-mobile">
           {hotDeals.map(function(deal, i) {
             return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
+          })}
+        </div>
+      </section>
+
+      {/* ── RETAILER COMPARISONS ── */}
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '72px 24px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }} />
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>Retailer Comparisons</span>
+            </div>
+            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(28px, 4vw, 42px)', color: 'var(--text-primary)', marginBottom: '8px' }}>Which retailer is actually cheaper?</h2>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-secondary)' }}>We tracked daily prices to find out where each store wins.</p>
+          </div>
+          <Link href="/compare" style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+            View all <ChevronRight size={16} />
+          </Link>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }} className="grid-2-mobile">
+          {COMPARISONS.map(function(c) {
+            return <ComparisonCard key={c.slug} comparison={c} />
           })}
         </div>
       </section>

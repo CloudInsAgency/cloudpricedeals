@@ -2,9 +2,19 @@
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ComparisonCard from '@/components/ComparisonCard'
 import { DEALS } from '@/data/deals'
+import { COMPARISONS } from '@/data/comparisons'
 import { ChevronLeft, ExternalLink } from 'lucide-react'
 import { GUIDES } from './guides-data'
+
+function findRelatedComparisons(guide) {
+  var haystack = (guide.title + ' ' + guide.excerpt + ' ' +
+    guide.content.map(function(s) { return s.heading + ' ' + s.body }).join(' ')).toLowerCase()
+  return COMPARISONS.filter(function(c) {
+    return c.retailers.every(function(r) { return haystack.indexOf(r.toLowerCase()) !== -1 })
+  }).slice(0, 2)
+}
 
 export default function GuideClient({ id }) {
   const guide = GUIDES.find(function(g) { return g.id === id })
@@ -26,6 +36,7 @@ export default function GuideClient({ id }) {
   }
 
   const relatedDeals = DEALS.filter(function(d) { return d.category === guide.relatedCategory }).slice(0, 3)
+  const relatedComparisons = findRelatedComparisons(guide)
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
@@ -73,6 +84,19 @@ export default function GuideClient({ id }) {
             </div>
           )
         })}
+
+        {/* Related Comparisons */}
+        {relatedComparisons.length > 0 && (
+          <div style={{ marginTop: '64px', paddingTop: '48px', borderTop: '1px solid var(--border)' }}>
+            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '8px' }}>Related comparison{relatedComparisons.length > 1 ? 's' : ''}</h2>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px' }}>Side-by-side data on the retailers mentioned in this guide.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              {relatedComparisons.map(function(c) {
+                return <ComparisonCard key={c.slug} comparison={c} />
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Related Deals */}
         {relatedDeals.length > 0 && (

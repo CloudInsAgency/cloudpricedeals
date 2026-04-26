@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { ChevronLeft, ChevronRight, Trophy } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ComparisonCard from '@/components/ComparisonCard'
 import { COMPARISONS } from '@/data/comparisons'
 import { DEALS, RETAILERS } from '@/data/deals'
 
@@ -52,6 +53,7 @@ export default function CompareDetailPage({ params }) {
   if (!c) notFound()
 
   const url = SITE + '/compare/' + c.slug
+  const moreComparisons = COMPARISONS.filter(function(x) { return x.slug !== c.slug }).slice(0, 3)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -188,6 +190,19 @@ export default function CompareDetailPage({ params }) {
             {c.verdict}
           </p>
         </div>
+
+        {/* More comparisons */}
+        {moreComparisons.length > 0 && (
+          <div style={{ marginTop: '64px', paddingTop: '48px', borderTop: '1px solid var(--border)' }}>
+            <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '8px' }}>More comparisons</h2>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px' }}>Other retailer matchups we've broken down.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              {moreComparisons.map(function(other) {
+                return <ComparisonCard key={other.slug} comparison={other} />
+              })}
+            </div>
+          </div>
+        )}
 
         {/* CTA */}
         <div style={{ marginTop: '48px', textAlign: 'center', padding: '40px 24px', background: 'var(--bg-section)', borderRadius: '16px' }}>

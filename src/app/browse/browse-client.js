@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
@@ -30,6 +32,19 @@ export default function BrowsePage() {
           <h1 className="font-display font-bold text-3xl text-ink mb-1">Browse deals</h1>
           <p className="text-gray-400 text-sm">{filtered.length} deals across {Object.keys(RETAILERS).length} retailers</p>
         </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 pt-6">
+        <Link href="/compare" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '14px 20px', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '12px', textDecoration: 'none', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', background: 'var(--accent)', color: '#FFFFFF', borderRadius: '100px' }}>New</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 600 }}>Compare prices across retailers</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)' }}>See which store is actually cheaper, by category.</span>
+          </div>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
+            View comparisons <ChevronRight size={14} />
+          </span>
+        </Link>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-6">
