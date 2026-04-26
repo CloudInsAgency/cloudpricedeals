@@ -1,4 +1,5 @@
 import './globals.css'
+import MetaPixel from '@/components/MetaPixel'
 
 export const metadata = {
   metadataBase: new URL('https://cloudpricedeals.com'),
@@ -52,7 +53,10 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#00A86B" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
-      <body>{children}</body>
+      <body>
+        <MetaPixel />
+        {children}
+      </body>
     </html>
   )
 }
