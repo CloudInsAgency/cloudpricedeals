@@ -9,7 +9,8 @@ import RetailerBadge from '@/components/RetailerBadge'
 import EmailCapture from '@/components/EmailCapture'
 import DealCard from '@/components/DealCard'
 import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
-import { DEALS, RETAILERS } from '@/data/deals'
+import { DEALS } from '@/data/deals'
+import { formatCurrency, calculateSavings, priceDiff } from '@/lib/currency'
 
 export default function ProductClient({ id }) {
   const deal = DEALS.find(function(d) { return d.id === id })
@@ -38,10 +39,17 @@ export default function ProductClient({ id }) {
     </div>
   )
 
-  const bestPrice = deal.comparePrices.reduce(function(min, p) { return p.price < min.price ? p : min }, deal.comparePrices[0])
+  // Amazon-only render: Craig's only Amazon Associates account is live;
+  // Walmart/Target/Best Buy don't have verified inventory or affiliate links yet.
+  // We keep `comparePrices` populated in src/data/deals.js for future use, but
+  // filter the rendered rows to Amazon to avoid sending shoppers to wrong/broken
+  // listings.
+  const amazonComparePrices = (deal.comparePrices || []).filter(function(cp) { return cp.retailer === 'amazon' })
+  const bestPrice = amazonComparePrices.length > 0
+    ? amazonComparePrices[0]
+    : deal.comparePrices.reduce(function(min, p) { return p.price < min.price ? p : min }, deal.comparePrices[0])
   const related = DEALS.filter(function(d) { return d.category === deal.category && d.id !== deal.id }).slice(0, 4)
-  const savingsPct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
-  const savings = deal.originalPrice - deal.price
+  const { amount: savings, percent: savingsPct } = calculateSavings(deal.originalPrice, deal.price)
 
   function notify(text) {
     if (typeof window !== 'undefined' && typeof window.cpdToast === 'function') {
@@ -163,17 +171,17 @@ export default function ProductClient({ id }) {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px' }}>
-                  <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '52px', color: 'var(--accent)', lineHeight: 1 }}>${deal.price}</span>
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '20px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${deal.originalPrice}</span>
+                  <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '52px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
+                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '20px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice)}</span>
                 </div>
                 <div style={{ marginBottom: '24px' }}>
                   <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', padding: '5px 14px', borderRadius: '100px' }}>
-                    You save ${savings} ({savingsPct}% off)
+                    You save {formatCurrency(savings)} ({savingsPct}% off)
                   </span>
                 </div>
 
                 <InlineAffiliateDisclosure />
-                <a href={deal.affiliateUrl} target="_blank" rel="sponsored nofollow noopener"
+                <a href={deal.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer"
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', background: 'var(--accent)', color: '#FFFFFF', padding: '15px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '10px', marginBottom: '10px' }}>
                   Buy on Amazon <ExternalLink size={15} />
                 </a>
@@ -197,8 +205,8 @@ export default function ProductClient({ id }) {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
                 {[
-                  { label: 'All-time low', value: '$' + deal.priceHistory.allTimeLow, good: true },
-                  { label: '30-day avg',   value: '$' + deal.priceHistory.thirtyDayAvg, good: false },
+                  { label: 'All-time low', value: formatCurrency(deal.priceHistory.allTimeLow), good: true },
+                  { label: '30-day avg',   value: formatCurrency(deal.priceHistory.thirtyDayAvg), good: false },
                   { label: 'vs avg',       value: deal.priceHistory.vsAvgPct + '%', good: true },
                 ].map(function(s) {
                   return (
@@ -214,20 +222,22 @@ export default function ProductClient({ id }) {
             <EmailCapture variant="inline" />
           </div>
 
-          {/* RIGHT COLUMN — COMPARE PRICES */}
+          {/* RIGHT COLUMN — GET THIS DEAL (Amazon-only render) */}
           <div className="compare-panel">
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '4px' }}>Compare prices</p>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '4px' }}>Get this deal</p>
               <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>Updated weekly · Tap to buy</p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {deal.comparePrices.slice().sort(function(a, b) { return a.price - b.price })
+                {amazonComparePrices.slice().sort(function(a, b) { return a.price - b.price })
                   .map(function(cp, i) {
-                    var r = RETAILERS[cp.retailer]
                     var isBest = cp.retailer === bestPrice.retailer
-                    var diff = cp.price - bestPrice.price
+                    // Competitor delta — gated behind Amazon-only render so we
+                    // don't compute it for retailers we're not showing. Uses
+                    // priceDiff to avoid float-math noise like "+$4.0099..."
+                    var diff = priceDiff(cp.price, bestPrice.price)
                     return (
-                      <a key={cp.retailer} href={cp.url} target="_blank" rel="noopener sponsored"
+                      <a key={cp.retailer} href={cp.url} target="_blank" rel="sponsored nofollow noopener noreferrer"
                         style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', border: isBest ? '1px solid var(--border-accent)' : '1px solid var(--border)', background: isBest ? 'var(--accent-bg)' : 'var(--bg-section)', borderRadius: '10px', textDecoration: 'none' }}>
                         <div style={{ width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontFamily: 'DM Sans, sans-serif', fontWeight: 700, flexShrink: 0, background: i === 0 ? 'var(--accent)' : 'var(--bg-card)', color: i === 0 ? '#FFFFFF' : 'var(--text-muted)', border: i !== 0 ? '1px solid var(--border)' : 'none' }}>
                           {i + 1}
@@ -237,8 +247,8 @@ export default function ProductClient({ id }) {
                           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', marginTop: '3px' }}>{cp.shipping}</p>
                         </div>
                         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                          <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: isBest ? 'var(--accent)' : 'var(--text-primary)', lineHeight: 1 }}>${cp.price}</p>
-                          {!isBest && <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>+${diff}</p>}
+                          <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: isBest ? 'var(--accent)' : 'var(--text-primary)', lineHeight: 1 }}>{formatCurrency(cp.price)}</p>
+                          {!isBest && <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>+{formatCurrency(diff)}</p>}
                           {isBest && <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)' }}>Best price</p>}
                         </div>
                         <ExternalLink size={13} color="var(--text-muted)" style={{ flexShrink: 0 }} />
