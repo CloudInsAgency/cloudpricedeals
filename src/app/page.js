@@ -131,7 +131,7 @@ export default function HomePage() {
             maxWidth: '620px',
             margin: '0 auto',
           }}>
-            Curated, expiring Amazon finds most shoppers never see — cross-checked against Best Buy, Walmart, Target and eBay each week.
+            Curated, expiring Amazon finds most shoppers never see — verified weekly so you only buy when the price is honest.
           </p>
         </div>
 
