@@ -23,9 +23,9 @@ export default function Navbar() {
     <header style={{ background: 'var(--bg-card)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100, width: '100%' }}>
 
       {/* Announcement bar */}
-      <div style={{ background: 'var(--accent)', padding: '8px 16px', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '0.02em' }}>
-          🔥 Updated weekly — {DEALS.length} deals compared across Amazon, Best Buy, Walmart, Target & eBay
+      <div style={{ background: 'var(--accent)', padding: '9px 16px', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 500, color: '#FFFFFF', letterSpacing: '0.02em' }}>
+          Updated weekly · {DEALS.length} curated deals compared across Amazon, Best Buy, Walmart, Target &amp; eBay
         </p>
       </div>
 
