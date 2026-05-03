@@ -101,7 +101,7 @@ export default function BrowsePage() {
             {activeCategory === 'all' ? 'All ' + DEALS.length + ' deals' : activeCatLabel + ' deals'}
           </h1>
           <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '17px', color: 'var(--text-secondary)', maxWidth: '640px' }}>
-            {filtered.length} live · cross-checked at Amazon, Best Buy, Walmart, Target, and eBay.
+            {filtered.length} live · Amazon prices verified weekly.
           </p>
         </div>
       </div>
