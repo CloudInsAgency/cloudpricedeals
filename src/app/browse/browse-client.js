@@ -27,8 +27,14 @@ export default function BrowsePage() {
     return valid ? c : 'all'
   })()
 
+  const initialRetailer = (function() {
+    const r = searchParams.get('retailer')
+    if (!r) return 'all'
+    return RETAILERS[r] ? r : 'all'
+  })()
+
   const [activeCategory, setActiveCategory] = useState(initialCat)
-  const [activeRetailer, setActiveRetailer] = useState('all')
+  const [activeRetailer, setActiveRetailer] = useState(initialRetailer)
   const [sortBy, setSortBy] = useState('savings')
 
   // Keep state in sync if user uses browser back/forward.
@@ -39,6 +45,12 @@ export default function BrowsePage() {
     } else if (!c) {
       setActiveCategory('all')
     }
+    const r = searchParams.get('retailer')
+    if (r && RETAILERS[r]) {
+      setActiveRetailer(r)
+    } else if (!r) {
+      setActiveRetailer('all')
+    }
   }, [searchParams])
 
   function selectCategory(catId) {
@@ -46,6 +58,15 @@ export default function BrowsePage() {
     const params = new URLSearchParams(searchParams.toString())
     if (catId === 'all') params.delete('cat')
     else params.set('cat', catId)
+    const qs = params.toString()
+    router.replace(qs ? pathname + '?' + qs : pathname, { scroll: false })
+  }
+
+  function selectRetailer(retailerId) {
+    setActiveRetailer(retailerId)
+    const params = new URLSearchParams(searchParams.toString())
+    if (retailerId === 'all') params.delete('retailer')
+    else params.set('retailer', retailerId)
     const qs = params.toString()
     router.replace(qs ? pathname + '?' + qs : pathname, { scroll: false })
   }
@@ -137,12 +158,12 @@ export default function BrowsePage() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', marginBottom: '24px' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginRight: '6px' }}>Retailer</span>
-            <button onClick={function() { setActiveRetailer('all') }} style={pillStyle(activeRetailer === 'all')}>All</button>
+            <button onClick={function() { selectRetailer('all') }} style={pillStyle(activeRetailer === 'all')}>All</button>
             {Object.entries(RETAILERS).map(function(entry) {
               var key = entry[0]
               var r = entry[1]
               return (
-                <button key={key} onClick={function() { setActiveRetailer(key) }} style={pillStyle(activeRetailer === key)}>{r.label}</button>
+                <button key={key} onClick={function() { selectRetailer(key) }} style={pillStyle(activeRetailer === key)}>{r.label}</button>
               )
             })}
           </div>
@@ -169,7 +190,7 @@ export default function BrowsePage() {
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '14px', padding: '64px 24px', textAlign: 'center' }}>
             <p style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '24px', color: 'var(--text-primary)', marginBottom: '8px' }}>No deals match these filters</p>
             <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>Try a broader category or clear the retailer filter.</p>
-            <button onClick={function() { selectCategory('all'); setActiveRetailer('all') }} className="btn-secondary">Reset filters</button>
+            <button onClick={function() { selectCategory('all'); selectRetailer('all') }} className="btn-secondary">Reset filters</button>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }} className="grid-2-mobile">

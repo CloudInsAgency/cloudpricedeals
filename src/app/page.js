@@ -1,8 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { LayoutGrid, List, ChevronRight, ExternalLink } from 'lucide-react'
+import { LayoutGrid, List, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
@@ -10,19 +9,25 @@ import EmailCapture from '@/components/EmailCapture'
 import SectionHeading from '@/components/SectionHeading'
 import CategoryTile from '@/components/CategoryTile'
 import TrustSection from '@/components/TrustSection'
+import HeroTile from '@/components/HeroTile'
+import RetailerRow from '@/components/RetailerRow'
 import { DEALS, CATEGORIES } from '@/data/deals'
 import { COMPARISONS } from '@/data/comparisons'
 import ComparisonCard from '@/components/ComparisonCard'
 import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
 
-const PICK_VARIANTS = ['color-block-sage', 'color-block-blush', 'color-block-slate']
+// Saturated tile palette + distinct corner badges for the homepage hero.
+const HERO_TILE_CONFIG = [
+  { variant: 'sage',   badgeLabel: 'Up to 60% Off' },
+  { variant: 'blush',  badgeLabel: 'Trending' },
+  { variant: 'sienna', badgeLabel: 'Ends Soon' },
+]
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all')
   const [viewMode, setViewMode] = useState('grid')
 
   const filtered = activeCategory === 'all' ? DEALS : DEALS.filter(function(d) { return d.category === activeCategory })
-  const totalSavings = Math.round(DEALS.reduce(function(acc, d) { return acc + (d.originalPrice - d.price) }, 0))
 
   // Editor's picks: top 3 hot deals (or top 3 by discount % if fewer than 3 are flagged hot)
   const editorPicks = (function() {
@@ -90,119 +95,84 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── HERO ── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '64px 24px 56px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '64px', alignItems: 'center' }} className="mobile-stack">
+      {/* ── HERO: massive wordmark + 3 large product tiles ── */}
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 24px 16px' }}>
 
-          {/* Left: copy */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-              <span className="live-dot" />
-              <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>
-                Updated weekly · {DEALS.length} live deals
-              </span>
-            </div>
-            <h1 className="fade-up fade-up-1" style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: 'clamp(40px, 7vw, 84px)', color: 'var(--text-primary)', marginBottom: '24px', letterSpacing: '-0.015em', lineHeight: 1.04 }}>
-              Shop smarter.<br />
-              <span style={{ color: 'var(--accent)' }}>Never overpay.</span>
-            </h1>
-            <p className="fade-up fade-up-2" style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '32px', maxWidth: '480px' }}>
-              A curated set of expiring Amazon finds, cross-checked against Best Buy, Walmart, Target and eBay every week — so you only buy when the price is honest.
-            </p>
-            <div className="fade-up fade-up-3" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <Link href="/browse" className="btn-primary">
-                Browse all deals <ChevronRight size={16} />
-              </Link>
-              <Link href="/guides" className="btn-secondary">
-                Buying guides
-              </Link>
-            </div>
-            <div className="fade-up fade-up-4" style={{ display: 'flex', gap: '32px', marginTop: '44px', flexWrap: 'wrap' }}>
-              {[
-                { value: DEALS.length + '+', label: 'Live Deals' },
-                { value: '$' + totalSavings + '+', label: 'Total Savings' },
-                { value: '5', label: 'Retailers' },
-              ].map(function(s) {
-                return (
-                  <div key={s.label}>
-                    <div style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: 'clamp(26px, 5vw, 38px)', color: 'var(--accent)', lineHeight: 1 }}>{s.value}</div>
-                    <div style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', fontWeight: 500 }}>{s.label}</div>
-                  </div>
-                )
-              })}
-            </div>
+        {/* Massive centered wordmark — the brand statement at the top of the page. */}
+        <h1
+          className="fade-up fade-up-1 hero-wordmark"
+          style={{
+            fontFamily: 'var(--font-dm-serif), DM Serif Display, serif',
+            color: '#1F4E3D',
+            textAlign: 'center',
+            letterSpacing: '-0.025em',
+            lineHeight: 0.95,
+            margin: '0 auto 28px',
+            fontSize: 'clamp(56px, 12vw, 128px)',
+          }}
+        >
+          CloudPriceDeals
+        </h1>
+
+        {/* Tight subtitle — supports the products, doesn't lead. */}
+        <div className="fade-up fade-up-2" style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <span className="live-dot" />
+            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+              Updated weekly · {DEALS.length} live deals
+            </span>
           </div>
-
-          {/* Right: Editor's Picks (3 color-blocked tiles) */}
-          <div className="fade-up fade-up-2">
-            <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '14px' }}>Editor&rsquo;s picks</p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {editorPicks.map(function(d, i) {
-                var pct = Math.round((d.originalPrice - d.price) / d.originalPrice * 100)
-                return (
-                  <Link key={d.id} href={'/product/' + d.id} style={{ textDecoration: 'none', display: 'block' }}>
-                    <div className={PICK_VARIANTS[i % PICK_VARIANTS.length]} style={{ borderRadius: '16px', padding: '14px', display: 'flex', gap: '14px', alignItems: 'center', border: '1px solid var(--border)' }}>
-                      <div style={{ width: '88px', height: '88px', background: 'var(--bg-card)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
-                        {d.imageUrl && d.imageUrl.charAt(0) === '/' ? (
-                          <Image
-                            src={d.imageUrl}
-                            alt={d.shortName}
-                            width={88}
-                            height={88}
-                            sizes="88px"
-                            priority={i === 0}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
-                          />
-                        ) : (
-                          <img
-                            src={d.imageUrl}
-                            alt={d.shortName}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
-                            onError={function(e) { e.target.parentNode.innerHTML = '<span style="font-size:36px">' + d.emoji + '</span>' }}
-                          />
-                        )}
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                          -{pct}% · Pick {String(i + 1).padStart(2, '0')}
-                        </p>
-                        <p style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: 1.2 }}>{d.shortName}</p>
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                          <span style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '24px', color: 'var(--accent)' }}>${d.price}</span>
-                          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${d.originalPrice}</span>
-                        </div>
-                      </div>
-                      <a
-                        href={d.affiliateUrl}
-                        target="_blank"
-                        rel="sponsored nofollow noopener"
-                        onClick={function(e) { e.stopPropagation() }}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '8px 12px', borderRadius: '100px', textDecoration: 'none', flexShrink: 0, minHeight: '36px' }}
-                      >
-                        Buy <ExternalLink size={11} />
-                      </a>
-                    </div>
-                  </Link>
-                )
-              })}
-              <Link href="/browse" style={{ textAlign: 'center', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, color: 'var(--accent)', textDecoration: 'none', padding: '12px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                See all {DEALS.length} deals <ChevronRight size={14} />
-              </Link>
-            </div>
-          </div>
+          <p style={{
+            fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
+            fontSize: 'clamp(15px, 1.6vw, 18px)',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.6,
+            maxWidth: '620px',
+            margin: '0 auto',
+          }}>
+            Curated, expiring Amazon finds most shoppers never see — cross-checked against Best Buy, Walmart, Target and eBay each week.
+          </p>
         </div>
 
-        {/* Retailer pills */}
-        <div className="fade-up fade-up-5" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '56px', paddingTop: '32px', borderTop: '1px solid var(--border)', flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Comparing at</span>
-          {['Amazon','Best Buy','Walmart','Target','eBay'].map(function(r) {
+        {/* 3 LARGE color-blocked product tiles in a horizontal row */}
+        <div
+          className="hero-tile-grid fade-up fade-up-3"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '18px',
+          }}
+        >
+          {editorPicks.map(function(d, i) {
+            var cfg = HERO_TILE_CONFIG[i % HERO_TILE_CONFIG.length]
             return (
-              <span key={r} style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '6px 14px', borderRadius: '100px' }}>{r}</span>
+              <HeroTile
+                key={d.id}
+                deal={d}
+                variant={cfg.variant}
+                badgeLabel={cfg.badgeLabel}
+                priority={i === 0}
+              />
             )
           })}
         </div>
+
+        {/* Inline FTC affiliate disclosure stays under the hero tiles */}
+        <div style={{ marginTop: '24px' }}>
+          <InlineAffiliateDisclosure />
+        </div>
       </section>
+
+      {/* ── SHOP BY RETAILER (icon-row navigation under the hero) ── */}
+      <RetailerRow />
+
+      <style>{`
+        .hero-tile { box-shadow: 0 6px 24px rgba(26,26,26,0.06); }
+        .hero-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(26,26,26,0.12); }
+        @media (max-width: 900px) {
+          .hero-tile-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
 
       {/* ── TODAY'S TOP DEALS ── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '64px 24px 0' }}>

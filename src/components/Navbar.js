@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, X, Heart, Zap } from 'lucide-react'
+import { Menu, X, Heart } from 'lucide-react'
 import { DEALS } from '@/data/deals'
 import AffiliateDisclosure from './AffiliateDisclosure'
 
@@ -34,16 +34,16 @@ export default function Navbar() {
 
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
 
-        {/* Logo */}
-        <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '32px', height: '32px', background: 'var(--accent)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Zap size={18} color="#FFFFFF" fill="#FFFFFF" />
-            </div>
-            <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)' }}>
-              Cloud<span style={{ color: 'var(--accent)' }}>Price</span>Deals
-            </span>
-          </div>
+        {/* Wordmark — minimal, text-only. The display wordmark lives in the homepage hero. */}
+        <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }} aria-label="CloudPriceDeals home">
+          <span style={{
+            fontFamily: 'var(--font-dm-serif), DM Serif Display, serif',
+            fontSize: '18px',
+            color: 'var(--accent)',
+            letterSpacing: '-0.005em',
+          }}>
+            CloudPriceDeals
+          </span>
         </Link>
 
         {/* Desktop nav links */}
