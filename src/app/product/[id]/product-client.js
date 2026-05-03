@@ -27,6 +27,23 @@ export default function ProductClient({ id }) {
     } catch(e) {}
   }, [deal])
 
+  // Meta Pixel: fire ViewContent on product page mount. The base pixel
+  // (loaded in the root layout via <Script strategy="afterInteractive">)
+  // defines `window.fbq` globally; we guard against the case where it
+  // hasn't loaded yet (e.g. ad blocker, slow network) so a missing fbq
+  // never throws.
+  useEffect(function() {
+    if (!deal) return
+    if (typeof window === 'undefined' || typeof window.fbq !== 'function') return
+    window.fbq('track', 'ViewContent', {
+      content_name: deal.name,
+      content_ids: [deal.id],
+      content_type: 'product',
+      value: Number(deal.price),
+      currency: 'USD',
+    })
+  }, [deal])
+
   if (!deal) return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
       <Navbar />

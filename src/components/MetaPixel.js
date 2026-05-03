@@ -5,12 +5,10 @@ import { useEffect } from 'react'
 
 // ─────────────────────────────────────────────────────────────────────
 // META PIXEL CONFIG
-// Replace 'YOUR_PIXEL_ID' below with the numeric Pixel ID from
-// Meta Events Manager → Data Sources → your Pixel → Settings.
-// (e.g. '1234567890123456'). The same ID is used by the base script
-// AND by the noscript <img> fallback below.
+// Numeric Pixel ID from Meta Events Manager → Data Sources → Pixel →
+// Settings. Used by both the base script and the <noscript> fallback.
 // ─────────────────────────────────────────────────────────────────────
-const PIXEL_ID = 'YOUR_PIXEL_ID'
+const PIXEL_ID = '480988302445198'
 
 export default function MetaPixel() {
   const pathname = usePathname()
