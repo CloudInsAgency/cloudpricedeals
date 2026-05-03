@@ -1,6 +1,21 @@
 import './globals.css'
+import { DM_Sans, DM_Serif_Display } from 'next/font/google'
 import MetaPixel from '@/components/MetaPixel'
 import Toast from '@/components/Toast'
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  variable: '--font-dm-sans',
+})
+
+const dmSerif = DM_Serif_Display({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-dm-serif',
+})
 
 export const metadata = {
   metadataBase: new URL('https://cloudpricedeals.com'),
@@ -49,9 +64,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <head>
-        <meta name="theme-color" content="#00A86B" />
+        <meta name="theme-color" content="#1F4E3D" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body>

@@ -5,7 +5,7 @@ export default function ComparisonCard({ comparison }) {
   return (
     <Link href={'/compare/' + c.slug} style={{ textDecoration: 'none' }}>
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', height: '100%' }}>
-        <div style={{ height: '6px', background: 'linear-gradient(90deg, var(--accent), #008A57)' }} />
+        <div style={{ height: '6px', background: 'var(--accent)' }} />
         <div style={{ padding: '28px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
             {c.retailers.map(function(r) {

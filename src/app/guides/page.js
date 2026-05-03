@@ -24,8 +24,8 @@ const GUIDES = [
     date: 'March 2026',
     readTime: '7 min read',
     badge: 'Data-backed',
-    badgeColor: '#00A86B',
-    badgeBg: 'rgba(0,168,107,0.12)',
+    badgeColor: '#1F4E3D',
+    badgeBg: '#E5EFE8',
     status: 'published',
   },
   {
@@ -97,7 +97,7 @@ export default function GuidesPage() {
             return (
               <Link key={guide.id} href={'/guides/' + guide.id} style={{ textDecoration: 'none' }}>
                 <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', height: '100%' }}>
-                  <div style={{ height: '6px', background: 'linear-gradient(90deg, var(--accent), #059669)' }} />
+                  <div style={{ height: '6px', background: 'var(--accent)' }} />
                   <div style={{ padding: '28px' }}>
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
                       <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', background: guide.tagBg, color: guide.tagColor, borderRadius: '100px' }}>{guide.tag}</span>

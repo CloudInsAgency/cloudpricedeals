@@ -20,11 +20,11 @@ export default function EmailCapture({ variant }) {
   if (variant === 'banner') {
     return (
       <div style={{ background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)', border: '1px solid var(--border)', borderRadius: '16px', padding: '48px 40px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(0,168,107,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, var(--accent-bg) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: 0, left: '20%', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ width: '48px', height: '48px', background: 'rgba(0,168,107,0.12)', border: '1px solid rgba(0,168,107,0.25)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'var(--green)' }}>
+          <div style={{ width: '48px', height: '48px', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'var(--green)' }}>
             <Bell size={22} />
           </div>
           <p className="section-eyebrow" style={{ justifyContent: 'center', marginBottom: '14px' }}>
@@ -38,7 +38,7 @@ export default function EmailCapture({ variant }) {
           </p>
 
           {submitted ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'rgba(0,168,107,0.1)', border: '1px solid rgba(0,168,107,0.25)', borderRadius: '12px', padding: '16px 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '12px', padding: '16px 24px' }}>
               <Check size={20} color="var(--green)" />
               <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 600, color: 'var(--green)' }}>You're in! We'll alert you on the next price drop.</span>
             </div>
@@ -70,7 +70,7 @@ export default function EmailCapture({ variant }) {
   return (
     <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '28px 24px' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-        <div style={{ width: '40px', height: '40px', background: 'rgba(0,168,107,0.12)', border: '1px solid rgba(0,168,107,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--green)' }}>
+        <div style={{ width: '40px', height: '40px', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--green)' }}>
           <Bell size={18} />
         </div>
         <div style={{ flex: 1 }}>

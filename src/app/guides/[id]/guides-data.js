@@ -9,8 +9,8 @@ export const GUIDES = [
     date: 'March 2026',
     readTime: '7 min read',
     badge: 'Data-backed',
-    badgeColor: '#00A86B',
-    badgeBg: 'rgba(0,168,107,0.12)',
+    badgeColor: '#1F4E3D',
+    badgeBg: '#E5EFE8',
     content: [
       { heading: 'The Short Answer', body: 'Amazon is cheaper for everyday electronics like headphones, speakers and cables — but Best Buy wins on large appliances, laptops and items that benefit from in-store price matching. The gap is usually 5–12%.' },
       { heading: 'What We Measured', body: 'We tracked 200 identical products across both retailers from January to March 2026, recording daily prices across 8 categories: headphones, TVs, laptops, tablets, smart home devices, cables & accessories, gaming, and kitchen appliances.' },
