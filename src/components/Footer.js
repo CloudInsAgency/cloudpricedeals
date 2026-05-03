@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer style={{ background: 'var(--bg-section)', borderTop: '1px solid var(--border)', marginTop: 'auto' }}>
       <style>{`
-        .footer-link { color: var(--text-secondary) !important; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 14px; display: block; transition: color 0.15s; }
+        .footer-link { color: var(--text-secondary) !important; text-decoration: none; font-family: var(--font-dm-sans), 'DM Sans', sans-serif; font-size: 14px; display: block; transition: color 0.15s; }
         .footer-link:hover { color: var(--accent) !important; }
       `}</style>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 40px' }}>

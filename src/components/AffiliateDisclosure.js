@@ -24,14 +24,14 @@ export default function AffiliateDisclosure() {
 
   return (
     <div role="region" aria-label="Affiliate disclosure" style={{
-      background: 'var(--accent-bg)',
-      borderBottom: '1px solid var(--border-accent)',
-      padding: '8px 16px',
+      background: 'var(--bg-section)',
+      borderBottom: '1px solid var(--border)',
+      padding: '9px 16px',
     }}>
       <div style={{
         maxWidth: '1280px', margin: '0 auto',
         display: 'flex', alignItems: 'center', gap: '10px',
-        fontFamily: 'DM Sans, sans-serif', fontSize: '12px',
+        fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px',
         color: 'var(--text-secondary)', lineHeight: 1.5,
       }}>
         <Info size={14} style={{ color: 'var(--accent)', flexShrink: 0 }} />
@@ -59,10 +59,10 @@ export default function AffiliateDisclosure() {
 export function InlineAffiliateDisclosure({ style }) {
   return (
     <p style={Object.assign({
-      fontFamily: 'DM Sans, sans-serif',
-      fontSize: '12px',
+      fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
+      fontSize: '13px',
       color: 'var(--text-secondary)',
-      margin: '0 0 12px 0',
+      margin: '0 0 16px 0',
       lineHeight: 1.5,
     }, style || {})}>
       <strong style={{ color: 'var(--text-primary)' }}>Disclosure:</strong>{' '}
