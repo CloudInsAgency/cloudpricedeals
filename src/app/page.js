@@ -15,6 +15,7 @@ import { DEALS, CATEGORIES } from '@/data/deals'
 import { COMPARISONS } from '@/data/comparisons'
 import ComparisonCard from '@/components/ComparisonCard'
 import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
+import { formatCurrency, calculateSavings } from '@/lib/currency'
 
 // Saturated tile palette + distinct corner badges for the homepage hero.
 const HERO_TILE_CONFIG = [
@@ -79,11 +80,11 @@ export default function HomePage() {
               return (
                 <div key={i} style={{ display: 'flex' }}>
                   {DEALS.map(function(d) {
-                    var pct = Math.round((d.originalPrice - d.price) / d.originalPrice * 100)
+                    var pct = calculateSavings(d.originalPrice, d.price).percent
                     return (
                       <span key={d.id} style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', whiteSpace: 'nowrap', padding: '0 28px', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                         {d.shortName}
-                        <span style={{ color: 'var(--accent)', fontWeight: 700 }}>${d.price}</span>
+                        <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatCurrency(d.price)}</span>
                         <span style={{ color: 'var(--text-muted)' }}>↓{pct}%</span>
                       </span>
                     )

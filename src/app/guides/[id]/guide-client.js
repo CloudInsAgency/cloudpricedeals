@@ -7,6 +7,7 @@ import { DEALS } from '@/data/deals'
 import { COMPARISONS } from '@/data/comparisons'
 import { ChevronLeft, ExternalLink } from 'lucide-react'
 import { GUIDES } from './guides-data'
+import { formatCurrency, calculateSavings } from '@/lib/currency'
 
 function findRelatedComparisons(guide) {
   var haystack = (guide.title + ' ' + guide.excerpt + ' ' +
@@ -104,15 +105,15 @@ export default function GuideClient({ id }) {
             <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '24px' }}>Current deals mentioned in this guide</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {relatedDeals.map(function(deal) {
-                var pct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
+                var pct = calculateSavings(deal.originalPrice, deal.price).percent
                 return (
-                  <a key={deal.id} href={deal.affiliateUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', textDecoration: 'none', gap: '12px' }}>
+                  <a key={deal.id} href={deal.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', textDecoration: 'none', gap: '12px' }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deal.name}</p>
                       <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>Amazon · Free Prime shipping</p>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-                      <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', color: 'var(--accent)' }}>${deal.price}</span>
+                      <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '20px', color: 'var(--accent)' }}>{formatCurrency(deal.price)}</span>
                       <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '100px' }}>-{pct}%</span>
                       <ExternalLink size={14} color="var(--text-muted)" />
                     </div>

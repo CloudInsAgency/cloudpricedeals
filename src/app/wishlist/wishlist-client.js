@@ -4,6 +4,7 @@ import { Heart, Share2, Trash2, ChevronDown, ChevronUp, Plus, ExternalLink } fro
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { DEALS, WISHLIST_OCCASIONS, RETAILERS } from '@/data/deals'
+import { formatCurrency } from '@/lib/currency'
 
 export default function WishlistPage() {
   const [lists, setLists] = useState([])
@@ -89,12 +90,16 @@ export default function WishlistPage() {
     return DEALS.find(function(d) { return d.id === id })
   }
 
-  var totalSavings = lists.reduce(function(acc, l) {
+  // Sum savings in cents to avoid float-math drift like $546.000000001.
+  var totalSavingsCents = lists.reduce(function(acc, l) {
     return acc + l.items.reduce(function(a, item) {
       var d = getDealDetails(item.id)
-      return a + (d ? (d.originalPrice - d.price) : ((item.originalPrice || 0) - (item.price || 0)))
+      var orig = d ? d.originalPrice : (item.originalPrice || 0)
+      var sale = d ? d.price : (item.price || 0)
+      return a + Math.round((Number(orig) * 100) - (Number(sale) * 100))
     }, 0)
   }, 0)
+  var totalSavings = totalSavingsCents / 100
 
   var totalItems = lists.reduce(function(acc, l) { return acc + l.items.length }, 0)
   var filteredLists = activeOccasion === 'all' ? lists : lists.filter(function(l) { return l.occasion === activeOccasion })
@@ -160,7 +165,7 @@ export default function WishlistPage() {
           {[
             { label: 'Lists', value: lists.length },
             { label: 'Items saved', value: totalItems },
-            { label: 'Total savings', value: '$' + totalSavings },
+            { label: 'Total savings', value: formatCurrency(totalSavings) },
           ].map(function(s) {
             return (
               <div key={s.label} style={{ background: 'var(--bg-card)', padding: '24px', textAlign: 'center' }}>
@@ -193,7 +198,7 @@ export default function WishlistPage() {
                   </div>
                   <div style={{ flex: 1, minWidth: '140px' }}>
                     <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '4px' }}>{deal.name || item.name}</div>
-                    <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--accent)', fontWeight: 600 }}>${deal.price || item.price}</div>
+                    <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--accent)', fontWeight: 600 }}>{formatCurrency(deal.price || item.price)}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {lists.map(function(l) {
@@ -244,10 +249,12 @@ export default function WishlistPage() {
         {/* Lists */}
         {filteredLists.map(function(list) {
           var occ = WISHLIST_OCCASIONS.find(function(o) { return o.id === list.occasion }) || {}
-          var listTotal = list.items.reduce(function(acc, item) {
+          var listTotalCents = list.items.reduce(function(acc, item) {
             var d = getDealDetails(item.id)
-            return acc + (d ? d.price : (item.price || 0))
+            var p = d ? d.price : (item.price || 0)
+            return acc + Math.round(Number(p) * 100)
           }, 0)
+          var listTotal = listTotalCents / 100
           var isExpanded = expandedList === list.id
 
           return (
@@ -260,7 +267,7 @@ export default function WishlistPage() {
                     <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || 'rgba(148,163,184,0.1)', color: occ.color || 'var(--text-secondary)', borderRadius: '100px' }}>{occ.label || list.occasion}</span>
                   </div>
                   <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>
-                    {list.items.length} item{list.items.length !== 1 ? 's' : ''} · ${listTotal} total · Created {list.created}
+                    {list.items.length} item{list.items.length !== 1 ? 's' : ''} · {formatCurrency(listTotal)} total · Created {list.created}
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -304,8 +311,8 @@ export default function WishlistPage() {
                           </span>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '26px', color: 'var(--accent)', lineHeight: 1 }}>${deal.price || item.price}</div>
-                          <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${deal.originalPrice || item.originalPrice}</div>
+                          <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '26px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price || item.price)}</div>
+                          <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice || item.originalPrice)}</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                           <a href={amazonUrl} target="_blank" rel="noopener noreferrer"

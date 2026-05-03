@@ -8,6 +8,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ExternalLink, ChevronRight } from 'lucide-react'
+import { calculateSavings } from '@/lib/currency'
 
 // Saturated tile palette (NOT pastels)
 const VARIANTS = {
@@ -18,7 +19,7 @@ const VARIANTS = {
 
 export default function HeroTile({ deal, variant, badgeLabel, priority }) {
   const v = VARIANTS[variant] || VARIANTS.sage
-  const pct = Math.round((deal.originalPrice - deal.price) / deal.originalPrice * 100)
+  const pct = calculateSavings(deal.originalPrice, deal.price).percent
   const isLocalImg = deal.imageUrl && deal.imageUrl.charAt(0) === '/'
 
   return (

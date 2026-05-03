@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Heart, ExternalLink } from 'lucide-react'
 import RetailerBadge from './RetailerBadge'
+import { formatCurrency, calculateSavings } from '@/lib/currency'
 
 function isLocalImage(src) {
   return typeof src === 'string' && src.length > 0 && src.charAt(0) === '/'
@@ -30,7 +31,8 @@ function tileClassFor(deal) {
 export default function DealCard({ deal, view, delay }) {
   var viewMode = view || 'grid'
   var d = delay || 0
-  var pct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
+  var savings = calculateSavings(deal.originalPrice, deal.price)
+  var pct = savings.percent
   var amazonLink = deal.affiliateUrl
   if (deal.comparePrices) {
     for (var i = 0; i < deal.comparePrices.length; i++) {
@@ -109,11 +111,11 @@ export default function DealCard({ deal, view, delay }) {
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '30px', color: 'var(--accent)', lineHeight: 1 }}>${deal.price}</div>
-          <div style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through', marginTop: '2px' }}>${deal.originalPrice}</div>
+          <div style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '30px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</div>
+          <div style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through', marginTop: '2px' }}>{formatCurrency(deal.originalPrice)}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-          <a href={amazonLink} target="_blank" rel="sponsored nofollow noopener" className="btn-primary" style={{ padding: '10px 18px', fontSize: '11px', gap: '6px' }}>
+          <a href={amazonLink} target="_blank" rel="sponsored nofollow noopener noreferrer" className="btn-primary" style={{ padding: '10px 18px', fontSize: '11px', gap: '6px' }}>
             Buy on Amazon <ExternalLink size={12} />
           </a>
           <Link href={'/product/' + deal.id} className="btn-secondary" style={{ padding: '9px 18px', fontSize: '11px', justifyContent: 'center' }}>
@@ -178,12 +180,12 @@ export default function DealCard({ deal, view, delay }) {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <span style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '34px', color: 'var(--accent)', lineHeight: 1 }}>${deal.price}</span>
-          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${deal.originalPrice}</span>
-          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-secondary)', marginLeft: 'auto', fontWeight: 500 }}>Save ${deal.originalPrice - deal.price}</span>
+          <span style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '34px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
+          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice)}</span>
+          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-secondary)', marginLeft: 'auto', fontWeight: 500 }}>Save {formatCurrency(savings.amount)}</span>
         </div>
 
-        <a href={amazonLink} target="_blank" rel="sponsored nofollow noopener" className="btn-primary" style={{ justifyContent: 'center', padding: '12px 16px', fontSize: '12px' }}>
+        <a href={amazonLink} target="_blank" rel="sponsored nofollow noopener noreferrer" className="btn-primary" style={{ justifyContent: 'center', padding: '12px 16px', fontSize: '12px' }}>
           Buy on Amazon <ExternalLink size={13} />
         </a>
 
