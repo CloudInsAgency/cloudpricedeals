@@ -113,8 +113,8 @@ export default function ProductClient({ id }) {
 
           {/* LEFT COLUMN */}
           <div>
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', marginBottom: '16px' }}>
-              <div style={{ height: '280px', background: 'var(--bg-section)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '18px', overflow: 'hidden', marginBottom: '16px' }}>
+              <div className={'color-block-' + (['sand','sage','blush','slate'][((deal.id || '').length) % 4])} style={{ height: '320px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
                 {deal.imageUrl ? (
                   deal.imageUrl.charAt(0) === '/' ? (
                     <Image
@@ -139,15 +139,15 @@ export default function ProductClient({ id }) {
                   <div style={{ fontSize: '80px' }}>{deal.emoji}</div>
                 )}
                 <div style={{ position: 'absolute', top: '16px', left: '16px', display: 'flex', gap: '6px' }}>
-                  {deal.badge === 'hot' && <span style={{ background: 'var(--hot-bg)', color: 'var(--hot)', border: '1px solid var(--hot-border)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: '100px' }}>🔥 Hot Deal</span>}
-                  <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: '100px' }}>-{savingsPct}%</span>
+                  {deal.badge === 'hot' && <span className="badge-hot">Hot Deal</span>}
+                  <span className="badge-green">-{savingsPct}%</span>
                 </div>
               </div>
 
               <div style={{ padding: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
                   <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(22px, 3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2, flex: 1 }}>{deal.name}</h1>
-                  <button onClick={handleWishlist} aria-pressed={isSaved} title={isSaved ? 'Saved to wishlist' : 'Save to wishlist'} style={{ flexShrink: 0, padding: '10px', background: isSaved ? 'rgba(255,71,87,0.15)' : 'var(--bg-section)', border: '1px solid ' + (isSaved ? 'var(--red)' : 'var(--border)'), borderRadius: '10px', cursor: 'pointer', color: isSaved ? 'var(--red)' : 'var(--text-secondary)' }}>
+                  <button onClick={handleWishlist} aria-pressed={isSaved} title={isSaved ? 'Saved to wishlist' : 'Save to wishlist'} style={{ flexShrink: 0, width: '44px', height: '44px', background: isSaved ? 'var(--hot-bg)' : 'var(--bg-section)', border: '1px solid ' + (isSaved ? 'var(--hot)' : 'var(--border)'), borderRadius: '50%', cursor: 'pointer', color: isSaved ? 'var(--hot)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
                   </button>
                 </div>

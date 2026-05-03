@@ -20,15 +20,15 @@ export default function ComparePage() {
       <Navbar />
 
       {/* Hero */}
-      <div style={{ background: 'var(--bg-main)', borderBottom: '1px solid var(--border)', padding: '64px 24px 56px' }}>
+      <div style={{ background: 'var(--bg-section)', borderBottom: '1px solid var(--border)', padding: '72px 24px 64px' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '100px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Retailer Comparisons</span>
+          <div style={{ display: 'inline-block', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '100px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Retailer comparisons</span>
           </div>
-          <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: '16px' }}>
+          <h1 style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: 'clamp(36px, 5vw, 60px)', color: 'var(--text-primary)', lineHeight: 1.05, marginBottom: '16px' }}>
             Which retailer<br />is actually cheaper?
           </h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '560px', margin: '0 auto' }}>
+          <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '560px', margin: '0 auto' }}>
             Side-by-side comparisons backed by months of real price tracking. Pick a matchup to see who wins, by category.
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function ComparePage() {
 
       {/* Comparison Cards */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 24px 96px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }} className="grid-2-mobile">
           {COMPARISONS.map(function(c) {
             return <ComparisonCard key={c.slug} comparison={c} />
           })}

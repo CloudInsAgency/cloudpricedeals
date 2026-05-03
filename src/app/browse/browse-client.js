@@ -9,6 +9,13 @@ import DealCard from '@/components/DealCard'
 import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
 import { DEALS, CATEGORIES, RETAILERS } from '@/data/deals'
 
+const CHIP_VARIANTS = ['color-block-sand', 'color-block-sage', 'color-block-blush', 'color-block-slate']
+function chipVariant(id) {
+  var hash = 0
+  for (var i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0
+  return CHIP_VARIANTS[hash % CHIP_VARIANTS.length]
+}
+
 export default function BrowsePage() {
   const router = useRouter()
   const pathname = usePathname()
@@ -54,111 +61,141 @@ export default function BrowsePage() {
       return 0
     })
 
+  const activeCatLabel = (function() {
+    var c = CATEGORIES.find(function(x) { return x.id === activeCategory })
+    return c ? c.label : 'All deals'
+  })()
+
   return (
-    <div className="min-h-screen">
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
       <Navbar />
 
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <h1 className="font-display font-bold text-3xl text-ink mb-1">Browse deals</h1>
-          <p className="text-gray-400 text-sm">{filtered.length} deals across {Object.keys(RETAILERS).length} retailers</p>
+      {/* Hero band */}
+      <div style={{ background: 'var(--bg-section)', borderBottom: '1px solid var(--border)', padding: '56px 24px 48px' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '12px' }}>
+            Browse the catalog
+          </p>
+          <h1 style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: 'clamp(36px, 6vw, 64px)', color: 'var(--text-primary)', lineHeight: 1.05, marginBottom: '14px' }}>
+            {activeCategory === 'all' ? 'All ' + DEALS.length + ' deals' : activeCatLabel + ' deals'}
+          </h1>
+          <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '17px', color: 'var(--text-secondary)', maxWidth: '640px' }}>
+            {filtered.length} live · cross-checked at Amazon, Best Buy, Walmart, Target, and eBay.
+          </p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 pt-6">
-        <Link href="/compare" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '14px 20px', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', borderRadius: '12px', textDecoration: 'none', flexWrap: 'wrap' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 24px 0' }}>
+        <Link href="/compare" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '16px 22px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '14px', textDecoration: 'none', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 10px', background: 'var(--accent)', color: '#FFFFFF', borderRadius: '100px' }}>New</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 600 }}>Compare prices across retailers</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)' }}>See which store is actually cheaper, by category.</span>
+            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', padding: '4px 10px', background: 'var(--accent)', color: '#FFFFFF', borderRadius: '100px' }}>New</span>
+            <span style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '18px', color: 'var(--text-primary)' }}>Compare prices across retailers</span>
+            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)' }}>See which store is actually cheaper, by category.</span>
           </div>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
             View comparisons <ChevronRight size={14} />
           </span>
         </Link>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row gap-6">
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 24px 96px' }}>
 
-          <div className="md:w-52 shrink-0">
-            <div className="card p-4 mb-3">
-              <p className="section-label">Category</p>
-              <div className="flex flex-col gap-1">
-                {CATEGORIES.map(cat => (
-                  <button
-                    key={cat.id}
-                    onClick={() => selectCategory(cat.id)}
-                    className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors ${
-                      activeCategory === cat.id ? 'bg-brand-50 text-brand-600 font-medium' : 'text-gray-500 hover:bg-gray-50'
-                    }`}
-                  >
-                    <span style={{ fontSize: '13px' }}>{cat.emoji}</span>
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Category chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+          {CATEGORIES.map(function(cat) {
+            var isActive = activeCategory === cat.id
+            var variant = chipVariant(cat.id)
+            return (
+              <button
+                key={cat.id}
+                onClick={function() { selectCategory(cat.id) }}
+                className={isActive ? '' : variant}
+                style={{
+                  fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: isActive ? 700 : 500,
+                  padding: '10px 18px',
+                  minHeight: '44px',
+                  border: '1px solid ' + (isActive ? 'var(--accent)' : 'var(--border)'),
+                  borderRadius: '100px',
+                  cursor: 'pointer',
+                  color: isActive ? '#FFFFFF' : 'var(--text-primary)',
+                  background: isActive ? 'var(--accent)' : undefined,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.15s',
+                }}
+              >
+                <span aria-hidden="true">{cat.emoji}</span> {cat.label}
+              </button>
+            )
+          })}
+        </div>
 
-            <div className="card p-4 mb-3">
-              <p className="section-label">Retailer</p>
-              <div className="flex flex-col gap-1">
-                <button
-                  onClick={() => setActiveRetailer('all')}
-                  className={`px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors ${activeRetailer === 'all' ? 'bg-brand-50 text-brand-600 font-medium' : 'text-gray-500 hover:bg-gray-50'}`}
-                >
-                  All retailers
-                </button>
-                {Object.entries(RETAILERS).map(([key, r]) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveRetailer(key)}
-                    className={`px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors ${activeRetailer === key ? 'bg-brand-50 text-brand-600 font-medium' : 'text-gray-500 hover:bg-gray-50'}`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="card p-4">
-              <p className="section-label">Sort by</p>
-              <div className="flex flex-col gap-1">
-                {[
-                  { id: 'savings',    label: 'Biggest savings' },
-                  { id: 'price-low',  label: 'Price: low to high' },
-                  { id: 'price-high', label: 'Price: high to low' },
-                  { id: 'rating',     label: 'Highest rated' },
-                ].map(s => (
-                  <button
-                    key={s.id}
-                    onClick={() => setSortBy(s.id)}
-                    className={`px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors ${sortBy === s.id ? 'bg-brand-50 text-brand-600 font-medium' : 'text-gray-500 hover:bg-gray-50'}`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Retailer + sort row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginRight: '6px' }}>Retailer</span>
+            <button onClick={function() { setActiveRetailer('all') }} style={pillStyle(activeRetailer === 'all')}>All</button>
+            {Object.entries(RETAILERS).map(function(entry) {
+              var key = entry[0]
+              var r = entry[1]
+              return (
+                <button key={key} onClick={function() { setActiveRetailer(key) }} style={pillStyle(activeRetailer === key)}>{r.label}</button>
+              )
+            })}
           </div>
 
-          <div className="flex-1 min-w-0">
-            <InlineAffiliateDisclosure />
-            {filtered.length === 0 ? (
-              <div className="card p-12 text-center">
-                <p className="text-gray-400 text-sm">No deals match these filters.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                {filtered.map((deal, i) => (
-                  <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
-                ))}
-              </div>
-            )}
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <label htmlFor="sort" style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Sort</label>
+            <select
+              id="sort"
+              value={sortBy}
+              onChange={function(e) { setSortBy(e.target.value) }}
+              style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', cursor: 'pointer', minHeight: '44px' }}
+            >
+              <option value="savings">Biggest savings</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="rating">Highest rated</option>
+            </select>
           </div>
         </div>
+
+        <InlineAffiliateDisclosure />
+
+        {filtered.length === 0 ? (
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '14px', padding: '64px 24px', textAlign: 'center' }}>
+            <p style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '24px', color: 'var(--text-primary)', marginBottom: '8px' }}>No deals match these filters</p>
+            <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>Try a broader category or clear the retailer filter.</p>
+            <button onClick={function() { selectCategory('all'); setActiveRetailer('all') }} className="btn-secondary">Reset filters</button>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }} className="grid-2-mobile">
+            {filtered.map((deal, i) => (
+              <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
     </div>
   )
+}
+
+function pillStyle(active) {
+  return {
+    fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
+    fontSize: '13px',
+    fontWeight: active ? 700 : 500,
+    padding: '8px 16px',
+    minHeight: '36px',
+    border: '1px solid ' + (active ? 'var(--accent)' : 'var(--border)'),
+    borderRadius: '100px',
+    cursor: 'pointer',
+    color: active ? '#FFFFFF' : 'var(--text-secondary)',
+    background: active ? 'var(--accent)' : 'var(--bg-card)',
+    transition: 'all 0.15s',
+  }
 }
