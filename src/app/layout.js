@@ -1,5 +1,6 @@
 import './globals.css'
 import MetaPixel from '@/components/MetaPixel'
+import Toast from '@/components/Toast'
 
 export const metadata = {
   metadataBase: new URL('https://cloudpricedeals.com'),
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
       <body>
         <MetaPixel />
         {children}
+        <Toast />
       </body>
     </html>
   )

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, X, Heart, Zap } from 'lucide-react'
+import { DEALS } from '@/data/deals'
+import AffiliateDisclosure from './AffiliateDisclosure'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -23,9 +25,12 @@ export default function Navbar() {
       {/* Announcement bar */}
       <div style={{ background: 'var(--accent)', padding: '8px 16px', textAlign: 'center' }}>
         <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '0.02em' }}>
-          🔥 Updated weekly — 20 deals compared across Amazon, Best Buy, Walmart, Target & eBay
+          🔥 Updated weekly — {DEALS.length} deals compared across Amazon, Best Buy, Walmart, Target & eBay
         </p>
       </div>
+
+      {/* Persistent FTC affiliate disclosure (dismissible) */}
+      <AffiliateDisclosure />
 
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
 

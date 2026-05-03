@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { LayoutGrid, List, TrendingDown, Shield, RefreshCw, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
@@ -9,6 +10,7 @@ import EmailCapture from '@/components/EmailCapture'
 import { DEALS, CATEGORIES } from '@/data/deals'
 import { COMPARISONS } from '@/data/comparisons'
 import ComparisonCard from '@/components/ComparisonCard'
+import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all')
@@ -96,39 +98,73 @@ export default function HomePage() {
               <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '16px' }}>This week's top deals</p>
 
               {/* ── FEATURED deal — image 104x104 (doubled from 52) ── */}
-              <div style={{ background: 'var(--bg-card)', borderRadius: '10px', padding: '16px', border: '1px solid var(--border)', display: 'flex', gap: '14px', alignItems: 'center', marginBottom: '10px' }}>
-                <div style={{ width: '104px', height: '104px', background: 'var(--bg-section)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-                  <img
-                    src={DEALS[0].imageUrl}
-                    alt={DEALS[0].shortName}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
-                    onError={function(e) { e.target.parentNode.innerHTML = '<span style="font-size:40px">' + DEALS[0].emoji + '</span>' }}
-                  />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{DEALS[0].shortName}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--accent)' }}>${DEALS[0].price}</span>
-                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${DEALS[0].originalPrice}</span>
+              <Link href={'/product/' + DEALS[0].id} style={{ textDecoration: 'none', display: 'block' }}>
+                <div style={{ background: 'var(--bg-card)', borderRadius: '10px', padding: '16px', border: '1px solid var(--border)', display: 'flex', gap: '14px', alignItems: 'center', marginBottom: '10px' }}>
+                  <div style={{ width: '104px', height: '104px', background: 'var(--bg-section)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
+                    {DEALS[0].imageUrl && DEALS[0].imageUrl.charAt(0) === '/' ? (
+                      <Image
+                        src={DEALS[0].imageUrl}
+                        alt={DEALS[0].shortName}
+                        width={104}
+                        height={104}
+                        sizes="104px"
+                        priority
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
+                      />
+                    ) : (
+                      <img
+                        src={DEALS[0].imageUrl}
+                        alt={DEALS[0].shortName}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
+                        onError={function(e) { e.target.parentNode.innerHTML = '<span style="font-size:40px">' + DEALS[0].emoji + '</span>' }}
+                      />
+                    )}
                   </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{DEALS[0].shortName}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--accent)' }}>${DEALS[0].price}</span>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>${DEALS[0].originalPrice}</span>
+                    </div>
+                    <a
+                      href={DEALS[0].affiliateUrl}
+                      target="_blank"
+                      rel="sponsored nofollow noopener"
+                      onClick={function(e) { e.stopPropagation() }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '5px 10px', borderRadius: '6px', textDecoration: 'none' }}
+                    >
+                      Buy on Amazon <ChevronRight size={11} />
+                    </a>
+                  </div>
+                  <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '100px', flexShrink: 0, alignSelf: 'flex-start' }}>
+                    Hot
+                  </span>
                 </div>
-                <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '100px', flexShrink: 0 }}>
-                  Hot
-                </span>
-              </div>
+              </Link>
 
               {/* Other deals */}
               {DEALS.slice(1, 5).map(function(d) {
                 return (
-                  <div key={d.id} style={{ background: 'var(--bg-card)', borderRadius: '8px', padding: '10px 14px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, marginRight: '12px' }}>{d.shortName}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                      <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '18px', color: 'var(--accent)' }}>${d.price}</span>
-                      <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '10px', fontWeight: 700, padding: '2px 7px', borderRadius: '100px' }}>
-                        -{Math.round((d.originalPrice - d.price) / d.originalPrice * 100)}%
-                      </span>
+                  <Link key={d.id} href={'/product/' + d.id} style={{ textDecoration: 'none', display: 'block' }}>
+                    <div style={{ background: 'var(--bg-card)', borderRadius: '8px', padding: '10px 14px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', gap: '10px' }}>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>{d.shortName}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                        <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '18px', color: 'var(--accent)' }}>${d.price}</span>
+                        <span style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--border-accent)', fontFamily: 'DM Sans, sans-serif', fontSize: '10px', fontWeight: 700, padding: '2px 7px', borderRadius: '100px' }}>
+                          -{Math.round((d.originalPrice - d.price) / d.originalPrice * 100)}%
+                        </span>
+                        <a
+                          href={d.affiliateUrl}
+                          target="_blank"
+                          rel="sponsored nofollow noopener"
+                          onClick={function(e) { e.stopPropagation() }}
+                          style={{ display: 'inline-flex', alignItems: 'center', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '10px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '4px 8px', borderRadius: '6px', textDecoration: 'none' }}
+                        >
+                          Buy
+                        </a>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
 
@@ -182,6 +218,7 @@ export default function HomePage() {
             View all <ChevronRight size={16} />
           </Link>
         </div>
+        <InlineAffiliateDisclosure />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }} className="grid-2-mobile">
           {hotDeals.map(function(deal, i) {
             return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />

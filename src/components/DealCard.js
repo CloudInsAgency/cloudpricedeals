@@ -1,7 +1,19 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { Heart, ExternalLink } from 'lucide-react'
 import RetailerBadge from './RetailerBadge'
+
+function isLocalImage(src) {
+  return typeof src === 'string' && src.length > 0 && src.charAt(0) === '/'
+}
+
+function notify(text) {
+  if (typeof window !== 'undefined' && typeof window.cpdToast === 'function') {
+    window.cpdToast(text)
+  }
+}
 
 export default function DealCard({ deal, view, delay }) {
   var viewMode = view || 'grid'
@@ -17,26 +29,37 @@ export default function DealCard({ deal, view, delay }) {
     }
   }
 
+  const [saved, setSaved] = useState(false)
+  useEffect(function() {
+    try {
+      var list = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id === deal.id) { setSaved(true); return }
+      }
+    } catch(e) {}
+  }, [deal.id])
+
   function handleWishlist(e) {
     e.preventDefault()
     e.stopPropagation()
     try {
-      var saved = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      var list = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
       var exists = false
-      for (var i = 0; i < saved.length; i++) {
-        if (saved[i].id === deal.id) { exists = true; break }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id === deal.id) { exists = true; break }
       }
       if (!exists) {
-        saved.push({
+        list.push({
           id: deal.id, name: deal.name, shortName: deal.shortName,
           emoji: deal.emoji, imageUrl: deal.imageUrl, price: deal.price,
           originalPrice: deal.originalPrice, retailer: deal.retailer,
           affiliateUrl: deal.affiliateUrl,
         })
-        localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
-        alert('Added ' + deal.shortName + ' to your wishlist!')
+        localStorage.setItem('cpd-wishlist', JSON.stringify(list))
+        setSaved(true)
+        notify('Added ' + deal.shortName + ' to your wishlist')
       } else {
-        alert(deal.shortName + ' is already in your wishlist.')
+        notify(deal.shortName + ' is already in your wishlist')
       }
     } catch(err) { console.error(err) }
   }
@@ -54,9 +77,13 @@ export default function DealCard({ deal, view, delay }) {
       <div className="fade-up" style={{ animationDelay: d * 0.05 + 's', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '8px', transition: 'border-color 0.2s' }}
         onMouseEnter={function(e) { e.currentTarget.style.borderColor = 'var(--border-accent)' }}
         onMouseLeave={function(e) { e.currentTarget.style.borderColor = 'var(--border)' }}>
-        <div style={{ width: '72px', height: '72px', background: 'var(--surface2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-          <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
-            onError={function(e) { e.target.style.display='none'; e.target.parentNode.innerHTML='<span style="font-size:28px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + deal.emoji + '</span>' }} />
+        <div style={{ width: '72px', height: '72px', background: 'var(--surface2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
+          {isLocalImage(deal.imageUrl) ? (
+            <Image src={deal.imageUrl} alt={deal.name} width={72} height={72} sizes="72px" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
+          ) : (
+            <img src={deal.imageUrl} alt={deal.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }}
+              onError={function(e) { e.target.style.display='none'; e.target.parentNode.innerHTML='<span style="font-size:28px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + deal.emoji + '</span>' }} />
+          )}
         </div>
         <div style={{ flex: 1, minWidth: '140px' }}>
           <Link href={'/product/' + deal.id} style={{ fontFamily: 'DM Serif Display, serif', fontSize: '17px', color: 'var(--text)', textDecoration: 'none', display: 'block', lineHeight: 1.3, marginBottom: '6px' }}>
@@ -86,14 +113,25 @@ export default function DealCard({ deal, view, delay }) {
   return (
     <div className="deal-card fade-up" style={{ animationDelay: d * 0.05 + 's' }}>
       <div style={{ position: 'relative', aspectRatio: '4/3', background: 'var(--surface2)', overflow: 'hidden' }}>
-        <img
-          src={deal.imageUrl}
-          alt={deal.name}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
-          onError={handleImgError}
-          onMouseEnter={function(e) { e.target.style.transform = 'scale(1.05)' }}
-          onMouseLeave={function(e) { e.target.style.transform = 'scale(1)' }}
-        />
+        {isLocalImage(deal.imageUrl) ? (
+          <Image
+            src={deal.imageUrl}
+            alt={deal.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 320px"
+            style={{ objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
+          />
+        ) : (
+          <img
+            src={deal.imageUrl}
+            alt={deal.name}
+            loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
+            onError={handleImgError}
+            onMouseEnter={function(e) { e.target.style.transform = 'scale(1.05)' }}
+            onMouseLeave={function(e) { e.target.style.transform = 'scale(1)' }}
+          />
+        )}
 
         <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {deal.badge === 'hot' && (
@@ -104,11 +142,12 @@ export default function DealCard({ deal, view, delay }) {
 
         <button
           onClick={handleWishlist}
-          title="Save to wishlist"
-          style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(4px)', border: '1px solid var(--border2)', width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-2)', transition: 'all 0.15s', zIndex: 2 }}
-          onMouseEnter={function(e) { e.currentTarget.style.background = 'rgba(255,71,87,0.15)'; e.currentTarget.style.color = 'var(--red)'; e.currentTarget.style.borderColor = 'var(--red)' }}
-          onMouseLeave={function(e) { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.color = 'var(--text-2)'; e.currentTarget.style.borderColor = 'var(--border2)' }}>
-          <Heart size={14} />
+          title={saved ? 'Saved to wishlist' : 'Save to wishlist'}
+          aria-pressed={saved}
+          style={{ position: 'absolute', top: '10px', right: '10px', background: saved ? 'rgba(255,71,87,0.15)' : 'rgba(255,255,255,0.85)', backdropFilter: 'blur(4px)', border: '1px solid ' + (saved ? 'var(--red)' : 'var(--border2)'), width: '34px', height: '34px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: saved ? 'var(--red)' : 'var(--text-2)', transition: 'all 0.15s', zIndex: 2 }}
+          onMouseEnter={function(e) { if (!saved) { e.currentTarget.style.background = 'rgba(255,71,87,0.15)'; e.currentTarget.style.color = 'var(--red)'; e.currentTarget.style.borderColor = 'var(--red)' } }}
+          onMouseLeave={function(e) { if (!saved) { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.color = 'var(--text-2)'; e.currentTarget.style.borderColor = 'var(--border2)' } }}>
+          <Heart size={14} fill={saved ? 'currentColor' : 'none'} />
         </button>
       </div>
 

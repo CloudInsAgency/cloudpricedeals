@@ -1,15 +1,30 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { ExternalLink, Heart, ArrowLeft, TrendingDown, Star, Truck, ChevronRight, Shield } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import RetailerBadge from '@/components/RetailerBadge'
 import EmailCapture from '@/components/EmailCapture'
 import DealCard from '@/components/DealCard'
+import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
 import { DEALS, RETAILERS } from '@/data/deals'
 
 export default function ProductClient({ id }) {
   const deal = DEALS.find(function(d) { return d.id === id })
+
+  // Hooks must run unconditionally (before any early return).
+  const [isSaved, setIsSaved] = useState(false)
+  useEffect(function() {
+    if (!deal) return
+    try {
+      var list = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id === deal.id) { setIsSaved(true); return }
+      }
+    } catch(e) {}
+  }, [deal])
 
   if (!deal) return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
@@ -28,21 +43,28 @@ export default function ProductClient({ id }) {
   const savingsPct = Math.round(((deal.originalPrice - deal.price) / deal.originalPrice) * 100)
   const savings = deal.originalPrice - deal.price
 
+  function notify(text) {
+    if (typeof window !== 'undefined' && typeof window.cpdToast === 'function') {
+      window.cpdToast(text)
+    }
+  }
+
   function handleWishlist() {
     try {
-      var saved = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
-      var exists = saved.find(function(s) { return s.id === deal.id })
+      var list = JSON.parse(localStorage.getItem('cpd-wishlist') || '[]')
+      var exists = list.find(function(s) { return s.id === deal.id })
       if (!exists) {
-        saved.push({
+        list.push({
           id: deal.id, name: deal.name, shortName: deal.shortName,
           emoji: deal.emoji, imageUrl: deal.imageUrl, price: deal.price,
           originalPrice: deal.originalPrice, retailer: deal.retailer,
           affiliateUrl: deal.affiliateUrl,
         })
-        localStorage.setItem('cpd-wishlist', JSON.stringify(saved))
-        alert('Added ' + deal.shortName + ' to your wishlist!')
+        localStorage.setItem('cpd-wishlist', JSON.stringify(list))
+        setIsSaved(true)
+        notify('Added ' + deal.shortName + ' to your wishlist')
       } else {
-        alert(deal.shortName + ' is already in your wishlist.')
+        notify(deal.shortName + ' is already in your wishlist')
       }
     } catch(e) { console.error(e) }
   }
@@ -94,14 +116,25 @@ export default function ProductClient({ id }) {
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden', marginBottom: '16px' }}>
               <div style={{ height: '280px', background: 'var(--bg-section)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
                 {deal.imageUrl ? (
-                  <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '24px' }}
-                    onError={function(e) {
-                      e.target.style.display = 'none'
-                      var fb = document.createElement('div')
-                      fb.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px'
-                      fb.textContent = deal.emoji
-                      e.target.parentNode.appendChild(fb)
-                    }} />
+                  deal.imageUrl.charAt(0) === '/' ? (
+                    <Image
+                      src={deal.imageUrl}
+                      alt={deal.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 660px"
+                      priority
+                      style={{ objectFit: 'contain', padding: '24px' }}
+                    />
+                  ) : (
+                    <img src={deal.imageUrl} alt={deal.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '24px' }}
+                      onError={function(e) {
+                        e.target.style.display = 'none'
+                        var fb = document.createElement('div')
+                        fb.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px'
+                        fb.textContent = deal.emoji
+                        e.target.parentNode.appendChild(fb)
+                      }} />
+                  )
                 ) : (
                   <div style={{ fontSize: '80px' }}>{deal.emoji}</div>
                 )}
@@ -114,8 +147,8 @@ export default function ProductClient({ id }) {
               <div style={{ padding: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
                   <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(22px, 3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2, flex: 1 }}>{deal.name}</h1>
-                  <button onClick={handleWishlist} style={{ flexShrink: 0, padding: '10px', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '10px', cursor: 'pointer', color: 'var(--text-secondary)' }}>
-                    <Heart size={18} />
+                  <button onClick={handleWishlist} aria-pressed={isSaved} title={isSaved ? 'Saved to wishlist' : 'Save to wishlist'} style={{ flexShrink: 0, padding: '10px', background: isSaved ? 'rgba(255,71,87,0.15)' : 'var(--bg-section)', border: '1px solid ' + (isSaved ? 'var(--red)' : 'var(--border)'), borderRadius: '10px', cursor: 'pointer', color: isSaved ? 'var(--red)' : 'var(--text-secondary)' }}>
+                    <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
                   </button>
                 </div>
 
@@ -139,7 +172,8 @@ export default function ProductClient({ id }) {
                   </span>
                 </div>
 
-                <a href={deal.affiliateUrl} target="_blank" rel="noopener sponsored"
+                <InlineAffiliateDisclosure />
+                <a href={deal.affiliateUrl} target="_blank" rel="sponsored nofollow noopener"
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', background: 'var(--accent)', color: '#FFFFFF', padding: '15px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '10px', marginBottom: '10px' }}>
                   Buy on Amazon <ExternalLink size={15} />
                 </a>

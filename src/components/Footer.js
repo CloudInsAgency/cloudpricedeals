@@ -78,8 +78,8 @@ export default function Footer() {
         </div>
 
         <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: '560px' }}>
-            <strong style={{ color: 'var(--text-secondary)' }}>Affiliate Disclosure:</strong> CloudPriceDeals earns a commission when you purchase through links on this site. This never affects the price you pay or our editorial recommendations. We are a participant in the Amazon Associates Program.
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '560px' }}>
+            <strong style={{ color: 'var(--text-primary)' }}>Affiliate Disclosure:</strong> CloudPriceDeals earns a commission when you purchase through links on this site. This never affects the price you pay or our editorial recommendations. We are a participant in the Amazon Associates Program.
           </p>
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
             © {currentYear} CloudPriceDeals · Made with

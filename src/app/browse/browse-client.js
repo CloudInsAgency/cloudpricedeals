@@ -1,16 +1,47 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
+import { InlineAffiliateDisclosure } from '@/components/AffiliateDisclosure'
 import { DEALS, CATEGORIES, RETAILERS } from '@/data/deals'
 
 export default function BrowsePage() {
-  const [activeCategory, setActiveCategory] = useState('all')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const initialCat = (function() {
+    const c = searchParams.get('cat')
+    if (!c) return 'all'
+    const valid = CATEGORIES.some(function(x) { return x.id === c })
+    return valid ? c : 'all'
+  })()
+
+  const [activeCategory, setActiveCategory] = useState(initialCat)
   const [activeRetailer, setActiveRetailer] = useState('all')
   const [sortBy, setSortBy] = useState('savings')
+
+  // Keep state in sync if user uses browser back/forward.
+  useEffect(function() {
+    const c = searchParams.get('cat')
+    if (c && CATEGORIES.some(function(x) { return x.id === c })) {
+      setActiveCategory(c)
+    } else if (!c) {
+      setActiveCategory('all')
+    }
+  }, [searchParams])
+
+  function selectCategory(catId) {
+    setActiveCategory(catId)
+    const params = new URLSearchParams(searchParams.toString())
+    if (catId === 'all') params.delete('cat')
+    else params.set('cat', catId)
+    const qs = params.toString()
+    router.replace(qs ? pathname + '?' + qs : pathname, { scroll: false })
+  }
 
   const filtered = DEALS
     .filter(d => activeCategory === 'all' || d.category === activeCategory)
@@ -57,7 +88,7 @@ export default function BrowsePage() {
                 {CATEGORIES.map(cat => (
                   <button
                     key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
+                    onClick={() => selectCategory(cat.id)}
                     className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors ${
                       activeCategory === cat.id ? 'bg-brand-50 text-brand-600 font-medium' : 'text-gray-500 hover:bg-gray-50'
                     }`}
@@ -112,6 +143,7 @@ export default function BrowsePage() {
           </div>
 
           <div className="flex-1 min-w-0">
+            <InlineAffiliateDisclosure />
             {filtered.length === 0 ? (
               <div className="card p-12 text-center">
                 <p className="text-gray-400 text-sm">No deals match these filters.</p>

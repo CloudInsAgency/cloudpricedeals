@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import BrowseClient from './browse-client'
 
 export const metadata = {
@@ -12,5 +13,9 @@ export const metadata = {
 }
 
 export default function BrowsePage() {
-  return <BrowseClient />
+  return (
+    <Suspense fallback={null}>
+      <BrowseClient />
+    </Suspense>
+  )
 }
