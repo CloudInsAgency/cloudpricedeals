@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { DEALS, RETAILERS, CATEGORIES } from '@/data/deals'
 import ProductClient from './product-client'
 
@@ -104,7 +105,8 @@ function buildSchemas(deal) {
 
 export default function ProductPage({ params }) {
   const deal = DEALS.find(function(d) { return d.id === params.id })
-  const schemas = deal ? buildSchemas(deal) : []
+  if (!deal) notFound()
+  const schemas = buildSchemas(deal)
   return (
     <>
       {schemas.map(function(schema, i) {

@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 export const metadata = {
   title: 'Buying Guides — Amazon vs Best Buy vs Walmart Price Comparisons',
   description: 'Data-backed buying guides comparing prices at Amazon, Best Buy, Walmart, Target and eBay. Find out which retailer is actually cheaper before you buy.',
-  alternates: { canonical: 'https://cloudpricedeals.com/guides' },
+  alternates: { canonical: '/guides' },
   openGraph: {
     title: 'Buying Guides — Which Retailer is Actually Cheaper?',
     description: 'Data-backed price comparisons across Amazon, Best Buy, Walmart, Target and eBay.',

@@ -1,5 +1,10 @@
+import { notFound } from 'next/navigation'
 import { GUIDES } from './guides-data'
 import GuideClient from './guide-client'
+
+export function generateStaticParams() {
+  return GUIDES.map(function(g) { return { id: g.id } })
+}
 
 export async function generateMetadata({ params }) {
   const guide = GUIDES.find(function(g) { return g.id === params.id })
@@ -24,5 +29,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default function GuidePage({ params }) {
+  const guide = GUIDES.find(function(g) { return g.id === params.id })
+  if (!guide) notFound()
   return <GuideClient id={params.id} />
 }
