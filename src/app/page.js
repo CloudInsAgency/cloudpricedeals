@@ -124,7 +124,7 @@ export default function HomePage() {
 
           {/* RIGHT: lifestyle photo — extends down so the tiles overlap it */}
           <div className="fade-up fade-up-2 hero-photo" style={{ position: 'relative', aspectRatio: '5/4.4', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 24px 60px rgba(13,27,42,0.14)' }}>
-            <Image src="/hero-lifestyle.png" alt="Curated home and kitchen deals in a warm, sunlit setting" fill priority sizes="(max-width: 900px) 100vw, 660px" style={{ objectFit: 'cover' }} />
+            <Image src="/hero-lifestyle.jpg" alt="Headphones and potted plants on a bright, sunlit windowsill" fill priority sizes="(max-width: 900px) 100vw, 660px" style={{ objectFit: 'cover' }} />
           </div>
         </div>
       </section>
