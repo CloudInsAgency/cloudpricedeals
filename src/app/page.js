@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
-import { LayoutGrid, List, ChevronRight } from 'lucide-react'
+import { LayoutGrid, List, ChevronRight, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DealCard from '@/components/DealCard'
@@ -9,6 +10,7 @@ import EmailCapture from '@/components/EmailCapture'
 import SectionHeading from '@/components/SectionHeading'
 import CategoryTile from '@/components/CategoryTile'
 import TrustSection from '@/components/TrustSection'
+import TrustBar from '@/components/TrustBar'
 import HeroTile from '@/components/HeroTile'
 import RetailerRow from '@/components/RetailerRow'
 import { DEALS, CATEGORIES } from '@/data/deals'
@@ -72,45 +74,63 @@ export default function HomePage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)', overflowX: 'hidden' }}>
       <Navbar />
 
-      {/* ── HERO: massive wordmark + 3 large product tiles ── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 24px 16px' }}>
-
-        {/* Massive centered wordmark — the brand statement at the top of the page. */}
-        <h1
-          className="fade-up fade-up-1 hero-wordmark"
-          style={{
-            fontFamily: 'var(--font-dm-serif), DM Serif Display, serif',
-            color: 'var(--accent)',
-            textAlign: 'center',
-            letterSpacing: '-0.025em',
-            lineHeight: 0.95,
-            margin: '0 auto 28px',
-            fontSize: 'clamp(56px, 12vw, 128px)',
-          }}
-        >
-          CloudPriceDeals
-        </h1>
-
-        {/* Tight subtitle — supports the products, doesn't lead. */}
-        <div className="fade-up fade-up-2" style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <span className="live-dot" />
-            <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>
-              Updated weekly · {DEALS.length} live deals
-            </span>
+      {/* ── PRICE TICKER ── */}
+      <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', overflow: 'hidden', padding: '11px 0' }}>
+        <div className="marquee-wrap">
+          <div className="marquee-track">
+            {[0, 1].map(function(i) {
+              return (
+                <div key={i} style={{ display: 'flex' }}>
+                  {DEALS.map(function(dd) {
+                    var tpct = calculateSavings(dd.originalPrice, dd.price).percent
+                    return (
+                      <span key={dd.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap', padding: '0 26px', borderRight: '1px solid var(--border)', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12.5px' }}>
+                        <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{dd.shortName}</span>
+                        <span className="tnum" style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatCurrency(dd.price)}</span>
+                        <span className="tnum" style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '11.5px' }}>▼{tpct}%</span>
+                      </span>
+                    )
+                  })}
+                </div>
+              )
+            })}
           </div>
-          <p style={{
-            fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
-            fontSize: 'clamp(15px, 1.6vw, 18px)',
-            color: 'var(--text-secondary)',
-            lineHeight: 1.6,
-            maxWidth: '620px',
-            margin: '0 auto',
-          }}>
-            Curated, expiring Amazon finds most shoppers never see — cross-checked against Best Buy, Walmart, Target and eBay each week.
-          </p>
         </div>
+      </div>
 
+      {/* ── HERO: headline + lifestyle photo ── */}
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 20px' }}>
+        <div className="hero-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '56px', alignItems: 'center' }}>
+          {/* LEFT: headline + CTA */}
+          <div className="fade-up fade-up-1">
+            <h1 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: 'clamp(44px, 5.4vw, 76px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.02, color: 'var(--text-primary)', marginBottom: '22px' }}>
+              Smarter shopping.<br />Bigger savings<span style={{ color: 'var(--accent)' }}>.</span>
+            </h1>
+            <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: 'clamp(15px, 1.5vw, 18px)', color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: '460px', marginBottom: '22px' }}>
+              Curated, expiring Amazon finds most shoppers never see — cross-checked against Best Buy, Walmart, Target and eBay each week.
+            </p>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '30px' }}>
+              <CheckCircle2 size={16} style={{ color: 'var(--accent)' }} />
+              <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+                Updated weekly · {DEALS.length} live deals
+              </span>
+            </div>
+            <div>
+              <a href="#top-deals" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '15px', fontWeight: 700, padding: '16px 28px', borderRadius: '12px', textDecoration: 'none', boxShadow: '0 8px 24px rgba(31,78,61,0.24)' }}>
+                Explore Today&rsquo;s Top Deals <ArrowRight size={18} />
+              </a>
+            </div>
+          </div>
+
+          {/* RIGHT: lifestyle photo */}
+          <div className="fade-up fade-up-2 hero-photo" style={{ position: 'relative', aspectRatio: '4/3', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 24px 60px rgba(13,27,42,0.14)' }}>
+            <Image src="/hero-lifestyle.png" alt="Curated home and kitchen deals in a warm, sunlit setting" fill priority sizes="(max-width: 900px) 100vw, 620px" style={{ objectFit: 'cover' }} />
+          </div>
+        </div>
+      </section>
+
+      {/* ── EDITOR'S PICKS: 3 large product tiles ── */}
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '20px 24px 16px' }}>
         {/* 3 LARGE color-blocked product tiles in a horizontal row */}
         <div
           className="hero-tile-grid fade-up fade-up-3"
@@ -148,25 +168,43 @@ export default function HomePage() {
         .hero-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(26,26,26,0.12); }
         @media (max-width: 900px) {
           .hero-tile-grid { grid-template-columns: 1fr !important; }
+          .hero-2col { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .hero-photo { aspect-ratio: 16/10 !important; order: -1; }
+          .topdeals-2col { grid-template-columns: 1fr !important; gap: 28px !important; }
         }
       `}</style>
 
-      {/* ── TODAY'S TOP DEALS ── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '64px 24px 0' }}>
-        <SectionHeading
-          eyebrow="Today's top deals"
-          title="The four biggest savings right now"
-          subhead="Cross-checked against the retailer's own listing today. If a price slips, the deal comes off the grid."
-          linkHref="/browse"
-          linkLabel="View all"
-        />
-        <InlineAffiliateDisclosure />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }} className="grid-2-mobile">
-          {topDeals.map(function(deal, i) {
-            return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
-          })}
+      {/* ── TODAY'S TOP DEALS (left heading · right card row) ── */}
+      <section id="top-deals" style={{ maxWidth: '1280px', margin: '0 auto', padding: '72px 24px 0', scrollMarginTop: '80px' }}>
+        <div className="topdeals-2col" style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '40px', alignItems: 'start' }}>
+          <div>
+            <p className="section-eyebrow" style={{ marginBottom: '14px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }} />
+              Today&rsquo;s top deals
+            </p>
+            <h2 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: 'clamp(30px, 3.4vw, 42px)', fontWeight: 800, letterSpacing: '-0.035em', color: 'var(--text-primary)', lineHeight: 1.08, marginBottom: '14px' }}>
+              The four biggest savings right now
+            </h2>
+            <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '22px', maxWidth: '300px' }}>
+              Cross-checked against the retailer&rsquo;s own listing today. If a price slips, the deal comes off the grid.
+            </p>
+            <Link href="/browse" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', textDecoration: 'none', padding: '11px 20px', border: '1px solid var(--border2)', borderRadius: '10px' }}>
+              View all deals <ArrowRight size={15} />
+            </Link>
+            <div style={{ marginTop: '20px' }}>
+              <InlineAffiliateDisclosure style={{ margin: 0 }} />
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '18px' }} className="grid-2-mobile">
+            {topDeals.map(function(deal, i) {
+              return <DealCard key={deal.id} deal={deal} view="grid" delay={i} />
+            })}
+          </div>
         </div>
       </section>
+
+      {/* ── TRUST BAR ── */}
+      <TrustBar />
 
       {/* ── SHOP BY CATEGORY ── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '80px 24px 0' }}>
