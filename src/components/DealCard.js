@@ -102,7 +102,7 @@ export default function DealCard({ deal, view, delay }) {
           )}
         </div>
         <div style={{ flex: 1, minWidth: '140px' }}>
-          <Link href={'/product/' + deal.id} style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '18px', color: 'var(--text-primary)', textDecoration: 'none', display: 'block', lineHeight: 1.3, marginBottom: '6px' }}>
+          <Link href={'/product/' + deal.id} style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: '15px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--text-primary)', textDecoration: 'none', display: 'block', lineHeight: 1.35, marginBottom: '6px' }}>
             {deal.name}
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -111,7 +111,7 @@ export default function DealCard({ deal, view, delay }) {
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '30px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</div>
+          <div className="tnum" style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1 }}>{formatCurrency(deal.price)}</div>
           <div style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through', marginTop: '2px' }}>{formatCurrency(deal.originalPrice)}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
@@ -173,15 +173,15 @@ export default function DealCard({ deal, view, delay }) {
           <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>★ {deal.rating}</span>
         </div>
 
-        <Link href={'/product/' + deal.id} style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '20px', fontWeight: 400, color: 'var(--text-primary)', textDecoration: 'none', lineHeight: 1.3, display: 'block', flex: 1 }}
+        <Link href={'/product/' + deal.id} style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: '15px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--text-primary)', textDecoration: 'none', lineHeight: 1.35, display: 'block', flex: 1 }}
           onMouseEnter={function(e) { e.target.style.color = 'var(--accent)' }}
           onMouseLeave={function(e) { e.target.style.color = 'var(--text-primary)' }}>
           {deal.name}
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <span style={{ fontFamily: 'var(--font-dm-serif), DM Serif Display, serif', fontSize: '34px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
-          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice)}</span>
+          <span className="tnum" style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: '26px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
+          <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'line-through' }} className="tnum">{formatCurrency(deal.originalPrice)}</span>
           <span style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-secondary)', marginLeft: 'auto', fontWeight: 500 }}>Save {formatCurrency(savings.amount)}</span>
         </div>
 
