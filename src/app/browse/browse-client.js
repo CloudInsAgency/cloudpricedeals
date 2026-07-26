@@ -148,7 +148,7 @@ export default function BrowsePage() {
                   transition: 'all 0.15s',
                 }}
               >
-                <span aria-hidden="true">{cat.emoji}</span> {cat.label}
+                {cat.label}
               </button>
             )
           })}

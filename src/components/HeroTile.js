@@ -10,11 +10,11 @@ import Image from 'next/image'
 import { ExternalLink, ChevronRight } from 'lucide-react'
 import { calculateSavings } from '@/lib/currency'
 
-// Saturated tile palette (NOT pastels)
+// Fintech tile trio — brand blue / soft blue / ink navy (cohesive, restrained)
 const VARIANTS = {
-  sage:   { bg: '#7FA88A', text: '#1A1A1A', sub: 'rgba(26,26,26,0.72)', badgeBg: '#1F4E3D', badgeText: '#FFFFFF', imgBg: 'rgba(255,255,255,0.92)' },
-  blush:  { bg: '#E8A88A', text: '#1A1A1A', sub: 'rgba(26,26,26,0.72)', badgeBg: '#7C2D12', badgeText: '#FFFFFF', imgBg: 'rgba(255,255,255,0.92)' },
-  sienna: { bg: '#C2410C', text: '#FFFFFF', sub: 'rgba(255,255,255,0.86)', badgeBg: '#FFFFFF', badgeText: '#7C2D12', imgBg: 'rgba(255,255,255,0.96)' },
+  sage:   { bg: '#185FA5', text: '#FFFFFF', sub: 'rgba(255,255,255,0.82)', badgeBg: '#0D1B2A', badgeText: '#FFFFFF', imgBg: 'rgba(255,255,255,0.96)' },
+  blush:  { bg: '#EBF3FC', text: '#0D1B2A', sub: 'rgba(13,27,42,0.64)', badgeBg: '#185FA5', badgeText: '#FFFFFF', imgBg: '#FFFFFF' },
+  sienna: { bg: '#0D1B2A', text: '#FFFFFF', sub: 'rgba(255,255,255,0.80)', badgeBg: '#FFFFFF', badgeText: '#0D1B2A', imgBg: 'rgba(255,255,255,0.96)' },
 }
 
 export default function HeroTile({ deal, variant, badgeLabel, priority }) {

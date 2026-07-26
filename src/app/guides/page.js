@@ -24,7 +24,7 @@ const GUIDES = [
     date: 'March 2026',
     readTime: '7 min read',
     badge: 'Data-backed',
-    badgeColor: '#1F4E3D',
+    badgeColor: '#185FA5',
     badgeBg: '#E5EFE8',
     status: 'published',
   },

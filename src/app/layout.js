@@ -1,20 +1,16 @@
 import './globals.css'
-import { DM_Sans, DM_Serif_Display } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import MetaPixel from '@/components/MetaPixel'
 import Toast from '@/components/Toast'
 
-const dmSans = DM_Sans({
+// Single Inter family for the whole site (modern tech / fintech direction).
+// Exposed under BOTH legacy variables so every existing var(--font-dm-serif)
+// and var(--font-dm-sans) reference resolves to Inter with no per-file edits.
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-dm-sans',
-})
-
-const dmSerif = DM_Serif_Display({
-  subsets: ['latin'],
-  weight: '400',
-  display: 'swap',
-  variable: '--font-dm-serif',
+  variable: '--font-inter',
 })
 
 export const metadata = {
@@ -64,9 +60,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+    <html lang="en" className={inter.variable}>
       <head>
-        <meta name="theme-color" content="#1F4E3D" />
+        <meta name="theme-color" content="#0D1B2A" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body>
