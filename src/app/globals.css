@@ -14,8 +14,9 @@
   --surface2: #F5F7FA;
   --border:   rgba(24,95,165,0.12);
   --border2:  rgba(24,95,165,0.20);
-  --green:    #185FA5;
-  --blue:     #185FA5;
+  --green:    #1F4E3D;
+  --blue:     #2563EB;
+  --purple:   #6D28D9;
   --text:     #0D1B2A;
   --text-2:   #3D5166;
   --text-3:   #7B93A8;
@@ -26,10 +27,11 @@
   /* Theme-aware vars */
   --bg-main:        #FFFFFF;
   --bg-card:        #FFFFFF;
-  --bg-section:     #F5F7FA;
-  --accent:         #185FA5;
-  --accent-bg:      #EBF3FC;
-  --border-accent:  rgba(24,95,165,0.30);
+  --bg-section:     #F7F5F0;
+  --accent:         #1F4E3D;
+  --accent-dark:    #163A2D;
+  --accent-bg:      #E5EFE8;
+  --border-accent:  rgba(31,78,61,0.28);
   --accent-fg:      #FFFFFF;
   --hot:            #E5484D;
   --hot-bg:         #FDECEC;

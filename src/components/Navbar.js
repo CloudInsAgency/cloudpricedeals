@@ -2,8 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, X, Heart } from 'lucide-react'
-import { DEALS } from '@/data/deals'
+import { Menu, X, Heart, Cloud, Search } from 'lucide-react'
 import AffiliateDisclosure from './AffiliateDisclosure'
 
 export default function Navbar() {
@@ -22,27 +21,16 @@ export default function Navbar() {
   return (
     <header style={{ background: 'var(--bg-card)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100, width: '100%' }}>
 
-      {/* Announcement bar */}
-      <div style={{ background: 'var(--accent)', padding: '9px 16px', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 500, color: '#FFFFFF', letterSpacing: '0.02em' }}>
-          Updated weekly · {DEALS.length} curated deals compared across Amazon, Best Buy, Walmart, Target &amp; eBay
-        </p>
-      </div>
-
-      {/* Persistent FTC affiliate disclosure (dismissible) */}
+      {/* Persistent FTC affiliate disclosure (dismissible, dark-green top bar) */}
       <AffiliateDisclosure />
 
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
 
-        {/* Wordmark — minimal, text-only. The display wordmark lives in the homepage hero. */}
-        <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }} aria-label="CloudPriceDeals home">
-          <span style={{
-            fontFamily: 'var(--font-dm-serif), DM Serif Display, serif',
-            fontSize: '18px',
-            color: 'var(--accent)',
-            letterSpacing: '-0.005em',
-          }}>
-            CloudPriceDeals
+        {/* Wordmark — cloud icon + CloudPrice (ink) / Deals (green) */}
+        <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'flex', alignItems: 'center', gap: '9px' }} aria-label="CloudPriceDeals home">
+          <Cloud size={26} strokeWidth={2.2} style={{ color: 'var(--accent)' }} />
+          <span style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: '21px', fontWeight: 800, letterSpacing: '-0.03em' }}>
+            <span style={{ color: 'var(--text-primary)' }}>CloudPrice</span><span style={{ color: 'var(--accent)' }}>Deals</span>
           </span>
         </Link>
 
@@ -52,11 +40,11 @@ export default function Navbar() {
             var isActive = l.href === '/' ? pathname === '/' : pathname.startsWith(l.href)
             return (
               <Link key={l.href} href={l.href} style={{
-                fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
-                textDecoration: 'none', padding: '8px 14px', borderRadius: '8px',
-                background: isActive ? 'var(--accent-bg)' : 'transparent',
+                fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '14px',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
+                textDecoration: 'none', padding: '9px 18px', borderRadius: '100px',
+                background: isActive ? 'var(--accent)' : 'transparent',
                 transition: 'all 0.15s', whiteSpace: 'nowrap',
               }}>
                 {l.label}
@@ -70,8 +58,8 @@ export default function Navbar() {
           <Link href="/wishlist" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px 16px', border: '1px solid var(--border)', borderRadius: '8px', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
             <Heart size={14} /> My Lists
           </Link>
-          <Link href="/browse" style={{ background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-            Browse Deals
+          <Link href="/browse" style={{ display: 'flex', alignItems: 'center', gap: '7px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, padding: '10px 18px', borderRadius: '10px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            Browse Deals <Search size={15} />
           </Link>
         </div>
 
