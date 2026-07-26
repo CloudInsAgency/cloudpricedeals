@@ -129,7 +129,7 @@ export default function CompareDetailPage({ params }) {
               <section key={cat.key} style={{ marginBottom: '40px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '14px' }}>
                   <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span>{cat.emoji}</span> {cat.name}
+                    {cat.name}
                   </h3>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '5px 12px', background: 'var(--hot-bg)', color: 'var(--hot)', border: '1px solid var(--hot-border)', borderRadius: '100px' }}>
                     <Trophy size={12} /> Winner: {cat.winner}

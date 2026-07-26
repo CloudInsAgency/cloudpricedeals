@@ -2,45 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── BOUTIQUE LIGHT THEME (cream + evergreen) ──────────────────────────── */
+/* ── MODERN TECH / FINTECH THEME (white + blue + ink) ──────────────────── */
 :root {
+  /* Both legacy font vars resolve to Inter — no per-file font edits needed */
+  --font-dm-sans:  var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-dm-serif: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+
   /* Legacy vars kept as aliases so older inline styles still resolve */
-  --bg:       #FAF6F0;
+  --bg:       #FFFFFF;
   --surface:  #FFFFFF;
-  --surface2: #EFE7DA;
-  --border:   rgba(26,26,26,0.10);
-  --border2:  rgba(26,26,26,0.16);
-  --green:    #1F4E3D;
-  --blue:     #3B82F6;
-  --text:     #1A1A1A;
-  --text-2:   #5A5A5A;
-  --text-3:   #8A8A8A;
+  --surface2: #F5F7FA;
+  --border:   rgba(24,95,165,0.12);
+  --border2:  rgba(24,95,165,0.20);
+  --green:    #185FA5;
+  --blue:     #185FA5;
+  --text:     #0D1B2A;
+  --text-2:   #3D5166;
+  --text-3:   #7B93A8;
   --white:    #FFFFFF;
-  --red:      #C2410C;
+  --red:      #E5484D;
   --amber:    #B45309;
 
   /* Theme-aware vars */
-  --bg-main:        #FAF6F0;
+  --bg-main:        #FFFFFF;
   --bg-card:        #FFFFFF;
-  --bg-section:     #EFE7DA;
-  --accent:         #1F4E3D;
-  --accent-bg:      #E5EFE8;
-  --border-accent:  rgba(31,78,61,0.28);
+  --bg-section:     #F5F7FA;
+  --accent:         #185FA5;
+  --accent-bg:      #EBF3FC;
+  --border-accent:  rgba(24,95,165,0.30);
   --accent-fg:      #FFFFFF;
-  --hot:            #C2410C;
-  --hot-bg:         #FBE9DC;
-  --hot-border:     rgba(194,65,12,0.30);
-  --text-primary:   #1A1A1A;
-  --text-secondary: #5A5A5A;
-  --text-muted:     #8A8A8A;
+  --hot:            #E5484D;
+  --hot-bg:         #FDECEC;
+  --hot-border:     rgba(229,72,77,0.28);
+  --text-primary:   #0D1B2A;
+  --text-secondary: #3D5166;
+  --text-muted:     #7B93A8;
   --warning:        #B45309;
-  --shadow:         0 4px 24px rgba(26,26,26,0.08);
+  --shadow:         0 8px 30px rgba(13,27,42,0.08);
 
-  /* Color-block tile palette (used on category tiles + product image surrounds) */
-  --color-block-sand:  #EFE7DA;
-  --color-block-sage:  #D9E4D6;
-  --color-block-blush: #F4D9C8;
-  --color-block-slate: #DCE3EA;
+  /* Color-block tile palette — cooled to light blue-grays for product surrounds */
+  --color-block-sand:  #F1F5F9;
+  --color-block-sage:  #ECF2F7;
+  --color-block-blush: #EEF3F8;
+  --color-block-slate: #E7EEF4;
 }
 
 *, *::before, *::after {
@@ -73,11 +77,15 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: var(--font-dm-serif), 'DM Serif Display', serif;
-  font-weight: 400;
-  line-height: 1.15;
+  font-family: var(--font-dm-serif), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
   color: var(--text-primary);
 }
+
+/* Numbers that should never wobble — prices, percentages, stats */
+.tnum { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }

@@ -72,30 +72,6 @@ export default function HomePage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)', overflowX: 'hidden' }}>
       <Navbar />
 
-      {/* ── TICKER ── */}
-      <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '10px 0', overflow: 'hidden' }}>
-        <div className="marquee-wrap">
-          <div className="marquee-track">
-            {[0,1].map(function(i) {
-              return (
-                <div key={i} style={{ display: 'flex' }}>
-                  {DEALS.map(function(d) {
-                    var pct = calculateSavings(d.originalPrice, d.price).percent
-                    return (
-                      <span key={d.id} style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', whiteSpace: 'nowrap', padding: '0 28px', borderRight: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        {d.shortName}
-                        <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatCurrency(d.price)}</span>
-                        <span style={{ color: 'var(--text-muted)' }}>↓{pct}%</span>
-                      </span>
-                    )
-                  })}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* ── HERO: massive wordmark + 3 large product tiles ── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 24px 16px' }}>
 
@@ -104,7 +80,7 @@ export default function HomePage() {
           className="fade-up fade-up-1 hero-wordmark"
           style={{
             fontFamily: 'var(--font-dm-serif), DM Serif Display, serif',
-            color: '#1F4E3D',
+            color: 'var(--accent)',
             textAlign: 'center',
             letterSpacing: '-0.025em',
             lineHeight: 0.95,
@@ -293,7 +269,7 @@ export default function HomePage() {
             var isActive = activeCategory === cat.id
             return (
               <button key={cat.id} onClick={function() { setActiveCategory(cat.id) }} style={{ fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: '13px', fontWeight: isActive ? 700 : 500, padding: '14px 18px', whiteSpace: 'nowrap', border: 'none', background: 'transparent', cursor: 'pointer', color: isActive ? 'var(--accent)' : 'var(--text-secondary)', borderBottom: isActive ? '2px solid var(--accent)' : '2px solid transparent', marginBottom: '-1px', transition: 'all 0.15s', flexShrink: 0, minHeight: '44px' }}>
-                {cat.emoji} {cat.label}
+                {cat.label}
               </button>
             )
           })}
