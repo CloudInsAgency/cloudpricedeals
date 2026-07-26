@@ -114,14 +114,14 @@ export default function WishlistPage() {
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '48px 24px 40px' }}>
         <div style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Heart size={13} /> My wishlists
             </p>
-            <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: '10px' }}>My wishlists</h1>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'var(--text-secondary)', fontWeight: 400 }}>Save deals to occasion lists — then share with family and friends</p>
+            <h1 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: 'clamp(32px, 5vw, 52px)', color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: '10px' }}>My wishlists</h1>
+            <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '16px', color: 'var(--text-secondary)', fontWeight: 400 }}>Save deals to occasion lists — then share with family and friends</p>
           </div>
           <button onClick={function() { setShowNewList(!showNewList) }}
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '13px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px', whiteSpace: 'nowrap' }}>
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '13px 24px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px', whiteSpace: 'nowrap' }}>
             <Plus size={15} /> New list
           </button>
         </div>
@@ -132,28 +132,28 @@ export default function WishlistPage() {
         {/* New list form */}
         {showNewList && (
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-accent)', borderRadius: '12px', padding: '28px', marginBottom: '28px' }}>
-            <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: 'var(--text-primary)', marginBottom: '20px' }}>Create a new list</p>
+            <p style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '24px', color: 'var(--text-primary)', marginBottom: '20px' }}>Create a new list</p>
             <input
               value={newListName}
               onChange={function(e) { setNewListName(e.target.value) }}
               placeholder="List name (e.g. Dad's Birthday 2026)"
-              style={{ width: '100%', padding: '12px 16px', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: 'var(--text-primary)', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '12px', outline: 'none' }}
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '15px', color: 'var(--text-primary)', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '12px', outline: 'none' }}
             />
             <select
               value={newListOccasion}
               onChange={function(e) { setNewListOccasion(e.target.value) }}
-              style={{ width: '100%', padding: '12px 16px', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: 'var(--text-primary)', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '20px', outline: 'none' }}>
+              style={{ width: '100%', padding: '12px 16px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '15px', color: 'var(--text-primary)', background: 'var(--bg-section)', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '20px', outline: 'none' }}>
               {WISHLIST_OCCASIONS.map(function(o) {
                 return <option key={o.id} value={o.id}>{o.label}</option>
               })}
             </select>
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={createList}
-                style={{ background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '11px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px' }}>
+                style={{ background: 'var(--accent)', color: '#FFFFFF', border: 'none', padding: '11px 24px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', borderRadius: '8px' }}>
                 Create list
               </button>
               <button onClick={function() { setShowNewList(false) }}
-                style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', padding: '11px 24px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', cursor: 'pointer', borderRadius: '8px' }}>
+                style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', padding: '11px 24px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', cursor: 'pointer', borderRadius: '8px' }}>
                 Cancel
               </button>
             </div>
@@ -169,8 +169,8 @@ export default function WishlistPage() {
           ].map(function(s) {
             return (
               <div key={s.label} style={{ background: 'var(--bg-card)', padding: '24px', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '40px', color: 'var(--accent)', lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{s.label}</div>
+                <div style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '40px', color: 'var(--accent)', lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '6px' }}>{s.label}</div>
               </div>
             )
           })}
@@ -179,10 +179,10 @@ export default function WishlistPage() {
         {/* Saved items */}
         {savedItems.length > 0 && (
           <div style={{ background: 'var(--bg-card)', border: '2px solid var(--border-accent)', borderRadius: '12px', padding: '24px', marginBottom: '28px' }}>
-            <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: 'var(--accent)', marginBottom: '6px' }}>
+            <p style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '24px', color: 'var(--accent)', marginBottom: '6px' }}>
               {savedItems.length} item{savedItems.length !== 1 ? 's' : ''} saved — assign to a list
             </p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
+            <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
               These items are in your saved deals. Add them to a list below.
             </p>
             {savedItems.map(function(item) {
@@ -197,21 +197,21 @@ export default function WishlistPage() {
                     }
                   </div>
                   <div style={{ flex: 1, minWidth: '140px' }}>
-                    <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '4px' }}>{deal.name || item.name}</div>
-                    <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--accent)', fontWeight: 600 }}>{formatCurrency(deal.price || item.price)}</div>
+                    <div style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '4px' }}>{deal.name || item.name}</div>
+                    <div style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', color: 'var(--accent)', fontWeight: 600 }}>{formatCurrency(deal.price || item.price)}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {lists.map(function(l) {
                       var occ = WISHLIST_OCCASIONS.find(function(o) { return o.id === l.occasion }) || {}
                       return (
                         <button key={l.id} onClick={function() { addToList(l.id, item) }}
-                          style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '6px 12px', background: occ.bg || 'rgba(148,163,184,0.1)', color: occ.color || 'var(--text-secondary)', border: '1px solid ' + (occ.color || 'var(--text-muted)') + '40', cursor: 'pointer', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                          style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '6px 12px', background: occ.bg || 'rgba(148,163,184,0.1)', color: occ.color || 'var(--text-secondary)', border: '1px solid ' + (occ.color || 'var(--text-muted)') + '40', cursor: 'pointer', borderRadius: '6px', whiteSpace: 'nowrap' }}>
                           + {l.name}
                         </button>
                       )
                     })}
                     <button onClick={function() { removeFromSaved(item.id) }}
-                      style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: 'var(--text-muted)', background: 'none', border: '1px solid var(--border)', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px' }}>
+                      style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', color: 'var(--text-muted)', background: 'none', border: '1px solid var(--border)', cursor: 'pointer', padding: '6px 10px', borderRadius: '6px' }}>
                       Remove
                     </button>
                   </div>
@@ -224,13 +224,13 @@ export default function WishlistPage() {
         {/* Occasion filter tabs */}
         <div style={{ display: 'flex', gap: '0', overflowX: 'auto', marginBottom: '28px', borderBottom: '1px solid var(--border)', WebkitOverflowScrolling: 'touch' }}>
           <button onClick={function() { setActiveOccasion('all') }}
-            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: activeOccasion === 'all' ? 600 : 400, padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === 'all' ? 'var(--accent)' : 'var(--text-muted)', borderBottom: activeOccasion === 'all' ? '2px solid var(--accent)' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', fontWeight: activeOccasion === 'all' ? 600 : 400, padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === 'all' ? 'var(--accent)' : 'var(--text-muted)', borderBottom: activeOccasion === 'all' ? '2px solid var(--accent)' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
             All
           </button>
           {WISHLIST_OCCASIONS.map(function(o) {
             return (
               <button key={o.id} onClick={function() { setActiveOccasion(o.id) }}
-                style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: activeOccasion === o.id ? 600 : 400, padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === o.id ? o.color : 'var(--text-muted)', borderBottom: activeOccasion === o.id ? '2px solid ' + o.color : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+                style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', fontWeight: activeOccasion === o.id ? 600 : 400, padding: '12px 20px', border: 'none', background: 'transparent', cursor: 'pointer', color: activeOccasion === o.id ? o.color : 'var(--text-muted)', borderBottom: activeOccasion === o.id ? '2px solid ' + o.color : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
                 {o.label}
               </button>
             )
@@ -241,8 +241,8 @@ export default function WishlistPage() {
         {filteredLists.length === 0 && (
           <div style={{ textAlign: 'center', padding: '64px 0' }}>
             <Heart size={48} color="var(--accent)" style={{ margin: '0 auto 16px', display: 'block' }} />
-            <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '8px' }}>No lists yet</p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: 'var(--text-muted)' }}>Create a list and start saving deals to it.</p>
+            <p style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '8px' }}>No lists yet</p>
+            <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '15px', color: 'var(--text-muted)' }}>Create a list and start saving deals to it.</p>
           </div>
         )}
 
@@ -263,10 +263,10 @@ export default function WishlistPage() {
                 onClick={function() { setExpandedList(isExpanded ? null : list.id) }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px', flexWrap: 'wrap' }}>
-                    <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)' }}>{list.name}</span>
-                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || 'rgba(148,163,184,0.1)', color: occ.color || 'var(--text-secondary)', borderRadius: '100px' }}>{occ.label || list.occasion}</span>
+                    <span style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '22px', color: 'var(--text-primary)' }}>{list.name}</span>
+                    <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', background: occ.bg || 'rgba(148,163,184,0.1)', color: occ.color || 'var(--text-secondary)', borderRadius: '100px' }}>{occ.label || list.occasion}</span>
                   </div>
-                  <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>
+                  <div style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>
                     {list.items.length} item{list.items.length !== 1 ? 's' : ''} · {formatCurrency(listTotal)} total · Created {list.created}
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default function WishlistPage() {
                 <div style={{ borderTop: '1px solid var(--border)', padding: '0 24px' }}>
                   {list.items.length === 0 && (
                     <div style={{ padding: '28px 0', textAlign: 'center' }}>
-                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-muted)' }}>No items yet. Save deals using the ♥ button then assign them here.</p>
+                      <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', color: 'var(--text-muted)' }}>No items yet. Save deals using the ♥ button then assign them here.</p>
                     </div>
                   )}
                   {list.items.map(function(item) {
@@ -305,22 +305,22 @@ export default function WishlistPage() {
                           }
                         </div>
                         <div style={{ flex: 1, minWidth: '140px' }}>
-                          <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '4px' }}>{deal.name || item.name}</div>
-                          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: retailer.bg || 'rgba(148,163,184,0.1)', color: retailer.text || 'var(--text-secondary)', borderRadius: '100px' }}>
+                          <div style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '17px', color: 'var(--text-primary)', marginBottom: '4px' }}>{deal.name || item.name}</div>
+                          <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '2px 8px', background: retailer.bg || 'rgba(148,163,184,0.1)', color: retailer.text || 'var(--text-secondary)', borderRadius: '100px' }}>
                             {retailer.label || (deal.retailer || item.retailer)}
                           </span>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontFamily: 'DM Serif Display, serif', fontSize: '26px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price || item.price)}</div>
-                          <div style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice || item.originalPrice)}</div>
+                          <div style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '26px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price || item.price)}</div>
+                          <div style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice || item.originalPrice)}</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                           <a href={amazonUrl} target="_blank" rel="noopener noreferrer"
-                            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '8px 14px', textDecoration: 'none', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '8px 14px', textDecoration: 'none', borderRadius: '6px', whiteSpace: 'nowrap' }}>
                             Buy <ExternalLink size={11} />
                           </a>
                           <button onClick={function() { removeFromList(list.id, item.id) }}
-                            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: 'var(--text-muted)', background: 'none', border: '1px solid var(--border)', padding: '7px 14px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em', borderRadius: '6px' }}>
+                            style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', color: 'var(--text-muted)', background: 'none', border: '1px solid var(--border)', padding: '7px 14px', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em', borderRadius: '6px' }}>
                             Remove
                           </button>
                         </div>
@@ -329,7 +329,7 @@ export default function WishlistPage() {
                   })}
                   {list.items.length > 0 && (
                     <div style={{ padding: '16px 0' }}>
-                      <a href="/browse" style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
+                      <a href="/browse" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>
                         + Browse more deals →
                       </a>
                     </div>

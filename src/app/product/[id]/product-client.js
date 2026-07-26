@@ -49,8 +49,8 @@ export default function ProductClient({ id }) {
       <Navbar />
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
         <h1 style={{ fontSize: '48px', marginBottom: '16px' }}>Deal not found</h1>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', color: 'var(--text-secondary)', marginBottom: '24px' }}>This deal may have expired or been removed.</p>
-        <Link href="/" style={{ background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 700, padding: '13px 28px', borderRadius: '8px', textDecoration: 'none', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Back to deals</Link>
+        <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', color: 'var(--text-secondary)', marginBottom: '24px' }}>This deal may have expired or been removed.</p>
+        <Link href="/" style={{ background: 'var(--accent)', color: '#FFFFFF', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', fontWeight: 700, padding: '13px 28px', borderRadius: '8px', textDecoration: 'none', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Back to deals</Link>
       </div>
       <Footer />
     </div>
@@ -121,16 +121,16 @@ export default function ProductClient({ id }) {
 
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', padding: '12px 24px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <Link href="/" style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none' }}>Deals</Link>
+          <Link href="/" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none' }}>Deals</Link>
           <ChevronRight size={12} color="var(--text-muted)" />
-          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{deal.category}</span>
+          <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{deal.category}</span>
           <ChevronRight size={12} color="var(--text-muted)" />
-          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)' }}>{deal.shortName}</span>
+          <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-secondary)' }}>{deal.shortName}</span>
         </div>
       </div>
 
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px 80px' }}>
-        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '28px' }}>
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '28px' }}>
           <ArrowLeft size={14} /> Back to deals
         </Link>
 
@@ -171,7 +171,7 @@ export default function ProductClient({ id }) {
 
               <div style={{ padding: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
-                  <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(22px, 3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2, flex: 1 }}>{deal.name}</h1>
+                  <h1 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: 'clamp(22px, 3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2, flex: 1 }}>{deal.name}</h1>
                   <button onClick={handleWishlist} aria-pressed={isSaved} title={isSaved ? 'Saved to wishlist' : 'Save to wishlist'} style={{ flexShrink: 0, width: '44px', height: '44px', background: isSaved ? 'var(--hot-bg)' : 'var(--bg-section)', border: '1px solid ' + (isSaved ? 'var(--hot)' : 'var(--border)'), borderRadius: '50%', cursor: 'pointer', color: isSaved ? 'var(--hot)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
                   </button>
@@ -181,35 +181,35 @@ export default function ProductClient({ id }) {
                   <RetailerBadge retailer={deal.retailer} />
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Star size={13} style={{ fill: '#F59E0B', color: '#F59E0B' }} />
-                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 500 }}>{deal.rating}</span>
-                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>· {deal.reviews.toLocaleString()} reviews</span>
+                    <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 500 }}>{deal.rating}</span>
+                    <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)' }}>· {deal.reviews.toLocaleString()} reviews</span>
                   </div>
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>Updated {deal.updatedAt}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>Updated {deal.updatedAt}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px' }}>
-                  <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '52px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '20px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice)}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '52px', color: 'var(--accent)', lineHeight: 1 }}>{formatCurrency(deal.price)}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '20px', color: 'var(--text-muted)', textDecoration: 'line-through' }}>{formatCurrency(deal.originalPrice)}</span>
                 </div>
                 <div style={{ marginBottom: '24px' }}>
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', padding: '5px 14px', borderRadius: '100px' }}>
+                  <span style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', background: 'var(--accent-bg)', border: '1px solid var(--border-accent)', padding: '5px 14px', borderRadius: '100px' }}>
                     You save {formatCurrency(savings)} ({savingsPct}% off)
                   </span>
                 </div>
 
                 <InlineAffiliateDisclosure />
                 <a href={deal.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', background: 'var(--accent)', color: '#FFFFFF', padding: '15px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '10px', marginBottom: '10px' }}>
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', background: 'var(--accent)', color: '#FFFFFF', padding: '15px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '10px', marginBottom: '10px' }}>
                   Buy on Amazon <ExternalLink size={15} />
                 </a>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>
                   <Truck size={13} /> {deal.shipping}
                 </div>
 
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
-                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '10px' }}>About this deal</p>
-                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8 }}>{deal.description}</p>
+                  <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '10px' }}>About this deal</p>
+                  <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8 }}>{deal.description}</p>
                 </div>
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function ProductClient({ id }) {
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
                 <TrendingDown size={16} color="var(--accent)" />
-                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Price history</p>
+                <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Price history</p>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
                 {[
@@ -228,8 +228,8 @@ export default function ProductClient({ id }) {
                 ].map(function(s) {
                   return (
                     <div key={s.label} style={{ background: 'var(--bg-section)', borderRadius: '10px', padding: '16px', textAlign: 'center', border: '1px solid var(--border)' }}>
-                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</p>
-                      <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '26px', color: s.good ? 'var(--accent)' : 'var(--text-primary)' }}>{s.value}</p>
+                      <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</p>
+                      <p style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '26px', color: s.good ? 'var(--accent)' : 'var(--text-primary)' }}>{s.value}</p>
                     </div>
                   )
                 })}
@@ -242,8 +242,8 @@ export default function ProductClient({ id }) {
           {/* RIGHT COLUMN — GET THIS DEAL (Amazon-only render) */}
           <div className="compare-panel">
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '4px' }}>Get this deal</p>
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>Updated weekly · Tap to buy</p>
+              <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '4px' }}>Get this deal</p>
+              <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>Updated weekly · Tap to buy</p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {amazonComparePrices.slice().sort(function(a, b) { return a.price - b.price })
@@ -256,17 +256,17 @@ export default function ProductClient({ id }) {
                     return (
                       <a key={cp.retailer} href={cp.url} target="_blank" rel="sponsored nofollow noopener noreferrer"
                         style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', border: isBest ? '1px solid var(--border-accent)' : '1px solid var(--border)', background: isBest ? 'var(--accent-bg)' : 'var(--bg-section)', borderRadius: '10px', textDecoration: 'none' }}>
-                        <div style={{ width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontFamily: 'DM Sans, sans-serif', fontWeight: 700, flexShrink: 0, background: i === 0 ? 'var(--accent)' : 'var(--bg-card)', color: i === 0 ? '#FFFFFF' : 'var(--text-muted)', border: i !== 0 ? '1px solid var(--border)' : 'none' }}>
+                        <div style={{ width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontFamily: 'var(--font-dm-sans), sans-serif', fontWeight: 700, flexShrink: 0, background: i === 0 ? 'var(--accent)' : 'var(--bg-card)', color: i === 0 ? '#FFFFFF' : 'var(--text-muted)', border: i !== 0 ? '1px solid var(--border)' : 'none' }}>
                           {i + 1}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <RetailerBadge retailer={cp.retailer} />
-                          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', marginTop: '3px' }}>{cp.shipping}</p>
+                          <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', color: 'var(--text-muted)', marginTop: '3px' }}>{cp.shipping}</p>
                         </div>
                         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                          <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '24px', color: isBest ? 'var(--accent)' : 'var(--text-primary)', lineHeight: 1 }}>{formatCurrency(cp.price)}</p>
-                          {!isBest && <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>+{formatCurrency(diff)}</p>}
-                          {isBest && <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)' }}>Best price</p>}
+                          <p style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '24px', color: isBest ? 'var(--accent)' : 'var(--text-primary)', lineHeight: 1 }}>{formatCurrency(cp.price)}</p>
+                          {!isBest && <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', color: 'var(--text-muted)' }}>+{formatCurrency(diff)}</p>}
+                          {isBest && <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, color: 'var(--accent)' }}>Best price</p>}
                         </div>
                         <ExternalLink size={13} color="var(--text-muted)" style={{ flexShrink: 0 }} />
                       </a>
@@ -276,7 +276,7 @@ export default function ProductClient({ id }) {
 
               <div style={{ marginTop: '20px', padding: '14px', background: 'var(--bg-section)', borderRadius: '10px', border: '1px solid var(--border)', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
                 <Shield size={14} color="var(--text-muted)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
                   CloudPriceDeals earns a commission on purchases. This never affects the price you pay.
                 </p>
               </div>
@@ -288,10 +288,10 @@ export default function ProductClient({ id }) {
           <div style={{ marginTop: '64px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '8px' }}>More like this</p>
-                <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(24px, 3vw, 34px)', color: 'var(--text-primary)' }}>Related {deal.category} deals</h2>
+                <p style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '8px' }}>More like this</p>
+                <h2 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: 'clamp(24px, 3vw, 34px)', color: 'var(--text-primary)' }}>Related {deal.category} deals</h2>
               </div>
-              <Link href="/browse" style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Link href="/browse" style={{ fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 View all <ChevronRight size={15} />
               </Link>
             </div>

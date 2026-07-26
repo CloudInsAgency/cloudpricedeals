@@ -21,13 +21,13 @@ export default function WishlistPage() {
           maxWidth: '760px',
           margin: '0 auto',
           padding: '32px 24px 96px',
-          fontFamily: 'DM Sans, sans-serif',
+          fontFamily: 'var(--font-dm-sans), sans-serif',
           color: 'var(--text-secondary)',
           lineHeight: 1.8,
           fontSize: '15px',
         }}
       >
-        <h2 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '16px', lineHeight: 1.2 }}>
+        <h2 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '28px', color: 'var(--text-primary)', marginBottom: '16px', lineHeight: 1.2 }}>
           How CloudPriceDeals wishlists work
         </h2>
         <p style={{ marginBottom: '20px' }}>
@@ -36,19 +36,19 @@ export default function WishlistPage() {
         <p style={{ marginBottom: '20px' }}>
           We built lists around occasions because most shopping is occasion-driven. You can create a list for a birthday, Christmas, Hanukkah, a baby shower, a wedding, a housewarming, or any general gift event. Each list keeps the items grouped together, tracks the running total, and shows how much you have saved off retail across the whole list. When the day comes around, every link is one click away — no tabs to keep open for weeks.
         </p>
-        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
+        <h3 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
           Occasion lists we support
         </h3>
         <p style={{ marginBottom: '20px' }}>
           Birthday lists are the most common — pick the person, set the date, and we'll show you a running shortlist of deals across the categories they care about. Christmas and holiday gift lists let you keep a year-round collection so you don't end up scrambling in December. Baby shower and wedding lists are useful when you want to align with a registry but still find the best price on each item. We also offer general gift, housewarming, and graduation lists for anyone who wants the structure without an occasion label.
         </p>
-        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
+        <h3 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
           Sharing lists with family and friends
         </h3>
         <p style={{ marginBottom: '20px' }}>
           Every list has a share button that copies a read-only link you can text or email. The recipient can see what you've saved and click straight through to the retailer — useful when you want a friend to weigh in before you buy, or when relatives ask for gift ideas. Sharing creates a snapshot, so subsequent edits to your list don't change what the recipient sees unless you re-share.
         </p>
-        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
+        <h3 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontWeight: 700, letterSpacing: '-0.02em', fontSize: '22px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '12px' }}>
           Why save deals instead of bookmarking?
         </h3>
         <p style={{ marginBottom: '20px' }}>
