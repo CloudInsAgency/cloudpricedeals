@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { calculateSavings } from '@/lib/currency'
+import RetailerMark, { RETAILER_IDS } from './RetailerMark'
 
 // Per-tile color theme (badge + button + card tint)
 const THEMES = {
@@ -18,15 +19,6 @@ const THEMES = {
   purple: { badgeBg: '#6D28D9', tint: '#F5F1FC', btn: '#6D28D9' },
 }
 const VARIANT_THEME = { sage: 'green', blush: 'blue', sienna: 'purple' }
-
-// "Available at" chips — brand-colored initials (not logos, for compliance)
-const RETAILER_CHIPS = [
-  { k: 'a', bg: '#FF9900' },
-  { k: 'BB', bg: '#0046BE' },
-  { k: 'W', bg: '#0071CE' },
-  { k: 'T', bg: '#CC0000' },
-  { k: 'e', bg: '#E53238' },
-]
 
 export default function HeroTile({ deal, variant, badgeLabel, priority }) {
   const theme = THEMES[VARIANT_THEME[variant] || 'green']
@@ -86,15 +78,17 @@ export default function HeroTile({ deal, variant, badgeLabel, priority }) {
 
       {/* Available-at retailer chips */}
       <div style={{ display: 'flex', gap: '7px', marginBottom: '14px' }} aria-label="Available at Amazon, Best Buy, Walmart, Target and eBay">
-        {RETAILER_CHIPS.map(function(r) {
+        {RETAILER_IDS.map(function(id) {
           return (
-            <span key={r.k} aria-hidden="true" style={{
-              width: '30px', height: '30px', borderRadius: '8px',
+            <span key={id} style={{
+              width: '32px', height: '32px', borderRadius: '9px',
               background: '#FFFFFF', border: '1px solid var(--border)',
+              boxShadow: '0 1px 3px rgba(13,27,42,0.06)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif',
-              fontSize: '11px', fontWeight: 800, color: r.bg, letterSpacing: '-0.02em',
-            }}>{r.k}</span>
+              padding: '6px',
+            }}>
+              <RetailerMark id={id} />
+            </span>
           )
         })}
       </div>

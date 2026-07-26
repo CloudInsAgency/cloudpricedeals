@@ -22,8 +22,8 @@ module.exports = {
         ink:    '#1A1A1A',
       },
       fontFamily: {
-        sans:    ['Jost', 'system-ui', 'sans-serif'],
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans:    ['var(--font-inter)', '-apple-system', 'system-ui', 'sans-serif'],
+        display: ['var(--font-inter)', '-apple-system', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'xs':   ['14px', { lineHeight: '1.5' }],

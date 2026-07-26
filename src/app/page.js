@@ -99,10 +99,10 @@ export default function HomePage() {
       </div>
 
       {/* ── HERO: headline + lifestyle photo ── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 20px' }}>
-        <div className="hero-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '56px', alignItems: 'center' }}>
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 24px 0', position: 'relative' }}>
+        <div className="hero-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1.05fr', gap: '48px', alignItems: 'start' }}>
           {/* LEFT: headline + CTA */}
-          <div className="fade-up fade-up-1">
+          <div className="fade-up fade-up-1" style={{ paddingTop: '18px' }}>
             <h1 style={{ fontFamily: 'var(--font-dm-serif), sans-serif', fontSize: 'clamp(44px, 5.4vw, 76px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.02, color: 'var(--text-primary)', marginBottom: '22px' }}>
               Smarter shopping.<br />Bigger savings<span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
@@ -122,15 +122,15 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* RIGHT: lifestyle photo */}
-          <div className="fade-up fade-up-2 hero-photo" style={{ position: 'relative', aspectRatio: '4/3', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 24px 60px rgba(13,27,42,0.14)' }}>
-            <Image src="/hero-lifestyle.png" alt="Curated home and kitchen deals in a warm, sunlit setting" fill priority sizes="(max-width: 900px) 100vw, 620px" style={{ objectFit: 'cover' }} />
+          {/* RIGHT: lifestyle photo — extends down so the tiles overlap it */}
+          <div className="fade-up fade-up-2 hero-photo" style={{ position: 'relative', aspectRatio: '5/4.4', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 24px 60px rgba(13,27,42,0.14)' }}>
+            <Image src="/hero-lifestyle.png" alt="Curated home and kitchen deals in a warm, sunlit setting" fill priority sizes="(max-width: 900px) 100vw, 660px" style={{ objectFit: 'cover' }} />
           </div>
         </div>
       </section>
 
-      {/* ── EDITOR'S PICKS: 3 large product tiles ── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '20px 24px 16px' }}>
+      {/* ── EDITOR'S PICKS: 3 tiles, pulled up to overlap the hero photo ── */}
+      <section className="picks-overlap" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px 16px', marginTop: '-96px', position: 'relative', zIndex: 5 }}>
         {/* 3 LARGE color-blocked product tiles in a horizontal row */}
         <div
           className="hero-tile-grid fade-up fade-up-3"
@@ -168,8 +168,9 @@ export default function HomePage() {
         .hero-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(26,26,26,0.12); }
         @media (max-width: 900px) {
           .hero-tile-grid { grid-template-columns: 1fr !important; }
-          .hero-2col { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .hero-photo { aspect-ratio: 16/10 !important; order: -1; }
+          .hero-2col { grid-template-columns: 1fr !important; gap: 28px !important; }
+          .hero-photo { aspect-ratio: 16/10 !important; }
+          .picks-overlap { margin-top: 24px !important; }
           .topdeals-2col { grid-template-columns: 1fr !important; gap: 28px !important; }
         }
       `}</style>
