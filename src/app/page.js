@@ -130,7 +130,7 @@ export default function HomePage() {
       </section>
 
       {/* ── EDITOR'S PICKS: 3 tiles, pulled up to overlap the hero photo ── */}
-      <section className="picks-overlap" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px 16px', marginTop: '-96px', position: 'relative', zIndex: 5 }}>
+      <section className="picks-overlap" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px 16px', marginTop: '-48px', position: 'relative', zIndex: 5 }}>
         {/* 3 LARGE color-blocked product tiles in a horizontal row */}
         <div
           className="hero-tile-grid fade-up fade-up-3"
